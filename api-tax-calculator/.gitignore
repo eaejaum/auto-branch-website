@@ -1,0 +1,60 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+.log
+
+# Diretórios de build/transpilação
+dist/
+build/
+coverage/
+.tmp/
+.out/
+.next/
+.vercel/
+functions/
+lib/
+.eslintcache
+
+# Arquivos de ambiente e configuração sensível
+.env
+.env.test
+.env.production
+.env.local
+.env.*.local
+
+# Jest
+jest/
+coverage/
+.vscode/
+.idea/
+*.swp
+
+# Nodemon
+.nodemon-debug.json
+nodemon-debug.log
+
+# Editor e Sistema Operacional
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+*.log
+*.bak
+*.tmp
+*.lock
+*.cache
+
+# TypeScript
+*.tsbuildinfo
