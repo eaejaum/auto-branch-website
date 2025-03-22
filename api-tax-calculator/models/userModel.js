@@ -13,3 +13,14 @@ export const createUser = async (name, email, password) => {
         throw err;
     }
 };
+
+export const getUserByEmail = async (email) => {
+    try {
+        const query = `SELECT * FROM  users WHERE email = ?`
+        const [results] = await db.promise().query(query, [email]);
+
+        return results.length > 0 ? results[0] : null;
+    } catch (err) {
+        throw err;
+    }
+};
