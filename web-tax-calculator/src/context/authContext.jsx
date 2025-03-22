@@ -6,6 +6,7 @@ export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -16,13 +17,31 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  async function login() {
+  async function login(email, password) {
     try {
-      setUser({ name: "John Doe" });
+      setLoading(true);
+      const response = await fetch("http://localhost:3000/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message);
+        return;
+      }
+
+
+      setUser(data.user);
       setIsAuthenticated(true);
-      localStorage.setItem("user", JSON.stringify({ name: "John Doe" }));
+      localStorage.setItem("user", JSON.stringify(data.user));
     } catch (error) {
-      setError(error);
+      console.error("Error: ", error);
+      setError("Erro ao realizar login");
       setIsAuthenticated(false);
     }
   }
@@ -35,7 +54,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, error, isAuthenticated, login, logout }}
+      value={{ user, error, loading, isAuthenticated, login, logout }}
     >
       {children}
     </AuthContext.Provider>
