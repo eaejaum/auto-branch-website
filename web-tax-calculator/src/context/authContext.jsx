@@ -28,7 +28,7 @@ export function AuthProvider({ children }) {
         },
         body: JSON.stringify({ email, password }),
       });
-      
+
       const data = await response.json();
 
       if (!response.ok) {
@@ -36,18 +36,45 @@ export function AuthProvider({ children }) {
         return;
       }
 
-
       setUser(data.user);
       setIsAuthenticated(true);
       localStorage.setItem("user", JSON.stringify(data.user));
       setError(null);
-      setLoading(false);
     } catch (error) {
       console.error("Error: ", error);
       setError("Erro ao realizar login");
       setIsAuthenticated(false);
+    } finally {
+      setLoading(false);
     }
-  }
+  };
+
+  async function register(name, email, password) {
+    try {
+      setError(null);
+      const response = await fetch("http://localhost:3000/api/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password })
+      });
+      
+      const data = await response.json();
+
+      if(!response.ok) {
+        setError(data.message);
+        return;
+      }
+
+      setError(null);
+    } catch (error) {
+      console.error("Error: ", error);
+      setError("Erro ao realizar cadastro");
+    } finally {
+      setLoading(false);
+    };
+  };
 
   function logout() {
     setIsAuthenticated(false);
@@ -57,7 +84,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, error, loading, isAuthenticated, login, logout }}
+      value={{ user, error, loading, isAuthenticated, login, register, logout }}
     >
       {children}
     </AuthContext.Provider>
