@@ -1,16 +1,11 @@
-import mysql from "mysql";
+import mysql from "mysql2";
 
-const db = mysql.createConnection({
+const db = mysql.createPool({
     host: "localhost",
     user: "root",
     password: "",
-    database: "db_tax_calculator"
-});
-
-db.connect((err) => {
-    if(err)
-        console.log(err);
-    console.log("Conectado ao banco de dados!");
+    database: "db_tax_calculator",
+    port: 3306,
 });
 
 export default db;
