@@ -20,6 +20,7 @@ export function AuthProvider({ children }) {
   async function login(email, password) {
     try {
       setLoading(true);
+      setError(null);
       const response = await fetch("http://localhost:3000/api/users/login", {
         method: "POST",
         headers: {
@@ -39,6 +40,8 @@ export function AuthProvider({ children }) {
       setUser(data.user);
       setIsAuthenticated(true);
       localStorage.setItem("user", JSON.stringify(data.user));
+      setError(null);
+      setLoading(false);
     } catch (error) {
       console.error("Error: ", error);
       setError("Erro ao realizar login");
