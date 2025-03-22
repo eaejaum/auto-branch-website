@@ -3,6 +3,7 @@ import Home from "./pages/Home/Home";
 import NotFound from "./pages/404/NotFound";
 import "./App.css";
 import Login from "./auth/Login/Login";
+import Register from "./auth/Register/Register";
 import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
         <Route element={<PrivateRoute />}>
           <Route path="/home" element={<Home />} />

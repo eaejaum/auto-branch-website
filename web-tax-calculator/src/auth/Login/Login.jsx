@@ -14,6 +14,7 @@ function Login() {
         <>
             <h1>Login</h1>
             <button onClick={handleLogin}>Entrar</button>
+            <button onClick={() => navigate("/register")}>Registro</button>
         </>
     )
 };
