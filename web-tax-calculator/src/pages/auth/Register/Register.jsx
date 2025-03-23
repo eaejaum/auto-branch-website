@@ -12,7 +12,7 @@ function Register() {
 
   async function handleRegister(e) {
     e.preventDefault();
-    await register(email, name, password);
+    await register(name, email, password);
     navigate("/login");
   }
 
