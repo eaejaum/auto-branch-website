@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
     res.send("Api funcionando!");
 });
 
-db.query(`USE db_tax_calculator`, (err) => {
+db.query(`USE db_auto_branch`, (err) => {
     if (err)
       console.error("Erro ao conectar ao banco de dados:", err);
     console.log("Conectado ao banco de dados");

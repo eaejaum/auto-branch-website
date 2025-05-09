@@ -4,7 +4,7 @@ const db = mysql.createPool({
     host: "localhost",
     user: "root",
     password: "",
-    database: "db_tax_calculator",
+    database: "db_auto_branch",
     port: 3306,
 });
 
