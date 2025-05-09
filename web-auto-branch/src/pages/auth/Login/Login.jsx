@@ -114,7 +114,7 @@ function Login() {
           </Button>
           <Flex justify="center" style={{ marginTop: "10px" }}>
             <Link
-              to="/register"
+              onClick={() => navigate("/register")}
               style={{
                 fontSize: "14px",
                 color: "#595959",
