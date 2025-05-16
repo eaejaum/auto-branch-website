@@ -1,0 +1,43 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #F5F5F5;
+}
+
+.title {
+    text-align: center;
+    font-size: 24px;
+    padding-bottom: 16px;
+    color: #2E2D37;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 26px;
+}
+
+.loginButton {
+    width: 100%;
+    padding: 18px;
+    background-color: #2563EB;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-top: 16px;
+}
+
+.newSeller {
+    font-size: 12px;
+    font-weight: 500;
+    color: #2563EB;
+    cursor: pointer;
+    text-decoration: underline
+}
