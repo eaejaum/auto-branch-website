@@ -54,7 +54,7 @@ function Login() {
           <span className="errorMessage">{error}</span>
         )}
 
-        <Text as="label" size="2">
+        <Text as="label" size="2" style={{ marginBottom: "16px" }}>
           <Flex gap="2">
             <Checkbox style={{ cursor: "pointer" }} />
             Lembrar de mim
