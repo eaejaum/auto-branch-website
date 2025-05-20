@@ -2,13 +2,13 @@ import { createUser, getUserByEmail } from "../models/userModel.js";
 import bcrypt from 'bcrypt';
 
 export const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, cpf, password } = req.body;
 
-  if (!name || !email || !password)
+  if (!name || !email || !cpf || !password)
     return res.status(400).json({ message: "Preencha todos os campos" });
 
   try {
-    await createUser(name, email, password);
+    await createUser(name, email, cpf, password, true);
     res.status(201).json({ message: "Usuário registrado com sucesso!" });
   } catch (error) {
     return res.status(500).json({ message: "Erro ao registrar usuário" });

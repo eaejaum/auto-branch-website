@@ -58,7 +58,7 @@ function Login() {
 
         {loginError && (<span className="errorMessage">{loginError}</span>)}
 
-        <Text as="label" size="2" style={{ marginBottom: "16px" }}>
+        <Text as="label" size="2" style={{ marginBottom: "10px" }}>
           <Flex gap="2">
             <Checkbox checked={rememberUser} onClick={() => setRememberUser(!rememberUser)} style={{ cursor: "pointer" }} />
             Lembrar de mim

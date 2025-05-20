@@ -1,12 +1,12 @@
 import bcrypt from 'bcrypt';
 import db from "../db/conn.js";
 
-export const createUser = async (name, email, password) => {
+export const createUser = async (name, email, cpf, password, isAdmin) => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const query = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
-        const [results] = await db.promise().query(query, [name, email, hashedPassword]);
+        const query = `INSERT INTO users (name, email, cpf, password, is_admin) VALUES (?, ?, ?, ?, ?)`;
+        const [results] = await db.promise().query(query, [name, email, cpf, hashedPassword, isAdmin]);
 
         return results;
     } catch (err) {
