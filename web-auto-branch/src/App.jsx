@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./pages/Home/Home";
 import NotFound from "./pages/404/NotFound";
 import "./App.css";
 import PrivateRoute from "./components/PrivateRoute";
 import Login from "./pages/auth/Login/Login";
 import Register from "./pages/auth/Register/Register";
+import Branches from "./pages/Branches.jsx/Branches";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         <Route element={<PrivateRoute />}>
-          <Route path="/home" element={<Home />} />
+          <Route path="/branches" element={<Branches />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

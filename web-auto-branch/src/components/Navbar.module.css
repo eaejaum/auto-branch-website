@@ -1,0 +1,10 @@
+.box {
+    flex-direction: row;
+    width: 100%;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.title {
+    font-size: 20px;
+    padding: 16px;
+}

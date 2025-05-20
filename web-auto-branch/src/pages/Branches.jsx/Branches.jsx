@@ -1,0 +1,31 @@
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../context/authContext";
+import { Box, Button, Container, Flex } from "@radix-ui/themes";
+import { Plus } from "lucide-react";
+import styles from "./Branches.module.css";
+import Navbar from "../../components/Navbar";
+
+function Branches() {
+    const navigate = useNavigate();
+    // const { logout } = useAuthContext();
+
+    // function handleLogout() {
+    //     logout();
+    //     navigate("/login");
+    // };
+
+    return (
+        <>
+            <Navbar />
+            <Box>
+                <Flex justify="between">
+                    <h1 className={styles.title}>Lista de Concessionárias</h1>
+                    <Button className={styles.addBranchButton}><Plus color="#FFF" height={14} width={14} /> Nova Concessionária</Button>
+                </Flex>
+            </Box>
+            {/* <Button onClick={handleLogout}>Logout</Button> */}
+        </>
+    )
+};
+
+export default Branches;
