@@ -1,9 +1,15 @@
+.box {
+    height: 100vh;
+    background-color: #F5F5F5;
+
+}
+
 .container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100%;
     background-color: #F5F5F5;
 }
 
@@ -14,23 +20,15 @@
     color: #2E2D37;
 }
 
-.loginForm {
+.registerForm {
     display: flex;
     flex-direction: column;
     gap: 4px;
     padding: 0 26px;
 }
 
-.newSeller {
-    font-size: 12px;
-    font-weight: 500;
-    color: #2563EB;
-    cursor: pointer;
-    text-decoration: underline
-}
-
 @media (min-width: 600px) {
-    .loginForm {
+    .registerForm {
         padding: 0 calc(25% - 30px);
     }
 }

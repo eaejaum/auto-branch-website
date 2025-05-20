@@ -5,7 +5,8 @@ export const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
+  const [loginError, setLoginError] = useState(null);
+  const [registerError, setRegisterError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -17,10 +18,10 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  async function login(email, password) {
+  async function login(email, password, rememberUser) {
     try {
       setLoading(true);
-      setError(null);
+      setLoginError(null);
       const response = await fetch("http://localhost:3000/api/users/login", {
         method: "POST",
         headers: {
@@ -32,18 +33,20 @@ export function AuthProvider({ children }) {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message);
-        return;
+        setLoginError(data.message);
+        return false;
       }
 
       setUser(data.user);
       setIsAuthenticated(true);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      setError(null);
+      if(rememberUser)
+        localStorage.setItem("user", JSON.stringify(data.user));
+      setLoginError(null);
+      return true;
     } catch (error) {
-      console.error("Error: ", error);
-      setError("Erro ao realizar login");
+      setLoginError("Erro ao realizar login");
       setIsAuthenticated(false);
+      return false;
     } finally {
       setLoading(false);
     }
@@ -51,7 +54,8 @@ export function AuthProvider({ children }) {
 
   async function register(name, email, password) {
     try {
-      setError(null);
+      setLoading(true);
+      setRegisterError(null);
       const response = await fetch("http://localhost:3000/api/users/register", {
         method: "POST",
         headers: {
@@ -63,14 +67,15 @@ export function AuthProvider({ children }) {
       const data = await response.json();
 
       if(!response.ok) {
-        setError(data.message);
-        return;
+        setRegisterError(data.message);
+        return false;
       }
 
-      setError(null);
+      setRegisterError(null);
+      return true;
     } catch (error) {
-      console.error("Error: ", error);
-      setError("Erro ao realizar cadastro");
+      setRegisterError("Erro ao realizar cadastro");
+      return false;
     } finally {
       setLoading(false);
     };
@@ -84,7 +89,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, error, loading, isAuthenticated, login, register, logout }}
+      value={{ user, loginError, registerError, loading, isAuthenticated, login, register, logout }}
     >
       {children}
     </AuthContext.Provider>

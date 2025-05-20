@@ -1,20 +1,26 @@
-import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../../context/authContext";
 import { useState } from "react";
-import { Box, Button, Checkbox, Container, Flex, Link, Text } from "@radix-ui/themes";
+import { Button, Checkbox, Container, Flex, Link, Spinner, Text } from "@radix-ui/themes";
 import styles from "./Login.module.css";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
-  const { login, error } = useAuthContext();
+  const { login, loginError, loading } = useAuthContext();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberUser, setRememberUser] = useState(false);
 
   async function handleLogin(e) {
     e.preventDefault();
-    await login(email, password);
-    navigate("/home");
+    try {
+      const req = await login(email, password, rememberUser);
+      if (req)
+        navigate("/home");
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
@@ -35,7 +41,7 @@ function Login() {
           name="email"
           placeholder="Digite seu email..."
           style={{
-            border: error ? "1px solid red" : "1px solid #ccc",
+            border: loginError ? "1px solid red" : "1px solid #ccc",
           }}
         />
         <label className="inputLabel">Senha</label>
@@ -46,24 +52,20 @@ function Login() {
           type="password"
           placeholder="Digite sua senha..."
           style={{
-            border: error ? "1px solid red" : "1px solid #ccc",
+            border: loginError ? "1px solid red" : "1px solid #ccc",
           }}
         />
 
-        {error && (
-          <span className="errorMessage">{error}</span>
-        )}
+        {loginError && (<span className="errorMessage">{loginError}</span>)}
 
         <Text as="label" size="2" style={{ marginBottom: "16px" }}>
           <Flex gap="2">
-            <Checkbox style={{ cursor: "pointer" }} />
+            <Checkbox checked={rememberUser} onClick={() => setRememberUser(!rememberUser)} style={{ cursor: "pointer" }} />
             Lembrar de mim
           </Flex>
         </Text>
 
-        <Button type="submit" className={styles.loginButton}>
-          Entrar
-        </Button>
+        <Button type="submit" className="authButton">{loading ? <Spinner /> : "Entrar"}</Button>
         <Flex justify="center" style={{ marginTop: "10px" }}>
           <Link onClick={() => navigate("/register")}>
             <span className={styles.newSeller}>Cadastrar novo vendedor</span>

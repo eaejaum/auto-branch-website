@@ -12,18 +12,38 @@
 .inputLabel {
     font-weight: 500;
     color: #2E2D37;
+    font-size: 14px;
 }
 
 .input {
-    padding: 10px;
+    padding: 8px 10px;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 12px;
     outline: none;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
+}
+
+.authButton {
+    align-self: center;
+    width: 100%;
+    padding: 8px 10px;
+    background-color: #2563EB;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.backButton {
+    margin: 10px;
+    position: absolute;
+    cursor: pointer;
 }
 
 .errorMessage {
     color: red;
-    font-size: 14px;
+    font-size: 12px;
     margin-bottom: 16px;
 }
