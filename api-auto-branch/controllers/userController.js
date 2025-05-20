@@ -19,6 +19,9 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    if(!email || !password)
+      return res.status(400).json({ message: "Preencha os campos corretamente" })
+
     const user = await getUserByEmail(email);
     if (!user)
       return res.status(401).json({ message: "Usuário não encontrado" });
