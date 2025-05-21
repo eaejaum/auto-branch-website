@@ -16,11 +16,19 @@ function Register() {
   const [password, setPassword] = useState("");
   const [registerAlert, setRegisterAlert] = useState(false);
 
+  function clearForm() {
+    setName('');
+    setEmail('');
+    setCpf('');
+    setPassword('');
+  }
+
   async function handleRegister(e) {
     e.preventDefault();
     try {
       const req = await register(name, email, cpf, password);
       if (req)
+        clearForm();
         setRegisterAlert(true);
     } catch (err) {
       console.error(err);
