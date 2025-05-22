@@ -52,16 +52,16 @@ export function AuthProvider({ children }) {
     }
   };
 
-  async function register(name, email, cpf, password) {
+  async function register(name, email, cpf, password, isAdmin) {
     try {
       setLoading(true);
       setRegisterError(null);
-      const response = await fetch("http://localhost:3000/api/users/register", {
+      const response = await fetch("http://localhost:3000/api/users/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, cpf, password })
+        body: JSON.stringify({ name, email, cpf, password, isAdmin })
       });
       
       const data = await response.json();

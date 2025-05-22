@@ -27,9 +27,10 @@ function Register() {
     e.preventDefault();
     try {
       const req = await register(name, email, cpf, password);
-      if (req)
+      if (req) {
         clearForm();
         setRegisterAlert(true);
+      }
     } catch (err) {
       console.error(err);
     }
