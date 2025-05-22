@@ -1,50 +1,27 @@
-import { createUser, getUserByEmail } from "../models/userModel.js";
-import bcrypt from 'bcrypt';
+import { createUserService, loginUserService } from "../services/userService.js";
 
-export const registerUser = async (req, res) => {
-  const { name, email, cpf, password } = req.body;
-
-  if (!name || !email || !cpf || !password)
-    return res.status(400).json({ message: "Preencha todos os campos" });
-
+export const createUser = async (req, res) => {
   try {
-    await createUser(name, email, cpf, password, true);
-    res.status(201).json({ message: "Usuário registrado com sucesso!" });
-  } catch (error) {
-    return res.status(500).json({ message: "Erro ao registrar usuário" });
+    await createUserService(req.body);
+    res.status(201).json({
+      message: "Usuário registrado com sucesso!"
+    });
+  } catch (err) {
+    const status = err.statusCode || 500;
+    res.status(status).json({ message: err.message });
   }
 };
 
 export const loginUser = async (req, res) => {
-  const { email, password } = req.body;
-
   try {
-    if(!email || !password)
-      return res.status(400).json({ message: "Preencha os campos corretamente" })
-
-    const user = await getUserByEmail(email);
-    if (!user)
-      return res.status(401).json({ message: "Usuário não encontrado" });
-
-    const isPasswordCorrect = await bcrypt.compare(
-      password,
-      user.password
-    );
-    if (!isPasswordCorrect)
-      return res.status(401).json({ message: "E-mail ou senha incorretos" });
-
-    // const token = jwt.sign({ id: user.id, email: user.email }, "secret", {
-    //   expiresIn: "1h",
-    // });
-
-    const { password: _, ...userWithoutPassword } = user;
-
-    res.status(200).json({ 
-        message: "Login realizado com sucesso!", 
-        user: userWithoutPassword,
-        // token
-    });
-  } catch (error) {
-    return res.status(500).json({ message: "Erro ao efetuar login" });
+    const user = await loginUserService(req.body);
+    res.status(200).json({
+      data: [user],
+      message: "Login realizado com sucesso!"
+      //token
+  });
+  } catch (err) {
+    const status = err.statusCode || 500;
+    res.status(status).json({ message: err.message });
   }
 };

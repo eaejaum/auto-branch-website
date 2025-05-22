@@ -12,6 +12,7 @@ app.use(express.json());
 
 app.use("/api/users", userRouter);
 app.use("/api/branches", branchRouter);
+
 app.get("/", (req, res) => {
     res.send("Api funcionando!");
 });
