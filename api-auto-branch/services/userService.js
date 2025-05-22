@@ -77,13 +77,13 @@ export const getUserByIdService = async (id) => {
     return userWithoutPassword;
 };
 
-export const editUserService = async ({ id, name, email, cpf, isAdmin }) => {
+export const editUserService = async ({ id, name, email, cpf, isAdmin = false }) => {
     const existingUser = await selectUserById(id);
 
     if (!existingUser)
         throw new AppError("Usuário não encontrado", 400);
 
-    if (!name || !email || !cpf || !isAdmin)
+    if (!name || !email || !cpf)
         throw new AppError("Preencha os campos corretamente", 400);
 
     return await updateUser(id, name, email, cpf, isAdmin);
