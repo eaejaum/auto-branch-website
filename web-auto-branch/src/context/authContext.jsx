@@ -10,12 +10,18 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-      setIsAuthenticated(true);
+    function restoreUser() {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
     }
+
+    restoreUser();
   }, []);
 
   async function login(email, password, rememberUser) {
@@ -30,17 +36,17 @@ export function AuthProvider({ children }) {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await response.json();
+      const responseData = await response.json();
 
       if (!response.ok) {
-        setLoginError(data.message);
+        setLoginError(responseData.message);
         return false;
       }
 
-      setUser(data.user);
+      setUser(responseData.data[0]);
       setIsAuthenticated(true);
-      if(rememberUser)
-        localStorage.setItem("user", JSON.stringify(data.user));
+      if (rememberUser)
+        localStorage.setItem("user", JSON.stringify(responseData.data[0]));
       setLoginError(null);
       return true;
     } catch (error) {
@@ -63,10 +69,10 @@ export function AuthProvider({ children }) {
         },
         body: JSON.stringify({ name, email, cpf, password, isAdmin })
       });
-      
+
       const data = await response.json();
 
-      if(!response.ok) {
+      if (!response.ok) {
         setRegisterError(data.message);
         return false;
       }

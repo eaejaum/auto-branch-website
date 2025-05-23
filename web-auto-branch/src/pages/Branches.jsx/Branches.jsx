@@ -4,9 +4,12 @@ import { Box, Button, Container, Flex } from "@radix-ui/themes";
 import { Plus } from "lucide-react";
 import styles from "./Branches.module.css";
 import Navbar from "../../components/Navbar";
+import { useState } from "react";
+import CreateBranchModal from "./components/CreateBranchModal";
 
 function Branches() {
     // const navigate = useNavigate();
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     // const { logout } = useAuthContext();
 
     // function handleLogout() {
@@ -20,9 +23,10 @@ function Branches() {
             <Box className={styles.mainBox}>
                 <Flex justify="between">
                     <h1 className={styles.title}>Lista de Concessionárias</h1>
-                    <Button className={styles.addBranchButton}><Plus color="#FFF" height={14} width={14} /> Nova Concessionária</Button>
+                    <Button onClick={() => setIsAddModalOpen(true)} className={styles.addBranchButton}><Plus color="#FFF" height={14} width={14} /> Nova Concessionária</Button>
                 </Flex>
             </Box>
+            <CreateBranchModal open={isAddModalOpen} onOpenChange={setIsAddModalOpen} />
             {/* <Button onClick={handleLogout}>Logout</Button> */}
         </>
     )
