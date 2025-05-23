@@ -19,11 +19,6 @@ function CreateBranchModal({ open, onOpenChange }) {
         setCep('');
     }
 
-    console.log('NAME', name)
-    console.log('STATE', state)
-    console.log('CITY', city)
-    console.log('CEP', cep)
-
     async function handleCreateBranch(e) {
         e.preventDefault();
         try {

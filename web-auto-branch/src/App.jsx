@@ -4,7 +4,7 @@ import "./App.css";
 import PrivateRoute from "./components/PrivateRoute";
 import Login from "./pages/auth/Login/Login";
 import Register from "./pages/auth/Register/Register";
-import Branches from "./pages/Branches.jsx/Branches";
+import Branch from "./pages/Branches/Branch";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         <Route element={<PrivateRoute />}>
-          <Route path="/branches" element={<Branches />} />
+          <Route path="/branches" element={<Branch />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

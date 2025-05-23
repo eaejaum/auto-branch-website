@@ -2,12 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/authContext";
 import { Box, Button, Container, Flex } from "@radix-ui/themes";
 import { Plus } from "lucide-react";
-import styles from "./Branches.module.css";
+import styles from "./Branch.module.css";
 import Navbar from "../../components/Navbar";
 import { useState } from "react";
-import CreateBranchModal from "./components/CreateBranchModal";
+import CreateBranchModal from "../Branches/components/CreateBranchModal";
 
-function Branches() {
+function Branch() {
     // const navigate = useNavigate();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     // const { logout } = useAuthContext();
@@ -32,4 +32,4 @@ function Branches() {
     )
 };
 
-export default Branches;
+export default Branch;
