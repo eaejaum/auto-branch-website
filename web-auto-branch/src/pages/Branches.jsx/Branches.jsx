@@ -6,7 +6,7 @@ import styles from "./Branches.module.css";
 import Navbar from "../../components/Navbar";
 
 function Branches() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     // const { logout } = useAuthContext();
 
     // function handleLogout() {
@@ -17,7 +17,7 @@ function Branches() {
     return (
         <>
             <Navbar />
-            <Box>
+            <Box className={styles.mainBox}>
                 <Flex justify="between">
                     <h1 className={styles.title}>Lista de Concessionárias</h1>
                     <Button className={styles.addBranchButton}><Plus color="#FFF" height={14} width={14} /> Nova Concessionária</Button>
