@@ -3,6 +3,8 @@ import { X } from "lucide-react";
 import { useState } from "react";
 import styles from "./CreateBranchModal.module.css";
 import { useBranchContext } from "../../../context/branchContext";
+import { formatCep } from "../../../utils/formatCep";
+import { unformatCep } from "../../../utils/unformatCep";
 
 function CreateBranchModal({ open, onOpenChange }) {
     const { createBranch } = useBranchContext();
@@ -19,10 +21,18 @@ function CreateBranchModal({ open, onOpenChange }) {
         setCep('');
     }
 
+    function handleCepChange(e) {
+        const input = e.target.value;
+        const numeros = formatCep(input);
+        const formatted = numeros;
+        
+        setCep(formatted);
+    }
+
     async function handleCreateBranch(e) {
         e.preventDefault();
         try {
-            const req = await createBranch(name, city, state, cep);
+            const req = await createBranch(name, city, state, unformatCep(cep));
             if (req) {
                 clearForm();
                 onOpenChange(false);
@@ -88,7 +98,7 @@ function CreateBranchModal({ open, onOpenChange }) {
                     <input
                         className="input"
                         value={cep}
-                        onChange={(e) => setCep(e.target.value)}
+                        onChange={(e) => handleCepChange(e)}
                         type="text"
                         name="text"
                         placeholder="Digite o CEP da concessionária..."
