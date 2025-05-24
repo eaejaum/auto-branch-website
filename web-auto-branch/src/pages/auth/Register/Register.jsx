@@ -5,6 +5,8 @@ import { ChevronLeft } from "lucide-react";
 import styles from "./Register.module.css";
 import { useNavigate } from "react-router-dom";
 import RegisterSuccessDialog from "./components/RegisterSuccessDialog";
+import { formatCpf } from "../../../utils/formatCpf";
+import { unformatCpf } from "../../../utils/unformatCpf";
 
 function Register() {
   const navigate = useNavigate();
@@ -23,10 +25,18 @@ function Register() {
     setPassword('');
   }
 
+  function handleCpfChange (e) {
+    const input = e.target.value;
+    const numbers = formatCpf(input);
+    let formatted = numbers;
+    
+    setCpf(formatted);
+  }
+
   async function handleRegister(e) {
     e.preventDefault();
     try {
-      const req = await register(name, email, cpf, password);
+      const req = await register(name, email, unformatCpf(cpf), password);
       if (req) {
         clearForm();
         setRegisterAlert(true);
@@ -77,7 +87,7 @@ function Register() {
               style={{
                 border: registerError ? "1px solid red" : "1px solid #ccc",
               }}
-              onChange={(e) => setCpf(e.target.value)}
+              onChange={(e) => handleCpfChange(e)}
               type="text"
               placeholder="Digite o CPF do funcionário..."
             />
