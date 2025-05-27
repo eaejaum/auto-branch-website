@@ -1,10 +1,53 @@
 .box {
-    flex-direction: row;
-    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
     border-bottom: 1px solid #E0E0E0;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
 }
 
 .title {
     font-size: 20px;
-    padding: 16px;
+    font-weight: bold;
+}
+.titleSpan {
+    color: #2563EB;
+}
+
+.navList {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navLink {
+    text-decoration: none;
+    transition: all 0.1s ease;
+    font-size: 14px;
+    display: inline-block; 
+}
+
+.navLink:hover {
+    color: #2563EB;
+    transform: scale(1.05);
+}
+
+.navLinkActive {
+    text-decoration: none;
+    color: #2563EB;
+}
+
+.logout {
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.logout:hover {
+    color: #2563EB;
 }

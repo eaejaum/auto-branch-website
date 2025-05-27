@@ -16,6 +16,8 @@ function App() {
 
         <Route element={<PrivateRoute />}>
           <Route path="/branches" element={<Branch />} />
+          <Route path="/vehicles" element={<Branch />} />
+          <Route path="/employees" element={<Branch />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
