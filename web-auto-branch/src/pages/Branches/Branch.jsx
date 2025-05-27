@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../../context/authContext";
 import { Box, Button, Flex, Spinner } from "@radix-ui/themes";
 import { Plus } from "lucide-react";
 import styles from "./Branch.module.css";
@@ -10,7 +8,6 @@ import BranchCard from "./components/BranchCard";
 import { useBranchContext } from "../../context/branchContext";
 
 function Branch() {
-    // const navigate = useNavigate();
     const { loading, branches, getAllBranches } = useBranchContext();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -24,7 +21,7 @@ function Branch() {
             <Box className={styles.mainBox}>
                 <Flex justify="between">
                     <h1 className={styles.title}>Lista de Concessionárias</h1>
-                    <Button onClick={() => setIsAddModalOpen(true)} className={styles.addBranchButton}><Plus color="#FFF" height={14} width={14} /> Nova Concessionária</Button>
+                    <Button onClick={() => setIsAddModalOpen(true)}><Plus color="#FFF" height={14} width={14} /> Nova Concessionária</Button>
                 </Flex>
                 {loading ? (
                     <Flex justify="center" align="center">
