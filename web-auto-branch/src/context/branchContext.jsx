@@ -35,7 +35,7 @@ export function BranchProvider({ children }) {
         }
     };
 
-    async function createBranch(name, city, state, cep) {
+    async function createBranch(name, city, state, cep, phoneNumber) {
         try {
             setLoading(true);
             setError(null);
@@ -44,7 +44,7 @@ export function BranchProvider({ children }) {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ name, city, state, cep })
+                body: JSON.stringify({ name, city, state, cep, phoneNumber })
             });
 
             const responseData = await response.json();

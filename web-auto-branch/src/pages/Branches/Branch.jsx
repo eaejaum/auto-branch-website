@@ -13,15 +13,10 @@ function Branch() {
     // const navigate = useNavigate();
     const { loading, branches, getAllBranches } = useBranchContext();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-    // const { logout } = useAuthContext();
 
     useEffect(() => {
         getAllBranches();
     }, []);
-    // function handleLogout() {
-    //     logout();
-    //     navigate("/login");
-    // };
 
     return (
         <>
@@ -36,15 +31,14 @@ function Branch() {
                         <Spinner />
                     </Flex>
                 ) : (
-                    <Flex justify="start" align="start" gap="5">
-                        {!loading && branches && branches.map((branch) => (
-                            <BranchCard branch={branch} />
+                    <Flex justify="start" align="start" gap="4" wrap="wrap">
+                        {Array.isArray(branches) && branches.map((branch) => (
+                            <BranchCard key={branch.id} branch={branch} />
                         ))}
                     </Flex>
                 )}
             </Box>
             <CreateBranchModal open={isAddModalOpen} onOpenChange={setIsAddModalOpen} />
-            {/* <Button onClick={handleLogout}>Logout</Button> */}
         </>
     )
 };

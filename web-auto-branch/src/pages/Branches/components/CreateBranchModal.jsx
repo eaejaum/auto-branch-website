@@ -5,6 +5,8 @@ import styles from "./CreateBranchModal.module.css";
 import { useBranchContext } from "../../../context/branchContext";
 import { formatCep } from "../../../utils/formatCep";
 import { unformatCep } from "../../../utils/unformatCep";
+import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
+import { unformatPhoneNumber } from "../../../utils/unformatPhoneNumber";
 
 function CreateBranchModal({ open, onOpenChange }) {
     const { createBranch } = useBranchContext();
@@ -13,26 +15,65 @@ function CreateBranchModal({ open, onOpenChange }) {
     const [state, setState] = useState("");
     const [city, setCity] = useState("");
     const [cep, setCep] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+
+    const states = [
+        { acronym: "AC", name: "Acre" },
+        { acronym: "AL", name: "Alagoas" },
+        { acronym: "AP", name: "Amapá" },
+        { acronym: "AM", name: "Amazonas" },
+        { acronym: "BA", name: "Bahia" },
+        { acronym: "CE", name: "Ceará" },
+        { acronym: "DF", name: "Distrito Federal" },
+        { acronym: "ES", name: "Espírito Santo" },
+        { acronym: "GO", name: "Goiás" },
+        { acronym: "MA", name: "Maranhão" },
+        { acronym: "MT", name: "Mato Grosso" },
+        { acronym: "MS", name: "Mato Grosso do Sul" },
+        { acronym: "MG", name: "Minas Gerais" },
+        { acronym: "PA", name: "Pará" },
+        { acronym: "PB", name: "Paraíba" },
+        { acronym: "PR", name: "Paraná" },
+        { acronym: "PE", name: "Pernambuco" },
+        { acronym: "PI", name: "Piauí" },
+        { acronym: "RJ", name: "Rio de Janeiro" },
+        { acronym: "RN", name: "Rio Grande do Norte" },
+        { acronym: "RS", name: "Rio Grande do Sul" },
+        { acronym: "RO", name: "Rondônia" },
+        { acronym: "RR", name: "Roraima" },
+        { acronym: "SC", name: "Santa Catarina" },
+        { acronym: "SP", name: "São Paulo" },
+        { acronym: "SE", name: "Sergipe" },
+        { acronym: "TO", name: "Tocantins" }
+    ];
+
 
     function clearForm() {
         setName('');
         setState('');
         setCity('');
         setCep('');
+        setPhoneNumber('');
     }
 
     function handleCepChange(e) {
         const input = e.target.value;
-        const numeros = formatCep(input);
-        const formatted = numeros;
-        
-        setCep(formatted);
+        const numbers = formatCep(input);
+
+        setCep(numbers);
+    }
+
+    function handlePhoneChange(e) {
+        const input = e.target.value;
+        const numbers = formatPhoneNumber(input);
+
+        setPhoneNumber(numbers);
     }
 
     async function handleCreateBranch(e) {
         e.preventDefault();
         try {
-            const req = await createBranch(name, city, state, unformatCep(cep));
+            const req = await createBranch(name, city, state, unformatCep(cep), unformatPhoneNumber(phoneNumber));
             if (req) {
                 clearForm();
                 onOpenChange(false);
@@ -69,18 +110,20 @@ function CreateBranchModal({ open, onOpenChange }) {
                         }}
                     />
                     <label className="inputLabel">Estado</label>
-                    <input
+                    <select
                         className="input"
                         value={state}
                         onChange={(e) => setState(e.target.value)}
-                        type="text"
-                        name="text"
-                        placeholder="Digite o estado da concessionária..."
                         style={{
                             border: "1px solid #ccc",
                             // error ? "1px solid red" : 
                         }}
-                    />
+                    >
+                        <option value="">Selecione o estado da concessionária...</option>
+                        {states && states.map((state) => (
+                            <option value={state.name}>{state.name}</option>
+                        ))}
+                    </select>
                     <label className="inputLabel">Cidade</label>
                     <input
                         className="input"
@@ -102,6 +145,19 @@ function CreateBranchModal({ open, onOpenChange }) {
                         type="text"
                         name="text"
                         placeholder="Digite o CEP da concessionária..."
+                        style={{
+                            border: "1px solid #ccc",
+                            // error ? "1px solid red" : 
+                        }}
+                    />
+                    <label className="inputLabel">Número de Contato</label>
+                    <input
+                        className="input"
+                        value={phoneNumber}
+                        onChange={(e) => handlePhoneChange(e)}
+                        type="text"
+                        name="text"
+                        placeholder="Digite o número de contato da concessionária..."
                         style={{
                             border: "1px solid #ccc",
                             // error ? "1px solid red" : 
