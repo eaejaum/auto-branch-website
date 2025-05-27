@@ -1,4 +1,5 @@
 export function formatCpf(cpf) {
+    if (cpf == "") return;
     const numbers = cpf.replace(/\D/g, '').slice(0, 11);
     
     if (numbers.length <= 3) return numbers;

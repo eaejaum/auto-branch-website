@@ -1,4 +1,5 @@
 export function formatCep(cep) {
+    if (cep == "") return;
     const numbers = cep.replace(/\D/g, '').slice(0, 8);
     
     if (numbers.length <= 5) return numbers;

@@ -1,4 +1,5 @@
 import { formatCep } from "../../../utils/formatCep";
+import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
 import styles from "./BranchCard.module.css";
 
 function BranchCard({ branch }) {
@@ -13,7 +14,7 @@ function BranchCard({ branch }) {
 
             <div className={styles.detailRow}>
                 <span className={styles.detailLabel}>Telefone</span>
-                <span className={styles.detailValue}>{''}</span>
+                <span className={styles.detailValue}>{formatPhoneNumber(branch.phoneNumber || '')}</span>
             </div>
             <div className={styles.detailRow}>
                 <span className={styles.detailLabel}>Cidade</span>
@@ -27,7 +28,7 @@ function BranchCard({ branch }) {
 
             <div className={styles.detailRow}>
                 <span className={styles.detailLabel}>CEP</span>
-                <span className={styles.detailValue}>{formatCep(branch.cep)}</span>
+                <span className={styles.detailValue}>{formatCep(branch.cep || '')}</span>
             </div>
 
             {/* Exemplo de campo com destaque */}
