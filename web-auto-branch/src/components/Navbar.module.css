@@ -44,10 +44,6 @@
 .logout {
     cursor: pointer;
     font-weight: 500;
-    transition: all 0.2s ease;
+    transition: all 0.1s ease;
     text-decoration: none;
-}
-
-.logout:hover {
-    color: #2563EB;
 }

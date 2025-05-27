@@ -1,6 +1,7 @@
 import { Box, Container } from "@radix-ui/themes";
 import styles from "./Navbar.module.css";
 import { NavLink, useLocation } from "react-router-dom";
+import { LogOut } from "lucide-react";
 
 function Navbar() {
     const location = useLocation();
@@ -14,7 +15,7 @@ function Navbar() {
     return (
         <div className={styles.box}>
             <h1 className={styles.title}>
-                Auto<span className="titleSpan">Branch</span>
+                A<span className="titleSpan">B</span>
             </h1>
             <nav>
                 <ul className={styles.navList}>
@@ -50,12 +51,7 @@ function Navbar() {
                     </li>
                 </ul>
             </nav>
-            <NavLink
-                to="/logout"
-                className={styles.logout}
-            >
-                *logout
-            </NavLink>
+            <LogOut className={styles.logout} />
         </div>
     );
 }

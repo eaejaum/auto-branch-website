@@ -5,6 +5,8 @@ import PrivateRoute from "./components/PrivateRoute";
 import Login from "./pages/auth/Login/Login";
 import Register from "./pages/auth/Register/Register";
 import Branch from "./pages/Branches/Branch";
+import Vehicle from "./pages/Vehicles/Vehicle";
+import Employee from "./pages/Employees/Employee";
 
 function App() {
   return (
@@ -16,8 +18,8 @@ function App() {
 
         <Route element={<PrivateRoute />}>
           <Route path="/branches" element={<Branch />} />
-          <Route path="/vehicles" element={<Branch />} />
-          <Route path="/employees" element={<Branch />} />
+          <Route path="/vehicles" element={<Vehicle />} />
+          <Route path="/employees" element={<Employee />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
