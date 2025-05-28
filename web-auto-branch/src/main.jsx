@@ -6,13 +6,16 @@ import { Theme } from "@radix-ui/themes";
 import "@radix-ui/themes/styles.css";
 import "./index.css";
 import { BranchProvider } from "./context/branchContext.jsx";
+import { VehicleProvider } from "./context/vehicleContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Theme>
       <AuthProvider>
         <BranchProvider>
-          <App />
+          <VehicleProvider>
+            <App />
+          </VehicleProvider>
         </BranchProvider>
       </AuthProvider>
     </Theme>

@@ -25,6 +25,7 @@ export function BranchProvider({ children }) {
                 return false;
             }
 
+            setError(false);
             setBranches(responseData.data);
             return true;
         } catch (error) {

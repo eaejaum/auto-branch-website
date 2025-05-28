@@ -2,33 +2,45 @@ import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { X } from "lucide-react";
 import { useState } from "react";
 import styles from "./CreateVehicleModal.module.css";
-import { formatCurrency } from "../../../utils/formatCurrency";
+import { useVehicleContext } from "../../../context/vehicleContext";
+import { useBranchContext } from "../../../context/branchContext";
 
 function CreateVehicleModal({ open, onOpenChange }) {
+    const { createVehicle } = useVehicleContext();
+    const { branches } = useBranchContext();
+
     const [brand, setBrand] = useState('');
     const [model, setModel] = useState('');
     const [version, setVersion] = useState('');
+    const [year, setYear] = useState('');
     const [gearbox, setGearbox] = useState('');
     const [color, setColor] = useState('');
     const [motorization, setMotorization] = useState('');
     const [plate, setPlate] = useState('');
     const [value, setValue] = useState('');
+    const [branchId, setBranchId] = useState(0);
 
     function clearForm() {
-
-    }
-
-    function handleChangeCurrency(e) {
-        const input = e.target.value;
-        const numbers = formatCurrency(input);
-
-        setValue(numbers);
+        setBrand('');
+        setModel('');
+        setVersion('');
+        setYear('');
+        setGearbox('');
+        setColor('');
+        setMotorization('');
+        setPlate('');
+        setValue('');
+        setBranchId(0);
     }
 
     async function handleCreateVehicle(e) {
         e.preventDefault();
         try {
-            console.log('foi');
+            const req = await createVehicle(brand, model, version, year, gearbox, color, motorization, plate, value, branchId);
+            if (req) {
+                clearForm();
+                onOpenChange(false);
+            }
         } catch (err) {
             console.error(err);
         }
@@ -36,7 +48,7 @@ function CreateVehicleModal({ open, onOpenChange }) {
 
     return (
         <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
-            <AlertDialog.Content align="start">
+            <AlertDialog.Content aria-describedby="form" align="start">
                 <Flex justify="between" align="start" style={{ paddingBottom: "20px" }}>
                     <AlertDialog.Title>Cadastrar Compra!</AlertDialog.Title>
                     <AlertDialog.Cancel>
@@ -44,6 +56,7 @@ function CreateVehicleModal({ open, onOpenChange }) {
                     </AlertDialog.Cancel>
                 </Flex>
                 <form
+                    id="form"
                     onSubmit={handleCreateVehicle}
                     className={styles.loginForm}
                 >
@@ -80,6 +93,19 @@ function CreateVehicleModal({ open, onOpenChange }) {
                         onChange={(e) => setVersion(e.target.value)}
                         type="text"
                         placeholder="Digite a versão..."
+                        style={{
+                            border: "1px solid #ccc",
+                            // error ? "1px solid red" : 
+                        }}
+                    />
+
+                    <label className="inputLabel">Ano</label>
+                    <input
+                        className="input"
+                        value={year}
+                        onChange={(e) => setYear(e.target.value)}
+                        type="text"
+                        placeholder="Digite o ano..."
                         style={{
                             border: "1px solid #ccc",
                             // error ? "1px solid red" : 
@@ -153,6 +179,22 @@ function CreateVehicleModal({ open, onOpenChange }) {
                         }}
                     />
 
+                    <label className="inputLabel">Concessionária</label>
+                    <select
+                        className="input"
+                        value={branchId}
+                        onChange={(e) => setBranchId(parseInt(e.target.value))}
+                        style={{
+                            border: "1px solid #ccc",
+                            // error ? "1px solid red" : 
+                        }}
+                    >
+                        <option value={0}>Selecione a concessionária...</option>
+                        {branches && branches.map((branch) => (
+                            <option key={branch.id} value={branch.id}>{branch.name}</option>
+                        ))}
+                    </select>
+
                     <Flex justify="end">
                         <AlertDialog.Action>
                             <Button type="submit" className={styles.saveButton}>Salvar</Button>
@@ -160,7 +202,7 @@ function CreateVehicleModal({ open, onOpenChange }) {
                     </Flex>
                 </form>
             </AlertDialog.Content>
-        </AlertDialog.Root >
+        </AlertDialog.Root>
     );
 }
 
