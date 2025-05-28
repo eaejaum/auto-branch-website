@@ -7,6 +7,7 @@ export const selectAllVehicles = async () => {
                         v.brand,
                         v.model,
                         v.version,
+                        v.year,
                         v.gearbox,
                         v.color,
                         v.motorization,
@@ -27,6 +28,7 @@ export const selectAllVehicles = async () => {
             brand: row.brand,
             model: row.model,
             version: row.version,
+            year: row.year,
             gearbox: row.gearbox,
             color: row.color,
             motorization: row.motorization,
@@ -56,6 +58,7 @@ export const selectVehicleById = async (id) => {
                         v.brand,
                         v.model,
                         v.version,
+                        v.year,
                         v.gearbox,
                         v.color,
                         v.motorization,
@@ -77,6 +80,7 @@ export const selectVehicleById = async (id) => {
             brand: row.brand,
             model: row.model,
             version: row.version,
+            year: row.year,
             gearbox: row.gearbox,
             color: row.color,
             motorization: row.motorization,
@@ -99,10 +103,10 @@ export const selectVehicleById = async (id) => {
     }
 };
 
-export const insertVehicle = async (brand, model, version, gearbox, color, motorization, plate, value, branchId) => {
+export const insertVehicle = async (brand, model, version, year, gearbox, color, motorization, plate, value, branchId) => {
     try {
         const query = `INSERT INTO vehicles (brand, model, version, gearbox, color, motorization, plate, value, branchId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-        const [results] = await db.promise().query(query, [brand, model, version, gearbox, color, motorization, plate, value, branchId]);
+        const [results] = await db.promise().query(query, [brand, model, version, year, gearbox, color, motorization, plate, value, branchId]);
 
         return results;
     } catch (err) {
@@ -110,10 +114,10 @@ export const insertVehicle = async (brand, model, version, gearbox, color, motor
     }
 };
 
-export const updateVehicle = async (id, brand, model, version, gearbox, color, motorization, plate, value, branchId) => {
+export const updateVehicle = async (id, brand, model, version, year, gearbox, color, motorization, plate, value, branchId) => {
     try {
         const query = `UPDATE vehicles SET brand = ?, model = ?, version = ?, gearbox = ?, color = ?, motorization = ?, plate = ?, value = ?, branchId = ? WHERE id = ?`;
-        const [results] = await db.promise().query(query, [brand, model, version, gearbox, color, motorization, plate, value, branchId, id]);
+        const [results] = await db.promise().query(query, [brand, model, version, year, gearbox, color, motorization, plate, value, branchId, id]);
 
         return results.length > 0 ? results[0] : null;
     } catch (err) {

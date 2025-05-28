@@ -3,6 +3,7 @@ CREATE TABLE vehicles (
     brand VARCHAR(255) NOT NULL,
     model VARCHAR(255) NOT NULL,
     version VARCHAR(255) NOT NULL,
+    year VARCHAR(255) NOT NULL,
     gearbox VARCHAR(255) NOT NULL,
     color VARCHAR(255) NOT NULL,
     motorization VARCHAR(255) NOT NULL,

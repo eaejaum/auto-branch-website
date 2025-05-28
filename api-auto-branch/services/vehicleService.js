@@ -14,23 +14,23 @@ export const getVehicleByIdService = async (id) => {
     return vehicle;
 };
 
-export const createVehicleService = async ({ brand, model, version, gearbox, color, motorization, plate, value, branchId }) => {
-    if (!brand || !model || !version || !gearbox || !color || !motorization || !plate || !value || !branchId)
+export const createVehicleService = async ({ brand, model, version, year, gearbox, color, motorization, plate, value, branchId }) => {
+    if (!brand || !model || !version || !year || !gearbox || !color || !motorization || !plate || !value || !branchId)
         throw new AppError("Preencha os campos corretamente", 400);
 
-    return await insertVehicle(brand, model, version, gearbox, color, motorization, plate, value, branchId);
+    return await insertVehicle(brand, model, version, year, gearbox, color, motorization, plate, value, branchId);
 };
 
-export const editVehicleService = async ({ id, brand, model, version, gearbox, color, motorization, plate, value, branchId }) => {
+export const editVehicleService = async ({ id, brand, model, version, year, gearbox, color, motorization, plate, value, branchId }) => {
     const existingVehicle = await selectVehicleById(id);
 
     if (!existingVehicle)
         throw new AppError("Veículo não encontrado", 400);
 
-    if (!brand || !model || !version || !gearbox || !color || !motorization || !plate || !value || !branchId)
+    if (!brand || !model || !version || !year || !gearbox || !color || !motorization || !plate || !value || !branchId)
         throw new AppError("Preencha os campos corretamente", 400);
 
-    return await updateVehicle(id, brand, model, version, gearbox, color, motorization, plate, value, branchId);
+    return await updateVehicle(id, brand, model, version, year, gearbox, color, motorization, plate, value, branchId);
 };
 
 export const removeVehicleService = async (id) => {
