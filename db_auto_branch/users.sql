@@ -4,21 +4,7 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL UNIQUE,
     cpf VARCHAR(11) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    isAdmin BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-//or
-CREATE TABLE roles (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE
-);
-
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100),
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
-    role_id INT,
-    FOREIGN KEY (role_id) REFERENCES roles(id)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    roleId INT,
+    FOREIGN KEY (roleId) REFERENCES roles(id)
 );
