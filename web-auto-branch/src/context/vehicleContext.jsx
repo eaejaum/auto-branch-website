@@ -53,8 +53,7 @@ export function VehicleProvider({ children }) {
             }
             
             setError(false);
-            const updatedVehicles = getAllVehicles();
-            setVehicles(updatedVehicles);
+            getAllVehicles();
 
             return true;
         } catch (error) {

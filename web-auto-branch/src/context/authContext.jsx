@@ -5,8 +5,8 @@ export const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
-  const [loginError, setLoginError] = useState(null);
-  const [registerError, setRegisterError] = useState(null);
+  const [users, setUsers] = useState(null);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -24,10 +24,40 @@ export function AuthProvider({ children }) {
     restoreUser();
   }, []);
 
+  async function getAllUsers() {
+    try {
+      setLoading(true);
+      setError(false);
+
+      const response = await fetch("http://localhost:3000/api/users/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        setError(responseData.message);
+        return false;
+      }
+
+      setUsers(responseData.data);
+      setError(null);
+      return true;
+    } catch (error) {
+      setError("Erro ao listar usuários");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   async function login(email, password, rememberUser) {
     try {
       setLoading(true);
-      setLoginError(null);
+      setError(null);
       const response = await fetch("http://localhost:3000/api/users/login", {
         method: "POST",
         headers: {
@@ -39,7 +69,7 @@ export function AuthProvider({ children }) {
       const responseData = await response.json();
 
       if (!response.ok) {
-        setLoginError(responseData.message);
+        setError(responseData.message);
         return false;
       }
 
@@ -47,10 +77,10 @@ export function AuthProvider({ children }) {
       setIsAuthenticated(true);
       if (rememberUser)
         localStorage.setItem("user", JSON.stringify(responseData.data[0]));
-      setLoginError(null);
+      setError(null);
       return true;
     } catch (error) {
-      setLoginError("Erro ao realizar login");
+      setError("Erro ao realizar login");
       setIsAuthenticated(false);
       return false;
     } finally {
@@ -61,7 +91,7 @@ export function AuthProvider({ children }) {
   async function register(name, email, cpf, password, isAdmin) {
     try {
       setLoading(true);
-      setRegisterError(null);
+      setError(null);
       const response = await fetch("http://localhost:3000/api/users/", {
         method: "POST",
         headers: {
@@ -73,14 +103,15 @@ export function AuthProvider({ children }) {
       const data = await response.json();
 
       if (!response.ok) {
-        setRegisterError(data.message);
+        setError(data.message);
         return false;
       }
 
-      setRegisterError(null);
+      getAllUsers();
+      setError(null);
       return true;
     } catch (error) {
-      setRegisterError("Erro ao realizar cadastro");
+      setError("Erro ao realizar cadastro");
       return false;
     } finally {
       setLoading(false);
@@ -95,7 +126,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loginError, registerError, loading, isAuthenticated, login, register, logout }}
+      value={{ user, users, error, loading, isAuthenticated, login, register, getAllUsers, logout }}
     >
       {children}
     </AuthContext.Provider>

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
-  const { login, loginError, loading } = useAuthContext();
+  const { login, error, loading } = useAuthContext();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -41,7 +41,7 @@ function Login() {
           name="email"
           placeholder="Digite seu email..."
           style={{
-            border: loginError ? "1px solid red" : "1px solid #ccc",
+            border: error ? "1px solid red" : "1px solid #ccc",
           }}
         />
         <label className="inputLabel">Senha</label>
@@ -52,11 +52,11 @@ function Login() {
           type="password"
           placeholder="Digite sua senha..."
           style={{
-            border: loginError ? "1px solid red" : "1px solid #ccc",
+            border: error ? "1px solid red" : "1px solid #ccc",
           }}
         />
 
-        {loginError && (<span className="errorMessage">{loginError}</span>)}
+        {error && (<span className="errorMessage">{error}</span>)}
 
         <Text as="label" size="2" style={{ marginBottom: "10px" }}>
           <Flex gap="2">
@@ -66,11 +66,6 @@ function Login() {
         </Text>
 
         <Button type="submit" className="authButton">{loading ? <Spinner /> : "Entrar"}</Button>
-        <Flex justify="center" style={{ marginTop: "10px" }}>
-          <Link onClick={() => navigate("/register")}>
-            <span className={styles.newSeller}>Cadastrar novo vendedor</span>
-          </Link>
-        </Flex>
       </form>
     </Container>
   );

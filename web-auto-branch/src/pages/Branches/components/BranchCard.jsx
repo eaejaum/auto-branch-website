@@ -5,7 +5,7 @@ import styles from "./BranchCard.module.css";
 function BranchCard({ branch }) {
     return (
         <div className={styles.card}>
-            <h3 className={styles.title}>{branch.name}</h3>
+            <h3 className={styles.title}>{(branch.name).toUpperCase()}</h3>
 
             <div className={styles.detailRow}>
                 <span className={styles.detailLabel}>Responsável</span>

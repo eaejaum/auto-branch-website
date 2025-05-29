@@ -121,7 +121,7 @@ function CreateBranchModal({ open, onOpenChange }) {
                     >
                         <option value="">Selecione o estado da concessionária...</option>
                         {states && states.map((state) => (
-                            <option value={state.name}>{state.name}</option>
+                            <option key={`${state.acronym}-${state.name}`} value={state.acronym}>{state.name}</option>
                         ))}
                     </select>
                     <label className="inputLabel">Cidade</label>
