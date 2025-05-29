@@ -8,15 +8,13 @@ import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 
 function CreateUserModal({ open, onOpenChange }) {
-    const navigate = useNavigate();
-    const { register, registerError, loading } = useAuthContext();
+    const { register, registerError, loading, user } = useAuthContext();
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [cpf, setCpf] = useState("");
     const [password, setPassword] = useState("");
-    const [registerAlert, setRegisterAlert] = useState(false);
-    const [isEmployeeAdmin, setIsEmployeeAdmin] = useState(false);
+    const [role, setRole] = useState(false);
 
     function clearForm() {
         setName('');
@@ -37,7 +35,7 @@ function CreateUserModal({ open, onOpenChange }) {
     async function handleRegister(e) {
         e.preventDefault();
         try {
-            const req = await register(name, email, unformatCpf(cpf), password, isEmployeeAdmin);
+            const req = await register(name, email, unformatCpf(cpf), password, role);
             if (req)
                 clearForm();
         } catch (err) {
@@ -102,13 +100,25 @@ function CreateUserModal({ open, onOpenChange }) {
                         type="password"
                         placeholder="Crie uma senha para o usuário..."
                     />
+
+                    <label className="inputLabel">Cargo</label>
+                    <select
+                        className="input"
+                        value={role}
+                        onChange={(e) => setRole(parseInt(e.target.value))}
+                        style={{
+                            border: "1px solid #ccc",
+                            // error ? "1px solid red" : 
+                        }}
+                    >
+                        <option value={0}>Selecione o cargo...</option>
+                        {user.roleId === 1 && (<option value={1}>Administrador</option>)}
+                        <option value={2}>Gerente</option>
+                        <option value={3}>Vendedor</option>
+                    </select>
+
                     {registerError && <span className="errorMessage">{registerError}</span>}
-                    <Text as="label" size="1" style={{ marginTop: "10px" }}>
-                        <Flex gap="2">
-                            <Checkbox checked={isEmployeeAdmin} onClick={() => setIsEmployeeAdmin(!isEmployeeAdmin)} style={{ cursor: "pointer" }} />
-                            Funcionário Administrador?
-                        </Flex>
-                    </Text>
+
                     <Flex justify="end">
                         <AlertDialog.Action>
                             <Button type="submit" className={styles.saveButton}>Salvar</Button>
@@ -116,7 +126,7 @@ function CreateUserModal({ open, onOpenChange }) {
                     </Flex>
                 </form>
             </AlertDialog.Content>
-        </AlertDialog.Root>
+        </AlertDialog.Root >
     );
 }
 

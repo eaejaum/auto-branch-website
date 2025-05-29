@@ -88,7 +88,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  async function register(name, email, cpf, password, isAdmin) {
+  async function register(name, email, cpf, password, roleId) {
     try {
       setLoading(true);
       setError(null);
@@ -97,7 +97,7 @@ export function AuthProvider({ children }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, cpf, password, isAdmin })
+        body: JSON.stringify({ name, email, cpf, password, roleId })
       });
 
       const data = await response.json();
