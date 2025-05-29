@@ -23,19 +23,19 @@ export const loginUserService = async ({ email, password }) => {
         name: user.name,
         email: user.email,
         cpf: user.cpf,
-        isAdmin: user.isAdmin,
+        roleId: user.roleId,
     };
 
     return userWithoutPassword;
 };
 
-export const createUserService = async ({ name, email, cpf, password, isAdmin }) => {
-    if (!name || !email || !cpf || !password)
+export const createUserService = async ({ name, email, cpf, password, roleId }) => {
+    if (!name || !email || !cpf || !password || !roleId)
         throw new AppError("Preencha todos os campos", 400);
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    return await insertUser(name, email, cpf, hashedPassword, isAdmin);
+    return await insertUser(name, email, cpf, hashedPassword, roleId);
 };
 
 export const getAllUsersService = async () => {
@@ -55,7 +55,7 @@ export const getUserByEmailService = async (email) => {
         name: user.name,
         email: user.email,
         cpf: user.cpf,
-        isAdmin: user.isAdmin,
+        roleId: user.roleId,
     };
 
     return userWithoutPassword;
@@ -71,13 +71,13 @@ export const getUserByIdService = async (id) => {
         name: user.name,
         email: user.email,
         cpf: user.cpf,
-        isAdmin: user.isAdmin,
+        roleId: user.roleId,
     };
 
     return userWithoutPassword;
 };
 
-export const editUserService = async ({ id, name, email, cpf, isAdmin = false }) => {
+export const editUserService = async ({ id, name, email, cpf, roleId = false }) => {
     const existingUser = await selectUserById(id);
 
     if (!existingUser)
@@ -86,7 +86,7 @@ export const editUserService = async ({ id, name, email, cpf, isAdmin = false })
     if (!name || !email || !cpf)
         throw new AppError("Preencha os campos corretamente", 400);
 
-    return await updateUser(id, name, email, cpf, isAdmin);
+    return await updateUser(id, name, email, cpf, roleId);
 };
 
 export const removeUserService = async (id) => {
