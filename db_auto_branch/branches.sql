@@ -4,5 +4,5 @@ CREATE TABLE branches (
     city VARCHAR(255) NOT NULL,
     state VARCHAR(255) NOT NULL,
     cep VARCHAR(255) NOT NULL UNIQUE,
-    phoneNumber VARCHAR(11);
+    phoneNumber VARCHAR(11)
 );
