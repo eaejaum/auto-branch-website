@@ -1,14 +1,19 @@
 import { Box, Button, Flex, Spinner } from "@radix-ui/themes";
 import Navbar from "../../components/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import styles from "./Vehicle.module.css";
 import CreateVehicleModal from "./components/CreateVehicleModal";
+import { useVehicleContext } from "../../context/vehicleContext";
+import VehicleCard from "./components/VehicleCard";
 
 function Vehicle() {
-    // const { loading, branches, getAllBranches } = useBranchContext();
-    const [loading, setLoading] = useState(false);
+    const { loading, vehicles, getAllVehicles } = useVehicleContext();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+    useEffect(() => {
+        getAllVehicles();
+    }, []);
 
     return (
         <>
@@ -24,9 +29,9 @@ function Vehicle() {
                     </Flex>
                 ) : (
                     <Flex justify="start" align="start" gap="4" wrap="wrap">
-                        {/* {Array.isArray(branches) && branches.map((branch) => (
-                            <VehicleCard key={branch.id} branch={branch} />
-                        ))} */}
+                        {Array.isArray(vehicles) && vehicles.map((vehicle) => (
+                            <VehicleCard key={vehicle.id} vehicle={vehicle} />
+                        ))}
                     </Flex>
                 )}
             </Box>

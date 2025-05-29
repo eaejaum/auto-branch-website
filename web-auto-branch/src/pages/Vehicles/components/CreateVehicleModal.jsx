@@ -17,6 +17,7 @@ function CreateVehicleModal({ open, onOpenChange }) {
     const [color, setColor] = useState('');
     const [motorization, setMotorization] = useState('');
     const [plate, setPlate] = useState('');
+    const [km, setKm] = useState('');
     const [value, setValue] = useState('');
     const [branchId, setBranchId] = useState(0);
 
@@ -29,6 +30,7 @@ function CreateVehicleModal({ open, onOpenChange }) {
         setColor('');
         setMotorization('');
         setPlate('');
+        setKm('');
         setValue('');
         setBranchId(0);
     }
@@ -36,7 +38,7 @@ function CreateVehicleModal({ open, onOpenChange }) {
     async function handleCreateVehicle(e) {
         e.preventDefault();
         try {
-            const req = await createVehicle(brand, model, version, year, gearbox, color, motorization, plate, value, branchId);
+            const req = await createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId);
             if (req) {
                 clearForm();
                 onOpenChange(false);
@@ -160,6 +162,19 @@ function CreateVehicleModal({ open, onOpenChange }) {
                         onChange={(e) => setPlate(e.target.value)}
                         type="text"
                         placeholder="Digite a placa..."
+                        style={{
+                            border: "1px solid #ccc",
+                            // error ? "1px solid red" : 
+                        }}
+                    />
+
+                    <label className="inputLabel">Quilômetragem</label>
+                    <input
+                        className="input"
+                        value={km}
+                        onChange={(e) => setKm(e.target.value)}
+                        type="text"
+                        placeholder="Digite o Km..."
                         style={{
                             border: "1px solid #ccc",
                             // error ? "1px solid red" : 

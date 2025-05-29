@@ -12,6 +12,7 @@ export const selectAllVehicles = async () => {
                         v.color,
                         v.motorization,
                         v.plate,
+                        v.km,
                         v.value,
                         v.branchId,
                         b.id AS branch_id,
@@ -33,6 +34,7 @@ export const selectAllVehicles = async () => {
             color: row.color,
             motorization: row.motorization,
             plate: row.plate,
+            km: row.km,
             value: row.value,
             branchId: row.branchId,
             branch: {
@@ -63,6 +65,7 @@ export const selectVehicleById = async (id) => {
                         v.color,
                         v.motorization,
                         v.plate,
+                        v.km,
                         v.value,
                         v.branchId,
                         b.id AS branch_id,
@@ -85,6 +88,7 @@ export const selectVehicleById = async (id) => {
             color: row.color,
             motorization: row.motorization,
             plate: row.plate,
+            km: row.km,
             value: row.value,
             branchId: row.branchId,
             branch: {
@@ -103,10 +107,10 @@ export const selectVehicleById = async (id) => {
     }
 };
 
-export const insertVehicle = async (brand, model, version, year, gearbox, color, motorization, plate, value, branchId) => {
+export const insertVehicle = async (brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId) => {
     try {
-        const query = `INSERT INTO vehicles (brand, model, version, year, gearbox, color, motorization, plate, value, branchId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-        const [results] = await db.promise().query(query, [brand, model, version, year, gearbox, color, motorization, plate, value, branchId]);
+        const query = `INSERT INTO vehicles (brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const [results] = await db.promise().query(query, [brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId]);
 
         return results;
     } catch (err) {
@@ -114,10 +118,10 @@ export const insertVehicle = async (brand, model, version, year, gearbox, color,
     }
 };
 
-export const updateVehicle = async (id, brand, model, version, year, gearbox, color, motorization, plate, value, branchId) => {
+export const updateVehicle = async (id, brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId) => {
     try {
-        const query = `UPDATE vehicles SET brand = ?, model = ?, version = ?, year = ?, gearbox = ?, color = ?, motorization = ?, plate = ?, value = ?, branchId = ? WHERE id = ?`;
-        const [results] = await db.promise().query(query, [brand, model, version, year, gearbox, color, motorization, plate, value, branchId, id]);
+        const query = `UPDATE vehicles SET brand = ?, model = ?, version = ?, year = ?, gearbox = ?, color = ?, motorization = ?, plate = ?, km = ?, value = ?, branchId = ? WHERE id = ?`;
+        const [results] = await db.promise().query(query, [brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId, id]);
 
         return results.length > 0 ? results[0] : null;
     } catch (err) {

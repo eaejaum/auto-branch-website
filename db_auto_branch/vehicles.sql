@@ -8,7 +8,8 @@ CREATE TABLE vehicles (
     color VARCHAR(255) NOT NULL,
     motorization VARCHAR(255) NOT NULL,
     plate VARCHAR(255) NOT NULL UNIQUE,
-    value DECIMAL(10, 2),
+    km DECIMAL(10, 2) NOT NULL;
+    value DECIMAL(10, 2) NOT NULL,
     branchId INT NOT NULL,
     FOREIGN KEY (branchId) REFERENCES branches(id)
 ); 

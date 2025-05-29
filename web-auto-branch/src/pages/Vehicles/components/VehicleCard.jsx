@@ -2,33 +2,22 @@ import { formatCep } from "../../../utils/formatCep";
 import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
 import styles from "./VehicleCard.module.css";
 
-function VehicleCard({ branch }) {
+function VehicleCard({ vehicle }) {
     return (
         <div className={styles.card}>
-            <h3 className={styles.title}>{branch.name}</h3>
-
-            <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Responsável</span>
-                <span className={styles.detailValue}>{''}</span>
+            <h3 className={styles.title}>{(vehicle.brand).toUpperCase()} {(vehicle.model).toUpperCase()}</h3>
+            <div>
+                <p className={styles.infoText}>{(vehicle.version).toUpperCase()} {(vehicle.motorization).toUpperCase()} {(vehicle.gearbox).toUpperCase()}</p>
+                <p className={styles.infoText}>{(vehicle.color).toUpperCase()}</p>
+                <p className={styles.infoText}>{(vehicle.plate).toUpperCase()}</p>
+                <p className={styles.infoText}>{(vehicle.branch.city).toUpperCase()}, {(vehicle.branch.state).toUpperCase()}</p>
             </div>
-
-            <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Telefone</span>
-                <span className={styles.detailValue}>{formatPhoneNumber(branch.phoneNumber || '')}</span>
-            </div>
-            <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Cidade</span>
-                <span className={styles.detailValue}>{branch.city}</span>
-            </div>
-
-            <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Estado</span>
-                <span className={styles.detailValue}>{branch.state}</span>
-            </div>
-
-            <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>CEP</span>
-                <span className={styles.detailValue}>{formatCep(branch.cep || '')}</span>
+            <div className={styles.subinfo}>
+                <p className={styles.priceText}>R${Number(vehicle.value).toFixed(0)}</p>
+                <div className={styles.yearKmBox}>
+                    <p className={styles.infoText}>{vehicle.year}</p>
+                    <p className={styles.infoText}>{Number(vehicle.km).toFixed(0)} km</p>
+                </div>
             </div>
         </div>
     );

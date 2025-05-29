@@ -35,7 +35,7 @@ export function VehicleProvider({ children }) {
         }
     }
 
-    async function createVehicle(brand, model, version, year, gearbox, color, motorization, plate, value, branchId) {
+    async function createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId) {
         try {
             setLoading(true);
             setError(false);
@@ -44,10 +44,8 @@ export function VehicleProvider({ children }) {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ brand, model, version, year, gearbox, color, motorization, plate, value, branchId })
+                body: JSON.stringify({ brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId })
             });
-            
-            console.log('bateu aqui', response)
             const responseData = await response.json();
             if (!response.ok) {
                 setError(responseData.message);
