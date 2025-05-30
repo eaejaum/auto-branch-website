@@ -1,4 +1,4 @@
-import { createUserService, getAllUsersService, loginUserService, getUserByIdService, getUserByEmailService, editUserService, removeUserService } from "../services/userService.js";
+import { createUserService, getAllUsersService, loginUserService, getUserByIdService, getUserByEmailService, editUserService, removeUserService, getAllManagersService } from "../services/userService.js";
 
 export const loginUser = async (req, res) => {
   try {
@@ -20,7 +20,19 @@ export const getAllUsers = async (req, res) => {
     res.status(200).json({
       data: users,
       message: "Usuários listados com sucesso!"
-      //token
+    });
+  } catch (err) {
+    const status = err.statusCode || 500;
+    res.status(status).json({ message: err.message });
+  }
+};
+
+export const getAllManagers = async (req, res) => {
+  try {
+    const managers = await getAllManagersService(req.body);
+    res.status(200).json({
+      data: managers,
+      message: "Gerentes listados com sucesso!"
     });
   } catch (err) {
     const status = err.statusCode || 500;
@@ -32,14 +44,14 @@ export const getUserById = async (req, res) => {
   const { id } = req.params
 
   try {
-      const user = await getUserByIdService(id);
-      res.status(200).json({
-          data: [user],
-          message: "Usuário listado com sucesso!"
-      });
+    const user = await getUserByIdService(id);
+    res.status(200).json({
+      data: [user],
+      message: "Usuário listado com sucesso!"
+    });
   } catch (err) {
-      const status = err.statusCode || 500;
-      res.status(status).json({ message: err.message });
+    const status = err.statusCode || 500;
+    res.status(status).json({ message: err.message });
   }
 };
 
@@ -57,13 +69,13 @@ export const createUser = async (req, res) => {
 
 export const editUser = async (req, res) => {
   try {
-      await editUserService(req.body);
-      res.status(200).json({
-          message: "Usuário editado com sucesso!"
-      });
+    await editUserService(req.body);
+    res.status(200).json({
+      message: "Usuário editado com sucesso!"
+    });
   } catch (err) {
-      const status = err.statusCode || 500;
-      res.status(status).json({ message: err.message });
+    const status = err.statusCode || 500;
+    res.status(status).json({ message: err.message });
   }
 };
 
@@ -71,12 +83,12 @@ export const removeUser = async (req, res) => {
   const { id } = req.params;
 
   try {
-      await removeUserService(id);
-      res.status(200).json({
-          message: "Usuário removido com sucesso!"
-      });
+    await removeUserService(id);
+    res.status(200).json({
+      message: "Usuário removido com sucesso!"
+    });
   } catch (err) {
-      const status = err.statusCode || 500;
-      res.status(status).json({ message: err.message });
+    const status = err.statusCode || 500;
+    res.status(status).json({ message: err.message });
   }
 };

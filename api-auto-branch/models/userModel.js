@@ -22,6 +22,17 @@ export const selectUserByEmail = async (email) => {
     }
 };
 
+export const selectAllManagers = async () => {
+    try {
+        const query = `SELECT * FROM users WHERE roleId = 2`
+        const [results] = await db.promise().query(query);
+
+        return results;
+    } catch (err) {
+        throw new Error("Erro ao selecionar gerentes no banco de dados");
+    }
+};
+
 export const selectUserById = async (id) => {
     try {
         const query = `SELECT * FROM  users WHERE id = ?`

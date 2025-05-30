@@ -1,4 +1,4 @@
-import { insertUser, selectUserByEmail, selectAllUsers, deleteUser, updateUser, selectUserById } from "../models/userModel.js";
+import { insertUser, selectUserByEmail, selectAllUsers, deleteUser, updateUser, selectUserById, selectAllManagers } from "../models/userModel.js";
 import { AppError } from "../utils/appError.js";
 import bcrypt from "bcrypt";
 
@@ -59,6 +59,16 @@ export const getUserByEmailService = async (email) => {
     };
 
     return userWithoutPassword;
+};
+
+export const getAllManagersService = async () => {
+    const managers = await selectAllManagers();
+    if (!managers)
+        throw new AppError("Usuário não encontrado", 400);
+
+    const managersWithoutPassword = managers.map(({password, ...managersWithoutPassword}) => managersWithoutPassword);
+
+    return managersWithoutPassword;
 };
 
 export const getUserByIdService = async (id) => {

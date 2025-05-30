@@ -6,6 +6,7 @@ export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState(null);
+  const [managers, setManagers] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -48,6 +49,36 @@ export function AuthProvider({ children }) {
       return true;
     } catch (error) {
       setError("Erro ao listar usuários");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  async function getAllManagers() {
+    try {
+      setLoading(true);
+      setError(false);
+
+      const response = await fetch("http://localhost:3000/api/users/managers/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        setError(responseData.message);
+        return false;
+      }
+
+      setManagers(responseData.data);
+      setError(null);
+      return true;
+    } catch (error) {
+      setError("Erro ao listar gerentes");
       return false;
     } finally {
       setLoading(false);
@@ -126,7 +157,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, users, error, loading, isAuthenticated, login, register, getAllUsers, logout }}
+      value={{ user, users, managers, error, loading, isAuthenticated, login, register, getAllUsers, getAllManagers, logout }}
     >
       {children}
     </AuthContext.Provider>

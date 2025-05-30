@@ -1,15 +1,17 @@
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./CreateBranchModal.module.css";
 import { useBranchContext } from "../../../context/branchContext";
 import { formatCep } from "../../../utils/formatCep";
 import { unformatCep } from "../../../utils/unformatCep";
 import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
 import { unformatPhoneNumber } from "../../../utils/unformatPhoneNumber";
+import { useAuthContext } from "../../../context/authContext";
 
 function CreateBranchModal({ open, onOpenChange }) {
     const { createBranch } = useBranchContext();
+    const { managers, getAllManagers } = useAuthContext();
 
     const [name, setName] = useState("");
     const [state, setState] = useState("");
@@ -17,6 +19,10 @@ function CreateBranchModal({ open, onOpenChange }) {
     const [cep, setCep] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [manager, setManager] = useState(0);
+
+    useEffect(() => {
+        getAllManagers();
+    }, [])
 
     const states = [
         { acronym: "AC", name: "Acre" },
@@ -75,7 +81,7 @@ function CreateBranchModal({ open, onOpenChange }) {
     async function handleCreateBranch(e) {
         e.preventDefault();
         try {
-            const req = await createBranch(name, city, state, unformatCep(cep), unformatPhoneNumber(phoneNumber), managerId);
+            const req = await createBranch(name, city, state, unformatCep(cep), unformatPhoneNumber(phoneNumber), manager);
             if (req) {
                 clearForm();
                 onOpenChange(false);
@@ -155,17 +161,17 @@ function CreateBranchModal({ open, onOpenChange }) {
                     <label className="inputLabel">Gerente</label>
                     <select
                         className="input"
-                        value={state}
-                        onChange={(e) => setState(e.target.value)}
+                        value={manager}
+                        onChange={(e) => setManager(e.target.value)}
                         style={{
                             border: "1px solid #ccc",
                             // error ? "1px solid red" : 
                         }}
                     >
                         <option value={0}>Selecione o gerente da concessionária...</option>
-                        {/* {states && states.map((state) => (
-                            <option key={`${state.acronym}-${state.name}`} value={state.acronym}>{state.name}</option>
-                        ))} */}
+                        {managers && managers.map((manager) => (
+                            <option key={manager.id} value={manager.id}>{manager.name}</option>
+                        ))}
                     </select>
                     <label className="inputLabel">Número de Contato</label>
                     <input
