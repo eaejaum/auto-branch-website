@@ -2,10 +2,12 @@ import { Box, Container } from "@radix-ui/themes";
 import styles from "./Navbar.module.css";
 import { NavLink, useLocation } from "react-router-dom";
 import { LogOut } from "lucide-react";
+import { useAuthContext } from "../context/authContext";
 
 function Navbar() {
     const location = useLocation();
-
+    const { user } = useAuthContext();
+    
     const isAuthenticatedRoute = ['/branches', '/vehicles', '/employees'].includes(location.pathname);
 
     if (!isAuthenticatedRoute) {
@@ -19,16 +21,18 @@ function Navbar() {
             </h1>
             <nav>
                 <ul className={styles.navList}>
-                    <li>
-                        <NavLink
-                            to="/branches"
-                            className={({ isActive }) =>
-                                isActive ? styles.navLinkActive : styles.navLink
-                            }
-                        >
-                            Concessionárias
-                        </NavLink>
-                    </li>
+                    {user && user.roleId == 1 && (
+                        <li>
+                            <NavLink
+                                to="/branches"
+                                className={({ isActive }) =>
+                                    isActive ? styles.navLinkActive : styles.navLink
+                                }
+                            >
+                                Concessionárias
+                            </NavLink>
+                        </li>
+                    )}
                     <li>
                         <NavLink
                             to="/vehicles"

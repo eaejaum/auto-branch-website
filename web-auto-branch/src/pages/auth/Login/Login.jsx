@@ -17,7 +17,7 @@ function Login() {
     try {
       const req = await login(email, password, rememberUser);
       if (req)
-        navigate("/branches");
+        navigate("/vehicles");
     } catch (err) {
       console.error(err);
     }

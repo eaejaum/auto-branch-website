@@ -112,8 +112,11 @@ function CreateUserModal({ open, onOpenChange }) {
                         }}
                     >
                         <option value={0}>Selecione o cargo...</option>
-                        {user.roleId === 1 && (<option value={1}>Administrador</option>)}
-                        <option value={2}>Gerente</option>
+                        {user.roleId === 1 && (
+                            <>
+                                <option value={1}>Administrador</option>
+                                <option value={2}>Gerente</option>
+                            </>)}
                         <option value={3}>Vendedor</option>
                     </select>
 

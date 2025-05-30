@@ -30,7 +30,7 @@ function Employee() {
                             <Table.ColumnHeaderCell>Nome</Table.ColumnHeaderCell>
                             <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
                             <Table.ColumnHeaderCell>CPF</Table.ColumnHeaderCell>
-                            <Table.ColumnHeaderCell>Adm</Table.ColumnHeaderCell>
+                            <Table.ColumnHeaderCell>Cargo</Table.ColumnHeaderCell>
                         </Table.Row>
                     </Table.Header>
 
@@ -44,13 +44,13 @@ function Employee() {
                     ) : (
                         <Table.Body>
                             {Array.isArray(users) && users.map((user) => (
-                                <Table.Row key={user.id} className={styles.tableRow}>
-                                    <Table.Cell className={styles.tableCell}>{user.name}</Table.Cell>
-                                    <Table.Cell className={styles.tableCell}>{user.email}</Table.Cell>
-                                    <Table.Cell className={styles.tableCell}>{formatCpf(user.cpf)}</Table.Cell>
-                                    <Table.Cell className={styles.tableCell}>{user.isAdmin ? "Sim" : "Não"}</Table.Cell>
-                                </Table.Row>
-                            ))}
+                                    <Table.Row key={user.id} className={styles.tableRow}>
+                                        <Table.Cell className={styles.tableCell}>{user.name}</Table.Cell>
+                                        <Table.Cell className={styles.tableCell}>{user.email}</Table.Cell>
+                                        <Table.Cell className={styles.tableCell}>{formatCpf(user.cpf)}</Table.Cell>
+                                        <Table.Cell className={styles.tableCell}>{user.roleId == 1 ? "Administrador" : user.roleId == 2 ? "Gerente" : "Vendedor"}</Table.Cell>
+                                    </Table.Row>
+                                ))}
                         </Table.Body>
                     )}
 

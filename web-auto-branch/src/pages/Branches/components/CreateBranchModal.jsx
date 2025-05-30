@@ -16,6 +16,7 @@ function CreateBranchModal({ open, onOpenChange }) {
     const [city, setCity] = useState("");
     const [cep, setCep] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
+    const [manager, setManager] = useState(0);
 
     const states = [
         { acronym: "AC", name: "Acre" },
@@ -54,6 +55,7 @@ function CreateBranchModal({ open, onOpenChange }) {
         setCity('');
         setCep('');
         setPhoneNumber('');
+        setManager(0);
     }
 
     function handleCepChange(e) {
@@ -73,7 +75,7 @@ function CreateBranchModal({ open, onOpenChange }) {
     async function handleCreateBranch(e) {
         e.preventDefault();
         try {
-            const req = await createBranch(name, city, state, unformatCep(cep), unformatPhoneNumber(phoneNumber));
+            const req = await createBranch(name, city, state, unformatCep(cep), unformatPhoneNumber(phoneNumber), managerId);
             if (req) {
                 clearForm();
                 onOpenChange(false);
@@ -150,6 +152,21 @@ function CreateBranchModal({ open, onOpenChange }) {
                             // error ? "1px solid red" : 
                         }}
                     />
+                    <label className="inputLabel">Gerente</label>
+                    <select
+                        className="input"
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                        style={{
+                            border: "1px solid #ccc",
+                            // error ? "1px solid red" : 
+                        }}
+                    >
+                        <option value={0}>Selecione o gerente da concessionária...</option>
+                        {/* {states && states.map((state) => (
+                            <option key={`${state.acronym}-${state.name}`} value={state.acronym}>{state.name}</option>
+                        ))} */}
+                    </select>
                     <label className="inputLabel">Número de Contato</label>
                     <input
                         className="input"

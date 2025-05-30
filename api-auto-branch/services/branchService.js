@@ -14,23 +14,23 @@ export const getBranchByIdService = async (id) => {
     return branch;
 };
 
-export const createBranchService = async ({ name, city, state, cep, phoneNumber }) => {
-    if (!name || !city || !state || !cep || !phoneNumber)
+export const createBranchService = async ({ name, city, state, cep, phoneNumber, managerId }) => {
+    if (!name || !city || !state || !cep || !phoneNumber || !managerId)
         throw new AppError("Preencha os campos corretamente", 400);
 
-    return await insertBranch(name, city, state, cep, phoneNumber);
+    return await insertBranch(name, city, state, cep, phoneNumber, managerId);
 };
 
-export const editBranchService = async ({ id, name, city, state, cep, phoneNumber }) => {
+export const editBranchService = async ({ id, name, city, state, cep, phoneNumber, managerId }) => {
     const existingBranch = await selectBranchById(id);
 
     if (!existingBranch)
         throw new AppError("Concessionária não encontrada", 400);
 
-    if (!name || !city || !state || !cep || !phoneNumber)
+    if (!name || !city || !state || !cep || !phoneNumber || !managerId)
         throw new AppError("Preencha os campos corretamente", 400);
 
-    return await updateBranch(id, name, city, state, cep, phoneNumber);
+    return await updateBranch(id, name, city, state, cep, phoneNumber, managerId);
 };
 
 export const removeBranchService = async (id) => {

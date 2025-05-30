@@ -9,7 +9,7 @@ function BranchCard({ branch }) {
 
             <div className={styles.detailRow}>
                 <span className={styles.detailLabel}>Responsável</span>
-                <span className={styles.detailValue}>{''}</span>
+                {/* <span className={styles.detailValue}>{branch.manager.name}</span> */}
             </div>
 
             <div className={styles.detailRow}>
