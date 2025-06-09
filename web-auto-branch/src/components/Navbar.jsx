@@ -21,18 +21,16 @@ function Navbar() {
             </h1>
             <nav>
                 <ul className={styles.navList}>
-                    {user && user.roleId != 3 && (
-                        <li>
-                            <NavLink
-                                to="/branches"
-                                className={({ isActive }) =>
-                                    isActive ? styles.navLinkActive : styles.navLink
-                                }
-                            >
-                                Concessionárias
-                            </NavLink>
-                        </li>
-                    )}
+                    <li>
+                        <NavLink
+                            to="/branches"
+                            className={({ isActive }) =>
+                                isActive ? styles.navLinkActive : styles.navLink
+                            }
+                        >
+                            Concessionárias
+                        </NavLink>
+                    </li>
                     <li>
                         <NavLink
                             to="/vehicles"

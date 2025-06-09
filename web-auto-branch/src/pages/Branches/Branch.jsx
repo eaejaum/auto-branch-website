@@ -6,8 +6,10 @@ import { useEffect, useState } from "react";
 import CreateBranchModal from "../Branches/components/CreateBranchModal";
 import BranchCard from "./components/BranchCard";
 import { useBranchContext } from "../../context/branchContext";
+import { useAuthContext } from "../../context/authContext";
 
 function Branch() {
+    const { user } = useAuthContext();
     const { loading, branches, getAllBranches } = useBranchContext();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -23,7 +25,7 @@ function Branch() {
             <Box className={styles.mainBox}>
                 <Flex justify="between">
                     <h1 className={styles.title}>Lista de Concessionárias</h1>
-                    <Button onClick={() => setIsAddModalOpen(true)}><Plus color="#FFF" height={14} width={14} /> Nova Concessionária</Button>
+                    {user.roleId == 1 && (<Button onClick={() => setIsAddModalOpen(true)}><Plus color="#FFF" height={14} width={14} /> Nova Concessionária</Button>)}
                 </Flex>
                 {loading ? (
                     <Flex justify="center" align="center">

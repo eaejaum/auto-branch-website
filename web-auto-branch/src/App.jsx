@@ -17,7 +17,7 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         <Route element={<PrivateRoute />}>
-          {user && user.roleId !== 3 && (<Route path="/branches" element={<Branch />} />)}
+          <Route path="/branches" element={<Branch />} />
           <Route path="/vehicles" element={<Vehicle />} />
           {user && user.roleId !== 3 && (<Route path="/employees" element={<Employee />} />)}
           <Route path="*" element={<NotFound />} />

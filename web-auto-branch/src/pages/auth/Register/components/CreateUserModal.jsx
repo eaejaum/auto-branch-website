@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AlertDialog, Button, Checkbox, Flex, Text } from "@radix-ui/themes";
 import styles from "./CreateUserModal.module.css";
 import { formatCpf } from "../../../../utils/formatCpf";
@@ -6,22 +6,32 @@ import { unformatCpf } from "../../../../utils/unformatCpf";
 import { useAuthContext } from "../../../../context/authContext";
 import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
+import { useBranchContext } from "../../../../context/branchContext";
 
 function CreateUserModal({ open, onOpenChange }) {
     const { register, registerError, loading, user } = useAuthContext();
+    const { getAllBranches, branches } = useBranchContext();
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [cpf, setCpf] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState(false);
+    const [role, setRole] = useState(0);
+    const [branch, setBranch] = useState(0);
+
+    useEffect(() => {
+        if(user.roleId == 1) {
+            getAllBranches();
+        }
+    }, [])
 
     function clearForm() {
         setName('');
         setEmail('');
         setCpf('');
         setPassword('');
-        setIsEmployeeAdmin(false);
+        setRole(0);
+        setBranch(0);
     }
 
     function handleCpfChange(e) {
@@ -35,7 +45,10 @@ function CreateUserModal({ open, onOpenChange }) {
     async function handleRegister(e) {
         e.preventDefault();
         try {
-            const req = await register(name, email, unformatCpf(cpf), password, role);
+            if (branch == 0)
+                setBranch(null);
+            
+            const req = await register(name, email, unformatCpf(cpf), password, role, branch);
             if (req)
                 clearForm();
         } catch (err) {
@@ -119,6 +132,26 @@ function CreateUserModal({ open, onOpenChange }) {
                             </>)}
                         <option value={3}>Vendedor</option>
                     </select>
+
+                    {user.roleId === 1 && (
+                        <>
+                            <label className="inputLabel">Concessionária</label>
+                            <select
+                                className="input"
+                                value={branch}
+                                onChange={(e) => setBranch(parseInt(e.target.value))}
+                                style={{
+                                    border: "1px solid #ccc",
+                                    // error ? "1px solid red" : 
+                                }}
+                            >
+                                <option value={0}>Selecione a concessionária...</option>
+                                {Array.isArray(branches) && branches.map((branch) => (
+                                    <option key={branch.id} value={branch.id}>{branch.name}</option>
+                                ))}
+                            </select>
+                        </>
+                    )}
 
                     {registerError && <span className="errorMessage">{registerError}</span>}
 
