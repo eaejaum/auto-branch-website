@@ -8,11 +8,6 @@ function BranchCard({ branch }) {
             <h3 className={styles.title}>{(branch.name).toUpperCase()}</h3>
 
             <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Responsável</span>
-                <span className={styles.detailValue}>{branch.manager.name}</span>
-            </div>
-
-            <div className={styles.detailRow}>
                 <span className={styles.detailLabel}>Telefone</span>
                 <span className={styles.detailValue}>{formatPhoneNumber(branch.phoneNumber || '')}</span>
             </div>
