@@ -10,6 +10,9 @@ CREATE TABLE vehicles (
     plate VARCHAR(255) NOT NULL UNIQUE,
     km DECIMAL(10, 2) NOT NULL,
     value DECIMAL(10, 2) NOT NULL,
-    branchId INT NOT NULL,
-    FOREIGN KEY (branchId) REFERENCES branches(id)
+    branchId INT NOT NULL
 ); 
+
+ALTER TABLE vehicles
+ADD CONSTRAINT fk_vehicles_branch
+FOREIGN KEY (branchId) REFERENCES branches(id);
