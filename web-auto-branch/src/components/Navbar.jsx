@@ -21,7 +21,7 @@ function Navbar() {
             </h1>
             <nav>
                 <ul className={styles.navList}>
-                    {user && user.roleId == 1 && (
+                    {user && user.roleId != 3 && (
                         <li>
                             <NavLink
                                 to="/branches"
