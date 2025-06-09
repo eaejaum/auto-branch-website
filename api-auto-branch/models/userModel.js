@@ -46,7 +46,7 @@ export const selectUserById = async (id) => {
 
 export const insertUser = async (name, email, cpf, password, roleId, branchId) => {
     try {
-        const query = `INSERT INTO users (name, email, cpf, password, roleId) VALUES (?, ?, ?, ?, ?, ?)`;
+        const query = `INSERT INTO users (name, email, cpf, password, roleId, branchId) VALUES (?, ?, ?, ?, ?, ?)`;
         const [results] = await db.promise().query(query, [name, email, cpf, password, roleId, branchId]);
 
         return results;
