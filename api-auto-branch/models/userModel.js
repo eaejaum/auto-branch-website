@@ -44,10 +44,10 @@ export const selectUserById = async (id) => {
     }
 };
 
-export const insertUser = async (name, email, cpf, password, roleId) => {
+export const insertUser = async (name, email, cpf, password, roleId, branchId) => {
     try {
-        const query = `INSERT INTO users (name, email, cpf, password, roleId) VALUES (?, ?, ?, ?, ?)`;
-        const [results] = await db.promise().query(query, [name, email, cpf, password, roleId]);
+        const query = `INSERT INTO users (name, email, cpf, password, roleId) VALUES (?, ?, ?, ?, ?, ?)`;
+        const [results] = await db.promise().query(query, [name, email, cpf, password, roleId, branchId]);
 
         return results;
     } catch (err) {
@@ -55,10 +55,10 @@ export const insertUser = async (name, email, cpf, password, roleId) => {
     }
 };
 
-export const updateUser = async (id, name, email, cpf, roleId) => {
+export const updateUser = async (id, name, email, cpf, roleId, branchId) => {
     try {
-        const query = `UPDATE users SET name = ?, email = ?, cpf = ?, roleId = ? WHERE id = ?`;
-        const [results] = await db.promise().query(query, [name, email, cpf, roleId, id]);
+        const query = `UPDATE users SET name = ?, email = ?, cpf = ?, roleId = ?, branchId = ? WHERE id = ?`;
+        const [results] = await db.promise().query(query, [name, email, cpf, roleId, branchId, id]);
 
         return results.length > 0 ? results[0] : null;
     } catch (err) {

@@ -24,18 +24,19 @@ export const loginUserService = async ({ email, password }) => {
         email: user.email,
         cpf: user.cpf,
         roleId: user.roleId,
+        branchId: user.branchId,
     };
 
     return userWithoutPassword;
 };
 
-export const createUserService = async ({ name, email, cpf, password, roleId }) => {
+export const createUserService = async ({ name, email, cpf, password, roleId, branchId }) => {
     if (!name || !email || !cpf || !password || !roleId)
         throw new AppError("Preencha todos os campos", 400);
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    return await insertUser(name, email, cpf, hashedPassword, roleId);
+    return await insertUser(name, email, cpf, hashedPassword, roleId, branchId);
 };
 
 export const getAllUsersService = async () => {
@@ -56,6 +57,7 @@ export const getUserByEmailService = async (email) => {
         email: user.email,
         cpf: user.cpf,
         roleId: user.roleId,
+        branchId: user.branchId,
     };
 
     return userWithoutPassword;

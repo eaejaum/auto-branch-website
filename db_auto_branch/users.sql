@@ -5,6 +5,14 @@ CREATE TABLE users (
     cpf VARCHAR(11) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    roleId INT,
-    FOREIGN KEY (roleId) REFERENCES roles(id)
+    roleId INT NOT NULL,
+    branchId INT
 );
+
+ALTER TABLE users
+ADD CONSTRAINT fk_users_role
+FOREIGN KEY (roleId) REFERENCES roles(id);
+
+ALTER TABLE users
+ADD CONSTRAINT fk_users_branch
+FOREIGN KEY (branchId) REFERENCES branches(id);
