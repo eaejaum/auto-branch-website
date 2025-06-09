@@ -8,12 +8,14 @@ import { useAuthContext } from "../../context/authContext";
 import { formatCpf } from "../../utils/formatCpf";
 
 function Employee() {
-    const { loading, users, getAllUsers, user } = useAuthContext();
+    const { loading, users, getAllUsers, getAllUsersByBranchId, user } = useAuthContext();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     useEffect(() => {
         if(user.roleId == 1) {
             getAllUsers();
+        } else if (user.roleId == 2) {
+            getAllUsersByBranchId(user.branchId);
         }
     }, []);
 

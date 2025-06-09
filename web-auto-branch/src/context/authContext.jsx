@@ -85,6 +85,36 @@ export function AuthProvider({ children }) {
     }
   };
 
+  async function getAllUsersByBranchId(branchId) {
+    try {
+      setLoading(true);
+      setError(false);
+
+      const response = await fetch(`http://localhost:3000/api/users/branch/${branchId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        setError(responseData.message);
+        return false;
+      }
+
+      setUsers(responseData.data);
+      setError(null);
+      return true;
+    } catch (error) {
+      setError("Erro ao listar usuarios");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   async function login(email, password, rememberUser) {
     try {
       setLoading(true);
@@ -119,7 +149,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  async function register(name, email, cpf, password, roleId) {
+  async function register(name, email, cpf, password, roleId, branchId) {
     try {
       setLoading(true);
       setError(null);
@@ -128,7 +158,7 @@ export function AuthProvider({ children }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, cpf, password, roleId })
+        body: JSON.stringify({ name, email, cpf, password, roleId, branchId })
       });
 
       const data = await response.json();
@@ -157,7 +187,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, users, managers, error, loading, isAuthenticated, login, register, getAllUsers, getAllManagers, logout }}
+      value={{ user, users, managers, error, loading, isAuthenticated, login, register, getAllUsers, getAllManagers, getAllUsersByBranchId, logout }}
     >
       {children}
     </AuthContext.Provider>
