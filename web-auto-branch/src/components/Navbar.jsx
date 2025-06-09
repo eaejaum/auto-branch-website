@@ -7,7 +7,7 @@ import { useAuthContext } from "../context/authContext";
 function Navbar() {
     const location = useLocation();
     const { user } = useAuthContext();
-    
+
     const isAuthenticatedRoute = ['/branches', '/vehicles', '/employees'].includes(location.pathname);
 
     if (!isAuthenticatedRoute) {
@@ -43,16 +43,18 @@ function Navbar() {
                             Veículos
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink
-                            to="/employees"
-                            className={({ isActive }) =>
-                                isActive ? styles.navLinkActive : styles.navLink
-                            }
-                        >
-                            Funcionários
-                        </NavLink>
-                    </li>
+                    {user && user.roleId != 3 && (
+                        <li>
+                            <NavLink
+                                to="/employees"
+                                className={({ isActive }) =>
+                                    isActive ? styles.navLinkActive : styles.navLink
+                                }
+                            >
+                                Funcionários
+                            </NavLink>
+                        </li>
+                    )}
                 </ul>
             </nav>
             <LogOut className={styles.logout} />
