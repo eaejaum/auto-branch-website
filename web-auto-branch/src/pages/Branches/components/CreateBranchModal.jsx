@@ -11,18 +11,12 @@ import { useAuthContext } from "../../../context/authContext";
 
 function CreateBranchModal({ open, onOpenChange }) {
     const { createBranch } = useBranchContext();
-    const { managers, getAllManagers } = useAuthContext();
 
     const [name, setName] = useState("");
     const [state, setState] = useState("");
     const [city, setCity] = useState("");
     const [cep, setCep] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [manager, setManager] = useState(0);
-
-    useEffect(() => {
-        getAllManagers();
-    }, [])
 
     const states = [
         { acronym: "AC", name: "Acre" },
@@ -81,7 +75,7 @@ function CreateBranchModal({ open, onOpenChange }) {
     async function handleCreateBranch(e) {
         e.preventDefault();
         try {
-            const req = await createBranch(name, city, state, unformatCep(cep), unformatPhoneNumber(phoneNumber), manager);
+            const req = await createBranch(name, city, state, unformatCep(cep), unformatPhoneNumber(phoneNumber));
             if (req) {
                 clearForm();
                 onOpenChange(false);
@@ -158,21 +152,7 @@ function CreateBranchModal({ open, onOpenChange }) {
                             // error ? "1px solid red" : 
                         }}
                     />
-                    <label className="inputLabel">Gerente</label>
-                    <select
-                        className="input"
-                        value={manager}
-                        onChange={(e) => setManager(e.target.value)}
-                        style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
-                        }}
-                    >
-                        <option value={0}>Selecione o gerente da concessionária...</option>
-                        {managers && managers.map((manager) => (
-                            <option key={manager.id} value={manager.id}>{manager.name}</option>
-                        ))}
-                    </select>
+                    
                     <label className="inputLabel">Número de Contato</label>
                     <input
                         className="input"
