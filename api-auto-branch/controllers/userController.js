@@ -1,4 +1,4 @@
-import { createUserService, getAllUsersService, loginUserService, getUserByIdService, getUserByEmailService, editUserService, removeUserService, getAllManagersService } from "../services/userService.js";
+import { createUserService, getAllUsersService, loginUserService, getUserByIdService, getUserByEmailService, editUserService, removeUserService, getAllManagersService, getAllUsersByBranchIdService } from "../services/userService.js";
 
 export const loginUser = async (req, res) => {
   try {
@@ -33,6 +33,21 @@ export const getAllManagers = async (req, res) => {
     res.status(200).json({
       data: managers,
       message: "Gerentes listados com sucesso!"
+    });
+  } catch (err) {
+    const status = err.statusCode || 500;
+    res.status(status).json({ message: err.message });
+  }
+};
+
+export const getAllUsersByBranchId = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const users = await getAllUsersByBranchIdService(id);
+    res.status(200).json({
+      data: users,
+      message: "Usuários por concessionária listados com sucesso!"
     });
   } catch (err) {
     const status = err.statusCode || 500;
