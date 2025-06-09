@@ -2,38 +2,10 @@ import db from "../db/conn.js";
 
 export const selectAllBranches = async () => {
     try {
-        const query = `SELECT
-                        b.id,
-                        b.name,
-                        b.city,
-                        b.state,
-                        b.cep,
-                        b.phoneNumber,
-                        b.managerId,
-                        m.id AS manager_id,
-                        m.name AS manager_name,
-                        m.cpf AS manager_cpf,
-                        m.roleId AS manager_roleId
-                       FROM branches b
-                       JOIN users m ON b.managerId = m.id;`;
+        const query = `SELECT * FROM branches;`;
         const [results] = await db.promise().query(query);
-        const formatted = results.map(row => ({
-            id: row.id,
-            name: row.name,
-            city: row.city,
-            state: row.state,
-            cep: row.cep,
-            phoneNumber: row.phoneNumber,
-            managerId: row.managerId,
-            manager: {
-                id: row.manager_id,
-                name: row.manager_name,
-                cpf: row.manager_cpf,
-                roleId: row.manager_roleId
-            }
-        }));
 
-        return formatted;
+        return results;
     } catch (err) {
         throw new Error("Erro ao listar no banco de dados");
     }
@@ -41,48 +13,19 @@ export const selectAllBranches = async () => {
 
 export const selectBranchById = async (id) => {
     try {
-        const query = `SELECT
-                        b.id,
-                        b.name,
-                        b.city,
-                        b.state,
-                        b.cep,
-                        b.phoneNumber,
-                        b.managerId,
-                        m.id AS manager_id,
-                        m.name AS manager_name,
-                        m.cpf AS manager_cpf,
-                        m.roleId AS manager_roleId
-                       FROM branches b
-                       JOIN users m ON b.managerId = m.id
-                       WHERE b.id = ?;`;
+        const query = `SELECT * FROM branches WHERE id = ?;`;
         const [results] = await db.promise().query(query, [id]);
-        const formatted = results.map(row => ({
-            id: row.id,
-            name: row.name,
-            city: row.city,
-            state: row.state,
-            cep: row.cep,
-            phoneNumber: row.phoneNumber,
-            managerId: row.managerId,
-            manager: {
-                id: row.manager_id,
-                name: row.manager_name,
-                cpf: row.manager_cpf,
-                roleId: row.manager_roleId
-            }
-        }));
 
-        return formatted.length > 0 ? formatted[0] : null;
+        return results.length > 0 ? results[0] : null;
     } catch (err) {
         throw new Error("Erro ao listar no banco de dados");
     }
 };
 
-export const insertBranch = async (name, city, state, cep, phoneNumber, managerId) => {
+export const insertBranch = async (name, city, state, cep, phoneNumber) => {
     try {
-        const query = `INSERT INTO branches (name, city, state, cep, phoneNumber, managerId) VALUES (?, ?, ?, ?, ?, ?)`;
-        const [results] = await db.promise().query(query, [name, city, state, cep, phoneNumber, managerId]);
+        const query = `INSERT INTO branches (name, city, state, cep, phoneNumber) VALUES (?, ?, ?, ?, ?)`;
+        const [results] = await db.promise().query(query, [name, city, state, cep, phoneNumber]);
 
         return results;
     } catch (err) {
@@ -90,10 +33,10 @@ export const insertBranch = async (name, city, state, cep, phoneNumber, managerI
     }
 };
 
-export const updateBranch = async (id, name, city, state, cep, phoneNumber, managerId) => {
+export const updateBranch = async (id, name, city, state, cep, phoneNumber) => {
     try {
-        const query = `UPDATE branches SET name = ?, city = ?, state = ?, cep = ?, phoneNumber = ?, managerId = ?, WHERE id = ?`;
-        const [results] = await db.promise().query(query, [name, city, state, cep, phoneNumber, managerId, id]);
+        const query = `UPDATE branches SET name = ?, city = ?, state = ?, cep = ?, phoneNumber = ? WHERE id = ?`;
+        const [results] = await db.promise().query(query, [name, city, state, cep, phoneNumber, id]);
 
         return results.length > 0 ? results[0] : null;
     } catch (err) {
