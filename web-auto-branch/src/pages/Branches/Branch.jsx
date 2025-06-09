@@ -12,7 +12,9 @@ function Branch() {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     useEffect(() => {
-        getAllBranches();
+        if(!loading) {
+            getAllBranches();
+        }
     }, []);
 
     return (
