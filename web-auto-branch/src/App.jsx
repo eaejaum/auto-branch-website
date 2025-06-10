@@ -7,7 +7,6 @@ import Branch from "./pages/Branches/Branch";
 import Vehicle from "./pages/Vehicles/Vehicle";
 import Employee from "./pages/Employees/Employee";
 import { useAuthContext } from "./context/authContext";
-import BranchDetails from "./pages/Branches/BranchDetails";
 
 function App() {
   const { user } = useAuthContext();
@@ -20,7 +19,6 @@ function App() {
 
         <Route element={<PrivateRoute />}>
           <Route path="/branches" element={<Branch />} />
-          <Route path="/branches/:branchId" element={<BranchDetails />} />
           <Route path="/vehicles" element={<Vehicle />} />
           {user && user.roleId !== 3 && (<Route path="/employees" element={<Employee />} />)}
           <Route path="*" element={<NotFound />} />
