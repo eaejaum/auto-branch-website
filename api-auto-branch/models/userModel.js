@@ -38,7 +38,7 @@ export const selectAllUsersByBranchId = async (branchId) => {
         const query = `SELECT * FROM users WHERE branchId = ?`
         const [results] = await db.promise().query(query, [branchId]);
 
-        return results.length > 0 ? results[0] : null;
+        return results;
     } catch (error) {
         throw new Error("Erro ao selecionar usuarios por concessionaria no banco de dados");
     }
