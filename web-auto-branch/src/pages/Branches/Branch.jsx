@@ -7,6 +7,7 @@ import CreateBranchModal from "../Branches/components/CreateBranchModal";
 import BranchCard from "./components/BranchCard";
 import { useBranchContext } from "../../context/branchContext";
 import { useAuthContext } from "../../context/authContext";
+import { Link } from "react-router-dom";
 
 function Branch() {
     const { user } = useAuthContext();
@@ -34,7 +35,9 @@ function Branch() {
                 ) : (
                     <Flex justify="start" align="start" gap="4" wrap="wrap">
                         {Array.isArray(branches) && branches.map((branch) => (
-                            <BranchCard key={branch.id} branch={branch} />
+                            <Link to={`/branches/${branch.id}`} style={{ textDecoration: 'none' }}>
+                                <BranchCard key={branch.id} branch={branch} />
+                            </Link>
                         ))}
                     </Flex>
                 )}

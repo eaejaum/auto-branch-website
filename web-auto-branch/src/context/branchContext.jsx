@@ -36,6 +36,34 @@ export function BranchProvider({ children }) {
         }
     };
 
+    async function getBranchById(branchId) {
+        try {
+            setLoading(true);
+            setError(null);
+            const response = await fetch(`http://localhost:3000/api/branches/${branchId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+
+            const responseData = await response.json();
+
+            if(!response.ok) {
+                setError(responseData.message);
+                return false;
+            }
+
+            setError(false);
+            return responseData.data;
+        } catch (error) {
+            setError("Erro ao listar concessionária por id");
+            return null;
+        } finally {
+            setLoading(false);
+        }
+    };
+
     async function createBranch(name, city, state, cep, phoneNumber ) {
         try {
             setLoading(true);
@@ -68,7 +96,7 @@ export function BranchProvider({ children }) {
     };
 
     return (
-        <BranchContext.Provider value={{ branches, loading, error, getAllBranches, createBranch }}>
+        <BranchContext.Provider value={{ branches, loading, error, getAllBranches, getBranchById, createBranch }}>
             {children}
         </BranchContext.Provider>
     )

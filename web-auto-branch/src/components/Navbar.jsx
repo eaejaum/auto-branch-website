@@ -8,7 +8,9 @@ function Navbar() {
     const location = useLocation();
     const { user } = useAuthContext();
 
-    const isAuthenticatedRoute = ['/branches', '/vehicles', '/employees'].includes(location.pathname);
+    const pathname = decodeURIComponent(location.pathname)
+
+    const isAuthenticatedRoute = ['/branches', '/vehicles', '/employees'].includes(pathname) || pathname.startsWith('/branches/');
 
     if (!isAuthenticatedRoute) {
         return null;
