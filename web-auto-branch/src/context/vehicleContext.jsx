@@ -35,6 +35,34 @@ export function VehicleProvider({ children }) {
         }
     }
 
+    async function getVehicleById(vehicleId) {
+        try {
+            setLoading(false);
+            setError(false);
+            const response = await fetch(`http://localhost:3000/api/vehicles/${vehicleId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type" : "application/json",
+                }
+            })
+
+            const responseData = await response.json();
+
+            if (!response.ok) {
+                setError(responseData.message);
+                return false;
+            }
+
+            setError(false);
+            return responseData.data;
+        } catch (error) {
+            setError("Erro ao listar veículo");
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    }
+
     async function createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId) {
         try {
             setLoading(true);
@@ -65,7 +93,7 @@ export function VehicleProvider({ children }) {
     }
 
     return (
-        <VehicleContext.Provider value={{ loading, error, vehicles, getAllVehicles, createVehicle }}>
+        <VehicleContext.Provider value={{ loading, error, vehicles, getAllVehicles, getVehicleById, createVehicle }}>
             {children}
         </VehicleContext.Provider>
     )

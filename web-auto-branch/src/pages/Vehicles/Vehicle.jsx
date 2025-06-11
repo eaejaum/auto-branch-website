@@ -6,6 +6,7 @@ import styles from "./Vehicle.module.css";
 import CreateVehicleModal from "./components/CreateVehicleModal";
 import { useVehicleContext } from "../../context/vehicleContext";
 import VehicleCard from "./components/VehicleCard";
+import { Link } from "react-router-dom";
 
 function Vehicle() {
     const { loading, vehicles, getAllVehicles } = useVehicleContext();
@@ -30,7 +31,9 @@ function Vehicle() {
                 ) : (
                     <Flex justify="start" align="start" gap="4" wrap="wrap">
                         {Array.isArray(vehicles) && vehicles.map((vehicle) => (
-                            <VehicleCard key={vehicle.id} vehicle={vehicle} />
+                            <Link key={vehicle.id} to={`/vehicles/${vehicle.id}`} style={{ textDecoration: "none" }}>
+                                <VehicleCard vehicle={vehicle} />
+                            </Link>
                         ))}
                     </Flex>
                 )}

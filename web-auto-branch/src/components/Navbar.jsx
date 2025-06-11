@@ -10,7 +10,7 @@ function Navbar() {
 
     const pathname = decodeURIComponent(location.pathname)
 
-    const isAuthenticatedRoute = ['/branches', '/vehicles', '/employees'].includes(pathname);
+    const isAuthenticatedRoute = ['/branches', '/vehicles', '/employees'].includes(pathname) || pathname.startsWith("/vehicles/");
 
     if (!isAuthenticatedRoute) {
         return null;

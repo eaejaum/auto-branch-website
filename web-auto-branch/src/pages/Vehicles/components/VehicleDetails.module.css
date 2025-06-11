@@ -1,0 +1,106 @@
+.mainBox {
+    flex-direction: row;
+    width: 100%;
+    padding: 80px;
+}
+
+.title {
+    text-align: left;
+    font-size: 20px;
+    font-weight: 500;
+    padding-bottom: 16px;
+}
+
+.vehicleCard {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+}
+
+.vehicleName,
+.vehicleName span {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.vehicleName span {
+    color: #2563EB;
+}
+
+.vehicleEspecification {
+    font-size: 14px;
+    font-weight: 600;
+    color: #AEAEBA;
+}
+
+.vehiclePrice {
+    color: #696977;
+    font-size: 30px;
+    font-weight: 600;
+    margin-right: 12px;
+}
+
+.actionButton {
+    border: 2px solid #e0e0e0;
+    background-color: #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    width: 2.2rem;
+    height: 2.2rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.actionButton:hover {
+    transform: scale(1.05);
+    background-color: #f9f9f9;
+    transition: .2s ease;
+}
+
+.vehicleInfos {
+    display: grid;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px 82px;
+}
+
+.spanInfo {
+    font-size: 12px;
+    font-weight: 600;
+    color: #AEAEBA;
+}
+
+.textInfo {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.sellButton {
+    padding: 12px 16px;
+    background-color: #2563EB;
+    border: none;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.sellButton:hover {
+    transform: scale(1.05);
+    background-color: #1b52c9;
+}
+
+.buttonText {
+    font-size: 16px;
+    color: #fff;
+    font-weight: 600;
+}
