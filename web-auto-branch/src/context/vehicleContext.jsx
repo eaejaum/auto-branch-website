@@ -92,8 +92,37 @@ export function VehicleProvider({ children }) {
         }
     }
 
+    async function deleteVehicle(vehicleId) {
+        try {
+            setLoading(true);
+            setError(false);
+            const response = await fetch(`http://localhost:3000/api/vehicles/${vehicleId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+            const responseData = await response.json();
+            if (!response.ok) {
+                setError(responseData.message);
+                return false
+            }
+            
+            setError(false);
+            getAllVehicles();
+
+            return true;
+            
+        } catch (error) {
+            setError("Erro ao deletar veículo");
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
-        <VehicleContext.Provider value={{ loading, error, vehicles, getAllVehicles, getVehicleById, createVehicle }}>
+        <VehicleContext.Provider value={{ loading, error, vehicles, getAllVehicles, getVehicleById, createVehicle, deleteVehicle }}>
             {children}
         </VehicleContext.Provider>
     )

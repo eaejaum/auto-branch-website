@@ -1,15 +1,18 @@
 import Navbar from "../../../components/Navbar";
-import { Flex, Box, Text, Button } from "@radix-ui/themes";
+import { Flex, Box, Text } from "@radix-ui/themes";
 import styles from "./VehicleDetails.module.css";
 import { useVehicleContext } from "../../../context/vehicleContext";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Edit, Trash } from "lucide-react";
+import DeleteModal from "../../../components/DeleteModal";
 
 function VehicleDetails() {
     const { vehicleId } = useParams();
-    const { getVehicleById, loading } = useVehicleContext();
+    const navigate = useNavigate();
+    const { getVehicleById, deleteVehicle, loading } = useVehicleContext();
     const [vehicle, setVehicle] = useState();
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     useEffect(() => {
         if (!loading && vehicleId) {
@@ -20,7 +23,15 @@ function VehicleDetails() {
 
             fetchVehicle();
         }
-    }, [vehicleId])
+    }, [vehicleId]);
+
+    async function handleDeleteVehicle() {
+        if(vehicleId) {
+            await deleteVehicle(vehicleId);
+            setIsDeleteModalOpen(false);
+            navigate('/vehicles');
+        }
+    };
 
     return (
         <>
@@ -45,7 +56,7 @@ function VehicleDetails() {
                                 <Flex gap="1">
                                     <Text className={styles.vehiclePrice}>R${Number(vehicle.value).toFixed(0)}</Text>
                                     <button className={styles.actionButton}>
-                                        <Trash width={15} height={15} color="#F3123C" />
+                                        <Trash width={15} height={15} color="#F3123C" onClick={() => setIsDeleteModalOpen(true)} />
                                     </button>
                                     <button className={styles.actionButton}>
                                         <Edit width={15} height={15} color="#2563EB" />
@@ -99,6 +110,7 @@ function VehicleDetails() {
                     </Box>
                 )}
             </Box>
+            <DeleteModal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} handleSubmit={handleDeleteVehicle} message="Tem certeza de que deseja excluir o veículo?" />
         </>
     );
 }
