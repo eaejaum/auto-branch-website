@@ -121,8 +121,37 @@ export function VehicleProvider({ children }) {
         }
     }
 
+    async function editVehicle(id, brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId) {
+        try {
+            setLoading(true);
+            setError(false);
+            const response = await fetch(`http://localhost:3000/api/vehicles/`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ id, brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId })
+            });
+            const responseData = await response.json();
+            if (!response.ok) {
+                setError(responseData.message);
+                return false
+            }
+            
+            setError(false);
+
+            return responseData.data;
+            
+        } catch (error) {
+            setError("Erro ao editar veículo");
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
-        <VehicleContext.Provider value={{ loading, error, vehicles, getAllVehicles, getVehicleById, createVehicle, deleteVehicle }}>
+        <VehicleContext.Provider value={{ loading, error, vehicles, getAllVehicles, getVehicleById, createVehicle, deleteVehicle, editVehicle }}>
             {children}
         </VehicleContext.Provider>
     )

@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar";
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import styles from "./Vehicle.module.css";
-import CreateVehicleModal from "./components/CreateVehicleModal";
+import VehicleModal from "./components/VehicleModal";
 import { useVehicleContext } from "../../context/vehicleContext";
 import VehicleCard from "./components/VehicleCard";
 import { Link } from "react-router-dom";
@@ -38,7 +38,7 @@ function Vehicle() {
                     </Flex>
                 )}
             </Box>
-            <CreateVehicleModal open={isAddModalOpen} onOpenChange={setIsAddModalOpen} />
+            <VehicleModal open={isAddModalOpen} onOpenChange={setIsAddModalOpen} />
         </>
     )
 };

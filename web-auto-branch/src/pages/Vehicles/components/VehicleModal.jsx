@@ -1,13 +1,13 @@
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { X } from "lucide-react";
-import { useState } from "react";
-import styles from "./CreateVehicleModal.module.css";
+import { useEffect, useState } from "react";
+import styles from "./VehicleModal.module.css";
 import { useVehicleContext } from "../../../context/vehicleContext";
 import { useBranchContext } from "../../../context/branchContext";
 
-function CreateVehicleModal({ open, onOpenChange }) {
-    const { createVehicle } = useVehicleContext();
-    const { branches } = useBranchContext();
+function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
+    const { createVehicle, editVehicle } = useVehicleContext();
+    const { branches, getAllBranches } = useBranchContext();
 
     const [brand, setBrand] = useState('');
     const [model, setModel] = useState('');
@@ -20,6 +20,23 @@ function CreateVehicleModal({ open, onOpenChange }) {
     const [km, setKm] = useState('');
     const [value, setValue] = useState('');
     const [branchId, setBranchId] = useState(0);
+
+    useEffect(() => {
+        getAllBranches();
+        if (vehicle) {
+            setBrand(vehicle.brand);
+            setModel(vehicle.model);
+            setVersion(vehicle.version);
+            setYear(vehicle.year);
+            setGearbox(vehicle.gearbox);
+            setColor(vehicle.color);
+            setMotorization(vehicle.motorization);
+            setPlate(vehicle.plate);
+            setKm(vehicle.km);
+            setValue(vehicle.value);
+            setBranchId(parseInt(vehicle.branchId));
+        }
+    }, [vehicle]);
 
     function clearForm() {
         setBrand('');
@@ -35,13 +52,18 @@ function CreateVehicleModal({ open, onOpenChange }) {
         setBranchId(0);
     }
 
-    async function handleCreateVehicle(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         try {
-            const req = await createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId);
+            let req;
+            if (!vehicle)
+                req = await createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId);
+            else if (vehicle) {
+                req = await editVehicle(parseInt(vehicle.id), brand, model, version, year, gearbox, color, motorization, plate, parseFloat(km), parseFloat(value), branchId);
+                refreshVehicle();
+            }
             if (req) {
                 clearForm();
-                onOpenChange(false);
             }
         } catch (err) {
             console.error(err);
@@ -59,7 +81,7 @@ function CreateVehicleModal({ open, onOpenChange }) {
                 </Flex>
                 <form
                     id="form"
-                    onSubmit={handleCreateVehicle}
+                    onSubmit={handleSubmit}
                     className={styles.loginForm}
                 >
                     <label className="inputLabel">Marca</label>
@@ -221,4 +243,4 @@ function CreateVehicleModal({ open, onOpenChange }) {
     );
 }
 
-export default CreateVehicleModal;
+export default VehicleModal;

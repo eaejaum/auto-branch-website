@@ -6,12 +6,14 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Edit, Trash } from "lucide-react";
 import DeleteModal from "../../../components/DeleteModal";
+import VehicleModal from "./VehicleModal";
 
 function VehicleDetails() {
     const { vehicleId } = useParams();
     const navigate = useNavigate();
     const { getVehicleById, deleteVehicle, loading } = useVehicleContext();
     const [vehicle, setVehicle] = useState();
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     useEffect(() => {
@@ -26,12 +28,19 @@ function VehicleDetails() {
     }, [vehicleId]);
 
     async function handleDeleteVehicle() {
-        if(vehicleId) {
+        if (vehicleId) {
             await deleteVehicle(vehicleId);
             setIsDeleteModalOpen(false);
             navigate('/vehicles');
         }
     };
+
+    async function refreshVehicle() {
+        if (vehicleId) {
+            const response = await getVehicleById(vehicleId);
+            setVehicle(response);
+        }
+    }
 
     return (
         <>
@@ -55,10 +64,10 @@ function VehicleDetails() {
                                 </Flex>
                                 <Flex gap="1">
                                     <Text className={styles.vehiclePrice}>R${Number(vehicle.value).toFixed(0)}</Text>
-                                    <button className={styles.actionButton}>
-                                        <Trash width={15} height={15} color="#F3123C" onClick={() => setIsDeleteModalOpen(true)} />
+                                    <button className={styles.actionButton} onClick={() => setIsDeleteModalOpen(true)}>
+                                        <Trash width={15} height={15} color="#F3123C" />
                                     </button>
-                                    <button className={styles.actionButton}>
+                                    <button className={styles.actionButton} onClick={() => setIsEditModalOpen(true)}>
                                         <Edit width={15} height={15} color="#2563EB" />
                                     </button>
                                 </Flex>
@@ -110,6 +119,7 @@ function VehicleDetails() {
                     </Box>
                 )}
             </Box>
+            <VehicleModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} vehicle={vehicle} refreshVehicle={refreshVehicle} />
             <DeleteModal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} handleSubmit={handleDeleteVehicle} message="Tem certeza de que deseja excluir o veículo?" />
         </>
     );
