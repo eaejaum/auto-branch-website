@@ -55,6 +55,35 @@ export function AuthProvider({ children }) {
     }
   };
 
+  async function deleteUser(userId) {
+    try {
+      setLoading(true);
+      setError(false);
+      const response = await fetch(`http://localhost:3000/api/users/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+      });
+      const responseData = await response.json();
+      if (!response.ok) {
+        setError(responseData.message);
+        return false
+      }
+
+      setError(false);
+      getAllUsers();
+
+      return true;
+
+    } catch (error) {
+      setError("Erro ao deletar usuário");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function getAllManagers() {
     try {
       setLoading(true);
@@ -187,7 +216,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, users, managers, error, loading, isAuthenticated, login, register, getAllUsers, getAllManagers, getAllUsersByBranchId, logout }}
+      value={{ user, users, managers, error, loading, isAuthenticated, login, register, getAllUsers, getAllManagers, getAllUsersByBranchId, deleteUser, logout }}
     >
       {children}
     </AuthContext.Provider>

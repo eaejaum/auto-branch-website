@@ -120,7 +120,7 @@ function VehicleDetails() {
                 )}
             </Box>
             <VehicleModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} vehicle={vehicle} refreshVehicle={refreshVehicle} />
-            <DeleteModal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} handleSubmit={handleDeleteVehicle} message="Tem certeza de que deseja excluir o veículo?" />
+            <DeleteModal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} handleSubmit={handleDeleteVehicle} message="Tem certeza de que deseja excluir o veículo?" title="Veículo" />
         </>
     );
 }

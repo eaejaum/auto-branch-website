@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { AlertDialog, Button, Checkbox, Flex, Text } from "@radix-ui/themes";
-import styles from "./CreateUserModal.module.css";
+import styles from "./UserModal.module.css";
 import { formatCpf } from "../../../../utils/formatCpf";
 import { unformatCpf } from "../../../../utils/unformatCpf";
 import { useAuthContext } from "../../../../context/authContext";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 import { useBranchContext } from "../../../../context/branchContext";
 
-function CreateUserModal({ open, onOpenChange }) {
+function UserModal({ open, onOpenChange, editUser }) {
     const { register, registerError, loading, user } = useAuthContext();
     const { getAllBranches, branches } = useBranchContext();
 
@@ -22,6 +22,11 @@ function CreateUserModal({ open, onOpenChange }) {
     useEffect(() => {
         if(user.roleId == 1) {
             getAllBranches();
+        }
+        if (editUser) {
+            setName(editUser.name);
+            setEmail(editUser.email);
+            setCpf(editUser.cpf);
         }
     }, [])
 
@@ -165,4 +170,4 @@ function CreateUserModal({ open, onOpenChange }) {
     );
 }
 
-export default CreateUserModal;
+export default UserModal;

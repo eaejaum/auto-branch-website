@@ -46,3 +46,23 @@
     color: #696977;
     font-weight: 500;
 }
+
+.actionButton {
+    border: 2px solid #e0e0e0;
+    background-color: #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    width: 2.2rem;
+    height: 2.2rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.actionButton:hover {
+    transform: scale(1.05);
+    background-color: #f9f9f9;
+    transition: .2s ease;
+}

@@ -1,23 +1,48 @@
-import { Box, Button, Flex, Spinner, Table } from "@radix-ui/themes";
+import { Box, Button, Flex, Spinner, Table, Text } from "@radix-ui/themes";
 import Navbar from "../../components/Navbar";
 import styles from "./Employee.module.css";
-import { Plus } from "lucide-react";
-import CreateUserModal from "../auth/Register/components/CreateUserModal";
+import { Edit, Plus, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuthContext } from "../../context/authContext";
 import { formatCpf } from "../../utils/formatCpf";
+import DeleteModal from "../../components/DeleteModal";
+import UserModal from "../auth/Register/components/UserModal";
 
 function Employee() {
-    const { loading, users, getAllUsers, getAllUsersByBranchId, user } = useAuthContext();
+    const { loading, users, getAllUsers, getAllUsersByBranchId, deleteUser, user } = useAuthContext();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(false);
 
     useEffect(() => {
-        if(user.roleId == 1) {
+        if (user.roleId == 1) {
             getAllUsers();
         } else if (user.roleId == 2) {
             getAllUsersByBranchId(user.branchId);
         }
     }, []);
+
+    
+    function openEditModal(user) {
+        setSelectedUser(user);
+        setIsEditModalOpen(true);
+    }
+
+    function openDeleteModal(user) {
+        setSelectedUser(user);
+        setIsDeleteModalOpen(true);
+    }
+
+    async function handleDeleteUser() {
+        await deleteUser(parseInt(selectedUser.id));
+        setIsDeleteModalOpen(false);
+        if (user.roleId == 1) {
+            getAllUsers();
+        } else if (user.roleId == 2) {
+            getAllUsersByBranchId(user.branchId);
+        }
+    };
 
     return (
         <>
@@ -35,6 +60,7 @@ function Employee() {
                             <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
                             <Table.ColumnHeaderCell>CPF</Table.ColumnHeaderCell>
                             <Table.ColumnHeaderCell>Cargo</Table.ColumnHeaderCell>
+                            <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
                         </Table.Row>
                     </Table.Header>
 
@@ -48,19 +74,30 @@ function Employee() {
                     ) : (
                         <Table.Body>
                             {Array.isArray(users) && users.map((user) => (
-                                    <Table.Row key={user.id} className={styles.tableRow}>
-                                        <Table.Cell className={styles.tableCell}>{user.name}</Table.Cell>
-                                        <Table.Cell className={styles.tableCell}>{user.email}</Table.Cell>
-                                        <Table.Cell className={styles.tableCell}>{formatCpf(user.cpf)}</Table.Cell>
-                                        <Table.Cell className={styles.tableCell}>{user.roleId == 1 ? "Administrador" : user.roleId == 2 ? "Gerente" : "Vendedor"}</Table.Cell>
-                                    </Table.Row>
-                                ))}
+                                <Table.Row key={user.id} className={styles.tableRow}>
+                                    <Table.Cell className={styles.tableCell}>{user.name}</Table.Cell>
+                                    <Table.Cell className={styles.tableCell}>{user.email}</Table.Cell>
+                                    <Table.Cell className={styles.tableCell}>{formatCpf(user.cpf)}</Table.Cell>
+                                    <Table.Cell className={styles.tableCell}>{user.roleId == 1 ? "Administrador" : user.roleId == 2 ? "Gerente" : "Vendedor"}</Table.Cell>
+                                    <Table.Cell className={styles.tableCell}>
+                                        <Flex gap="1" justify="end">
+                                            <button className={styles.actionButton} onClick={() => openDeleteModal(user)}>
+                                                <Trash width={15} height={15} color="#F3123C" />
+                                            </button>
+                                            <button className={styles.actionButton} onClick={() => openEditModal(user)}>
+                                                <Edit width={15} height={15} color="#2563EB" />
+                                            </button>
+                                        </Flex>
+                                    </Table.Cell>
+                                </Table.Row>
+                            ))}
                         </Table.Body>
                     )}
 
                 </Table.Root>
             </Box>
-            <CreateUserModal open={isAddModalOpen} onOpenChange={setIsAddModalOpen} />
+            <UserModal open={isAddModalOpen} onOpenChange={setIsAddModalOpen} vehicle={user} />
+            <DeleteModal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} handleSubmit={handleDeleteUser} message="Tem certeza de que deseja excluir este funcionário?" title="Funcionário" />
         </>
     )
 };
