@@ -8,8 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 import { useBranchContext } from "../../../../context/branchContext";
 
-function UserModal({ open, onOpenChange, editUser }) {
-    const { register, registerError, loading, user } = useAuthContext();
+function UserModal({ open, onOpenChange, employee }) {
+    const { register, registerError, editUser, loading, user } = useAuthContext();
     const { getAllBranches, branches } = useBranchContext();
 
     const [name, setName] = useState("");
@@ -20,15 +20,17 @@ function UserModal({ open, onOpenChange, editUser }) {
     const [branch, setBranch] = useState(0);
 
     useEffect(() => {
-        if(user.roleId == 1) {
+        if (user.roleId == 1) {
             getAllBranches();
         }
-        if (editUser) {
-            setName(editUser.name);
-            setEmail(editUser.email);
-            setCpf(editUser.cpf);
+        if (employee) {
+            setName(employee.name);
+            setEmail(employee.email);
+            setCpf(employee.cpf);
+            setRole(employee.roleId);
+            setBranch(employee.branchId);
         }
-    }, [])
+    }, [employee])
 
     function clearForm() {
         setName('');
@@ -47,15 +49,25 @@ function UserModal({ open, onOpenChange, editUser }) {
         setCpf(formatted);
     }
 
-    async function handleRegister(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         try {
-            if (branch == 0)
+            if (branch == 0 || role == 1) {
                 setBranch(null);
-            
-            const req = await register(name, email, unformatCpf(cpf), password, role, branch);
-            if (req)
+            }
+
+            let req
+
+            if (!employee) {
+                req = await register(name, email, unformatCpf(cpf), password, role, user.roleId == 2 ? 2 : branch);
+            }
+            else if (employee) {
+                req = await editUser(parseInt(employee.id), name, email, cpf, role, branch);
+            }
+
+            if (req) {
                 clearForm();
+            }
         } catch (err) {
             console.error(err);
         }
@@ -65,13 +77,13 @@ function UserModal({ open, onOpenChange, editUser }) {
         <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
             <AlertDialog.Content aria-describedby="form" align="start">
                 <Flex justify="between" align="start" style={{ paddingBottom: "20px" }}>
-                    <AlertDialog.Title>Cadastrar Funcionário!</AlertDialog.Title>
+                    <AlertDialog.Title>{employee ? "Editar" : "Cadastrar"} Funcionário!</AlertDialog.Title>
                     <AlertDialog.Cancel>
                         <X style={{ cursor: 'pointer' }} width={16} height={16} />
                     </AlertDialog.Cancel>
                 </Flex>
                 <form
-                    onSubmit={(e) => handleRegister(e)}
+                    onSubmit={(e) => handleSubmit(e)}
                     className={styles.registerForm}
                 >
                     <label className="inputLabel">Email</label>
@@ -107,17 +119,21 @@ function UserModal({ open, onOpenChange, editUser }) {
                         type="text"
                         placeholder="Digite o CPF do funcionário..."
                     />
-                    <label className="inputLabel">Senha</label>
-                    <input
-                        className="input"
-                        value={password}
-                        style={{
-                            border: registerError ? "1px solid red" : "1px solid #ccc",
-                        }}
-                        onChange={(e) => setPassword(e.target.value)}
-                        type="password"
-                        placeholder="Crie uma senha para o usuário..."
-                    />
+                    {!employee && (
+                        <>
+                            <label className="inputLabel">Senha</label>
+                            <input
+                                className="input"
+                                value={password}
+                                style={{
+                                    border: registerError ? "1px solid red" : "1px solid #ccc",
+                                }}
+                                onChange={(e) => setPassword(e.target.value)}
+                                type="password"
+                                placeholder="Crie uma senha para o usuário..."
+                            />
+                        </>
+                    )}
 
                     <label className="inputLabel">Cargo</label>
                     <select
@@ -132,12 +148,13 @@ function UserModal({ open, onOpenChange, editUser }) {
                         <option value={0}>Selecione o cargo...</option>
                         {user.roleId === 1 && (
                             <>
+                                <option value={1}>Diretor</option>
                                 <option value={2}>Gerente</option>
                             </>)}
                         <option value={3}>Vendedor</option>
                     </select>
 
-                    {user.roleId === 1 && (
+                    {user.roleId === 1 && role != 1 && (
                         <>
                             <label className="inputLabel">Concessionária</label>
                             <select
