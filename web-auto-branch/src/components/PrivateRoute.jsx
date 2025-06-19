@@ -1,12 +1,18 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuthContext } from "../context/authContext";
+import { Spinner } from "@radix-ui/themes";
 
 function PrivateRoute() {
-    const { isAuthenticated } = useAuthContext();
+    const { user, isAuthenticated, isRestoringSession } = useAuthContext();
 
-    if(!isAuthenticated)
-        return <Navigate to="/login" />;
-
+    if (isRestoringSession) {
+      return <Spinner />;
+    }
+  
+    if (!user || !isAuthenticated) {
+      return <Navigate to="/login" />;
+    }
+  
     return <Outlet />;
 };
 

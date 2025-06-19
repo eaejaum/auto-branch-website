@@ -4,6 +4,7 @@ export const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isRestoringSession, setIsRestoringSession] = useState(true);
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState(null);
   const [managers, setManagers] = useState(null);
@@ -13,18 +14,22 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     function restoreUser() {
       const storedUser = localStorage.getItem("user");
-      if (storedUser) {
+      const storedAuth = localStorage.getItem("authentication");
+  
+      if (storedUser && storedAuth) {
         const parsedUser = JSON.parse(storedUser);
         setUser(parsedUser);
         setIsAuthenticated(true);
       } else {
         setIsAuthenticated(false);
+        localStorage.removeItem("user");
       }
+  
+      setIsRestoringSession(false);
     }
-
+  
     restoreUser();
   }, []);
-
   async function getAllUsers() {
     try {
       setLoading(true);
@@ -202,8 +207,11 @@ export function AuthProvider({ children }) {
 
       setUser(responseData.data[0]);
       setIsAuthenticated(true);
-      if (rememberUser)
+      if (rememberUser) {
         localStorage.setItem("user", JSON.stringify(responseData.data[0]));
+        localStorage.setItem("authentication", true);
+      }
+
       setError(null);
       return true;
     } catch (error) {
@@ -253,11 +261,12 @@ export function AuthProvider({ children }) {
     setIsAuthenticated(false);
     setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("authentication");
   }
 
   return (
     <AuthContext.Provider
-      value={{ user, users, managers, error, loading, isAuthenticated, login, register, getAllUsers, getAllManagers, getAllUsersByBranchId, deleteUser, editUser, logout }}
+      value={{ user, users, managers, error, loading, isAuthenticated, isRestoringSession, login, register, getAllUsers, getAllManagers, getAllUsersByBranchId, deleteUser, editUser, logout }}
     >
       {children}
     </AuthContext.Provider>

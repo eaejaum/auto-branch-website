@@ -10,12 +10,12 @@ import { useAuthContext } from "./context/authContext";
 import VehicleDetails from "./pages/Vehicles/components/VehicleDetails";
 
 function App() {
-  const { user } = useAuthContext();
+  const { user, isAuthenticated, isRestoringSession } = useAuthContext();
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/" element={user && isAuthenticated && !isRestoringSession ? <Navigate to="/vehicles" /> : <Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
 
         <Route element={<PrivateRoute />}>
