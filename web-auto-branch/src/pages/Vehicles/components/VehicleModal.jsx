@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import styles from "./VehicleModal.module.css";
 import { useVehicleContext } from "../../../context/vehicleContext";
 import { useBranchContext } from "../../../context/branchContext";
+import { useAuthContext } from "../../../context/authContext";
 
 function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
+    const { user } = useAuthContext();
     const { createVehicle, editVehicle } = useVehicleContext();
     const { branches, getAllBranches } = useBranchContext();
 
@@ -57,7 +59,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
         try {
             let req;
             if (!vehicle)
-                req = await createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId);
+                req = await createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, user.branchId ? user.branchId : branchId);
             else if (vehicle) {
                 req = await editVehicle(parseInt(vehicle.id), brand, model, version, year, gearbox, color, motorization, plate, parseFloat(km), parseFloat(value), branchId);
                 refreshVehicle();
@@ -216,22 +218,25 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                         }}
                     />
 
-                    <label className="inputLabel">Concessionária</label>
-                    <select
-                        className="input"
-                        value={branchId}
-                        onChange={(e) => setBranchId(parseInt(e.target.value))}
-                        style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
-                        }}
-                    >
-                        <option value={0}>Selecione a concessionária...</option>
-                        {branches && branches.map((branch) => (
-                            <option key={branch.id} value={branch.id}>{branch.name}</option>
-                        ))}
-                    </select>
-
+                    {user.roleId === 1 && (
+                        <>
+                            <label className="inputLabel">Concessionária</label>
+                            <select
+                                className="input"
+                                value={branchId}
+                                onChange={(e) => setBranchId(parseInt(e.target.value))}
+                                style={{
+                                    border: "1px solid #ccc",
+                                    // error ? "1px solid red" : 
+                                }}
+                            >
+                                <option value={0}>Selecione a concessionária...</option>
+                                {branches && branches.map((branch) => (
+                                    <option key={branch.id} value={branch.id}>{branch.name}</option>
+                                ))}
+                            </select>
+                        </>
+                    )}
                     <Flex justify="end">
                         <AlertDialog.Action>
                             <Button type="submit" className={styles.saveButton}>Salvar</Button>
