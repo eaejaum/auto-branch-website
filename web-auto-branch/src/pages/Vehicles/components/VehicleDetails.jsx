@@ -9,12 +9,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Edit, Trash } from "lucide-react";
 import DeleteModal from "../../../components/DeleteModal";
 import VehicleModal from "./VehicleModal";
+import SellModal from "./SellModal";
 
 function VehicleDetails() {
     const { vehicleId } = useParams();
     const navigate = useNavigate();
     const { getVehicleById, deleteVehicle, loading } = useVehicleContext();
     const [vehicle, setVehicle] = useState();
+    const [isSellModalOpen, setIsSellModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -114,7 +116,7 @@ function VehicleDetails() {
                                             </Flex>
                                         </Box>
                                     </div>
-                                    <button className={styles.sellButton}>
+                                    <button className={styles.sellButton} onClick={() => setIsSellModalOpen(true)}>
                                         <Text className={styles.buttonText}>VENDER</Text>
                                     </button>
                                 </Flex>
@@ -160,7 +162,7 @@ function VehicleDetails() {
                                             <Box>
                                                 <Flex direction="column">
                                                     <span className={styles.spanInfo}>Cidade</span>
-                                                    <Text className={styles.textInfo}>{vehicle.branch.state}</Text>
+                                                    <Text className={styles.textInfo}>{vehicle.branch.city}</Text>
                                                 </Flex>
                                             </Box>
                                         </div>
@@ -171,6 +173,7 @@ function VehicleDetails() {
                     </Flex>
                 )}
             </Box>
+            <SellModal open={isSellModalOpen} onOpenChange={setIsSellModalOpen} vehicle={vehicle} />
             <VehicleModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} vehicle={vehicle} refreshVehicle={refreshVehicle} />
             <DeleteModal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} handleSubmit={handleDeleteVehicle} message="Tem certeza de que deseja excluir o veículo?" title="Veículo" />
         </>
