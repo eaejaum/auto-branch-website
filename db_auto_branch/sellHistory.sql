@@ -5,7 +5,7 @@ CREATE TABLE sellHistory (
     userId INT NOT NULL,
     sellPrice DECIMAL(10, 2) NOT NULL,
     discountPercent DECIMAL(10, 2) NOT NULL,
-    totalPrice DECIMAL(10, 2) NOT NULL,
+    totalPrice DECIMAL(10, 2) NOT NULL
 ); 
 
 ALTER TABLE sellHistory
