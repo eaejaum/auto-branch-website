@@ -10,10 +10,10 @@ function SellModal({ open, onOpenChange, vehicle }) {
     const { user } = useAuthContext();
     // const { sellVehicle } = useVehicleContext();
 
-    const [originalValue, setOriginalValue] = useState(vehicle.value || 0);
+    const [originalValue, setOriginalValue] = useState(0);
     const [discountInput, setDiscountInput] = useState("");
     const [discountPercent, setDiscountPercent] = useState(0);
-    const [totalValue, setTotalValue] = useState(vehicle.value || 0);
+    const [totalValue, setTotalValue] = useState(0);
 
     useEffect(() => {
         if (open) {
