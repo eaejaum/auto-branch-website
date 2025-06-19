@@ -13,35 +13,33 @@ function Employee() {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState(false);
+    const [selectedEmployee, setSelectedEmployee] = useState(false);
 
     useEffect(() => {
-        if (user.roleId == 1) {
-            getAllUsers();
-        } else if (user.roleId == 2) {
-            getAllUsersByBranchId(user.branchId);
+        async function getUsers() {
+            if (user.roleId == 1) {
+                await getAllUsers();
+            } else {
+                await getAllUsersByBranchId(user.branchId);
+            }
         }
+        getUsers();
     }, []);
 
-    
+
     function openEditModal(user) {
-        setSelectedUser(user);
+        setSelectedEmployee(user);
         setIsEditModalOpen(true);
     }
 
     function openDeleteModal(user) {
-        setSelectedUser(user);
+        setSelectedEmployee(user);
         setIsDeleteModalOpen(true);
     }
 
     async function handleDeleteUser() {
-        await deleteUser(parseInt(selectedUser.id));
+        await deleteUser(parseInt(selectedEmployee.id));
         setIsDeleteModalOpen(false);
-        if (user.roleId == 1) {
-            getAllUsers();
-        } else if (user.roleId == 2) {
-            getAllUsersByBranchId(user.branchId);
-        }
     };
 
     return (
@@ -53,38 +51,35 @@ function Employee() {
                     <Button onClick={() => setIsAddModalOpen(true)} ><Plus color="#FFF" height={14} width={14} /> Novo Funcionário</Button>
                 </Flex>
 
-                <Table.Root className={styles.tableContainer}>
-                    <Table.Header className={styles.tableHeader}>
-                        <Table.Row>
-                            <Table.ColumnHeaderCell>Nome</Table.ColumnHeaderCell>
-                            <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
-                            <Table.ColumnHeaderCell>CPF</Table.ColumnHeaderCell>
-                            <Table.ColumnHeaderCell>Cargo</Table.ColumnHeaderCell>
-                            <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
-                        </Table.Row>
-                    </Table.Header>
+                {loading ? (
+                    <Flex justify="center" align="center">
+                        <Spinner />
+                    </Flex>
 
-                    {loading ? (
+                ) : users && users.length > 1 && (
+                    <Table.Root className={styles.tableContainer}>
+                        <Table.Header className={styles.tableHeader}>
+                            <Table.Row>
+                                <Table.ColumnHeaderCell>Nome</Table.ColumnHeaderCell>
+                                <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
+                                <Table.ColumnHeaderCell>CPF</Table.ColumnHeaderCell>
+                                <Table.ColumnHeaderCell>Cargo</Table.ColumnHeaderCell>
+                                <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
+                            </Table.Row>
+                        </Table.Header>
                         <Table.Body>
-                            <Flex justify="center" align="center">
-                                <Spinner />
-                            </Flex>
-                        </Table.Body>
-
-                    ) : (
-                        <Table.Body>
-                            {Array.isArray(users) && users.map((user) => (
-                                <Table.Row key={user.id} className={styles.tableRow}>
-                                    <Table.Cell className={styles.tableCell}>{user.name}</Table.Cell>
-                                    <Table.Cell className={styles.tableCell}>{user.email}</Table.Cell>
-                                    <Table.Cell className={styles.tableCell}>{formatCpf(user.cpf)}</Table.Cell>
-                                    <Table.Cell className={styles.tableCell}>{user.roleId == 1 ? "Administrador" : user.roleId == 2 ? "Gerente" : "Vendedor"}</Table.Cell>
+                            {Array.isArray(users) && users.filter(u => u.id !== user.id).map((u) => (
+                                <Table.Row key={u.id} className={styles.tableRow}>
+                                    <Table.Cell className={styles.tableCell}>{u.name}</Table.Cell>
+                                    <Table.Cell className={styles.tableCell}>{u.email}</Table.Cell>
+                                    <Table.Cell className={styles.tableCell}>{formatCpf(u.cpf)}</Table.Cell>
+                                    <Table.Cell className={styles.tableCell}>{u.roleId == 1 ? "Diretor" : u.roleId == 2 ? "Gerente" : "Vendedor"}</Table.Cell>
                                     <Table.Cell className={styles.tableCell}>
                                         <Flex gap="1" justify="end">
-                                            <button className={styles.actionButton} onClick={() => openDeleteModal(user)}>
+                                            <button className={styles.actionButton} onClick={() => openDeleteModal(u)}>
                                                 <Trash width={15} height={15} color="#F3123C" />
                                             </button>
-                                            <button className={styles.actionButton} onClick={() => openEditModal(user)}>
+                                            <button className={styles.actionButton} onClick={() => openEditModal(u)}>
                                                 <Edit width={15} height={15} color="#2563EB" />
                                             </button>
                                         </Flex>
@@ -92,11 +87,11 @@ function Employee() {
                                 </Table.Row>
                             ))}
                         </Table.Body>
-                    )}
-
-                </Table.Root>
+                    </Table.Root>
+                )}
             </Box>
-            <UserModal open={isAddModalOpen} onOpenChange={setIsAddModalOpen} vehicle={user} />
+            <UserModal open={isAddModalOpen} onOpenChange={setIsAddModalOpen} />
+            <UserModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} employee={selectedEmployee} />
             <DeleteModal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} handleSubmit={handleDeleteUser} message="Tem certeza de que deseja excluir este funcionário?" title="Funcionário" />
         </>
     )
