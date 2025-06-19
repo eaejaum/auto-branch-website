@@ -20,7 +20,7 @@ export function VehicleProvider({ children }) {
 
             const responseData = await response.json();
 
-            if(!response.ok) {
+            if (!response.ok) {
                 setError(responseData.message);
                 return false;
             }
@@ -42,7 +42,7 @@ export function VehicleProvider({ children }) {
             const response = await fetch(`http://localhost:3000/api/vehicles/${vehicleId}`, {
                 method: "GET",
                 headers: {
-                    "Content-Type" : "application/json",
+                    "Content-Type": "application/json",
                 }
             })
 
@@ -63,6 +63,36 @@ export function VehicleProvider({ children }) {
         }
     }
 
+    async function getAllVehiclesByBranchId(branchId) {
+        try {
+            setLoading(true);
+            setError(false);
+
+            const response = await fetch(`http://localhost:3000/api/vehicles/branch/${branchId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const responseData = await response.json();
+
+            if (!response.ok) {
+                setError(responseData.message);
+                return false;
+            }
+
+            setVehicles(responseData.data);
+            setError(null);
+            return true;
+        } catch (error) {
+            setError("Erro ao listar veiculos");
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
+
     async function createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId) {
         try {
             setLoading(true);
@@ -79,9 +109,13 @@ export function VehicleProvider({ children }) {
                 setError(responseData.message);
                 return false
             }
-            
+
             setError(false);
-            getAllVehicles();
+            if (user.roleId == 1) {
+                getAllVehicles();
+            } else {
+                getAllVehiclesByBranchId(user.branchId)
+            }
 
             return true;
         } catch (error) {
@@ -107,12 +141,16 @@ export function VehicleProvider({ children }) {
                 setError(responseData.message);
                 return false
             }
-            
+
             setError(false);
-            getAllVehicles();
+            if (user.roleId == 1) {
+                getAllVehicles();
+            } else {
+                getAllVehiclesByBranchId(user.branchId)
+            }
 
             return true;
-            
+
         } catch (error) {
             setError("Erro ao deletar veículo");
             return false;
@@ -137,11 +175,15 @@ export function VehicleProvider({ children }) {
                 setError(responseData.message);
                 return false
             }
-            
+
             setError(false);
 
-            return responseData.data;
-            
+            if (user.roleId == 1) {
+                getAllVehicles();
+            } else {
+                getAllVehiclesByBranchId(user.branchId)
+            }
+
         } catch (error) {
             setError("Erro ao editar veículo");
             return false;
@@ -151,7 +193,7 @@ export function VehicleProvider({ children }) {
     }
 
     return (
-        <VehicleContext.Provider value={{ loading, error, vehicles, getAllVehicles, getVehicleById, createVehicle, deleteVehicle, editVehicle }}>
+        <VehicleContext.Provider value={{ loading, error, vehicles, getAllVehicles, getVehicleById, getAllVehiclesByBranchId, createVehicle, deleteVehicle, editVehicle }}>
             {children}
         </VehicleContext.Provider>
     )

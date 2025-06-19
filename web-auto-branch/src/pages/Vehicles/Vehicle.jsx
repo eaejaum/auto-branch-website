@@ -7,13 +7,19 @@ import VehicleModal from "./components/VehicleModal";
 import { useVehicleContext } from "../../context/vehicleContext";
 import VehicleCard from "./components/VehicleCard";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../../context/authContext";
 
 function Vehicle() {
-    const { loading, vehicles, getAllVehicles } = useVehicleContext();
+    const { user } = useAuthContext();
+    const { loading, vehicles, getAllVehicles, getAllVehiclesByBranchId } = useVehicleContext();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     useEffect(() => {
-        getAllVehicles();
+        if (user.roleId == 1) {
+            getAllVehicles();
+        } else {
+            getAllVehiclesByBranchId(user.branchId)
+        }
     }, []);
 
     return (
@@ -30,7 +36,7 @@ function Vehicle() {
                     </Flex>
                 ) : (
                     <Flex justify="start" align="start" gap="4" wrap="wrap">
-                        {Array.isArray(vehicles) && vehicles.map((vehicle) => (
+                        {vehicles && Array.isArray(vehicles) && vehicles.map((vehicle) => (
                             <Link key={vehicle.id} to={`/vehicles/${vehicle.id}`} style={{ textDecoration: "none" }}>
                                 <VehicleCard vehicle={vehicle} />
                             </Link>
