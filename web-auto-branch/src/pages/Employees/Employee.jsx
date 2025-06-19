@@ -48,7 +48,7 @@ function Employee() {
             <Box className={styles.mainBox}>
                 <Flex justify="between">
                     <h1 className={styles.title}>Lista de Funcionários</h1>
-                    <Button onClick={() => setIsAddModalOpen(true)} ><Plus color="#FFF" height={14} width={14} /> Novo Funcionário</Button>
+                    {user.roleId !== 3 && (<Button onClick={() => setIsAddModalOpen(true)} ><Plus color="#FFF" height={14} width={14} /> Novo Funcionário</Button>)}
                 </Flex>
 
                 {loading ? (
@@ -64,7 +64,9 @@ function Employee() {
                                 <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
                                 <Table.ColumnHeaderCell>CPF</Table.ColumnHeaderCell>
                                 <Table.ColumnHeaderCell>Cargo</Table.ColumnHeaderCell>
-                                <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
+                                {user.roleId !== 3 && (
+                                    <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
+                                )}
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
@@ -74,25 +76,31 @@ function Employee() {
                                     <Table.Cell className={styles.tableCell}>{u.email}</Table.Cell>
                                     <Table.Cell className={styles.tableCell}>{formatCpf(u.cpf)}</Table.Cell>
                                     <Table.Cell className={styles.tableCell}>{u.roleId == 1 ? "Diretor" : u.roleId == 2 ? "Gerente" : "Vendedor"}</Table.Cell>
-                                    <Table.Cell className={styles.tableCell}>
-                                        <Flex gap="1" justify="end">
-                                            <button className={styles.actionButton} onClick={() => openDeleteModal(u)}>
-                                                <Trash width={15} height={15} color="#F3123C" />
-                                            </button>
-                                            <button className={styles.actionButton} onClick={() => openEditModal(u)}>
-                                                <Edit width={15} height={15} color="#2563EB" />
-                                            </button>
-                                        </Flex>
-                                    </Table.Cell>
+                                    {user.roleId !== 3 && (
+                                        <Table.Cell className={styles.tableCell}>
+                                            <Flex gap="1" justify="end">
+                                                <button className={styles.actionButton} onClick={() => openDeleteModal(u)}>
+                                                    <Trash width={15} height={15} color="#F3123C" />
+                                                </button>
+                                                <button className={styles.actionButton} onClick={() => openEditModal(u)}>
+                                                    <Edit width={15} height={15} color="#2563EB" />
+                                                </button>
+                                            </Flex>
+                                        </Table.Cell>
+                                    )}
                                 </Table.Row>
                             ))}
                         </Table.Body>
                     </Table.Root>
                 )}
             </Box>
-            <UserModal open={isAddModalOpen} onOpenChange={setIsAddModalOpen} />
-            <UserModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} employee={selectedEmployee} />
-            <DeleteModal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} handleSubmit={handleDeleteUser} message="Tem certeza de que deseja excluir este funcionário?" title="Funcionário" />
+            {user.roleId !== 3 && (
+                <>
+                    <UserModal open={isAddModalOpen} onOpenChange={setIsAddModalOpen} />
+                    <UserModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} employee={selectedEmployee} />
+                    <DeleteModal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} handleSubmit={handleDeleteUser} message="Tem certeza de que deseja excluir este funcionário?" title="Funcionário" />
+                </>
+            )}
         </>
     )
 };

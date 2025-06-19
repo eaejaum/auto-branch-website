@@ -43,18 +43,16 @@ function Navbar() {
                             Veículos
                         </NavLink>
                     </li>
-                    {user && user.roleId != 3 && (
-                        <li>
-                            <NavLink
-                                to="/employees"
-                                className={({ isActive }) =>
-                                    isActive ? styles.navLinkActive : styles.navLink
-                                }
-                            >
-                                Funcionários
-                            </NavLink>
-                        </li>
-                    )}
+                    <li>
+                        <NavLink
+                            to="/employees"
+                            className={({ isActive }) =>
+                                isActive ? styles.navLinkActive : styles.navLink
+                            }
+                        >
+                            Funcionários
+                        </NavLink>
+                    </li>
                 </ul>
             </nav>
             <LogOut className={styles.logout} />

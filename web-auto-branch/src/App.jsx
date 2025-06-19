@@ -22,7 +22,7 @@ function App() {
           <Route path="/branches" element={<Branch />} />
           <Route path="/vehicles" element={<Vehicle />} />
           <Route path="/vehicles/:vehicleId" element={<VehicleDetails />} />
-          {user && user.roleId !== 3 && (<Route path="/employees" element={<Employee />} />)}
+          <Route path="/employees" element={<Employee />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
