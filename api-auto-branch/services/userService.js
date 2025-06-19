@@ -95,16 +95,16 @@ export const getUserByIdService = async (id) => {
     return userWithoutPassword;
 };
 
-export const editUserService = async ({ id, name, email, cpf, roleId = false }) => {
+export const editUserService = async ({ id, name, email, cpf, roleId, branchId }) => {
     const existingUser = await selectUserById(id);
 
     if (!existingUser)
         throw new AppError("Usuário não encontrado", 400);
 
-    if (!name || !email || !cpf)
+    if (!name || !email || !cpf || !roleId)
         throw new AppError("Preencha os campos corretamente", 400);
 
-    return await updateUser(id, name, email, cpf, roleId);
+    return await updateUser(id, name, email, cpf, roleId, branchId);
 };
 
 export const removeUserService = async (id) => {
