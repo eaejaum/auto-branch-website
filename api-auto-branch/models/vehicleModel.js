@@ -75,8 +75,7 @@ export const selectVehicleById = async (id) => {
                         b.cep AS branch_cep,
                         b.phoneNumber AS branch_phone
                        FROM vehicles v
-                       JOIN branches b ON v.branchId = b.id
-                       WHERE v.id = ?`;
+                       JOIN branches b ON v.branchId = b.id;`;
         const [results] = await db.promise().query(query, [id]);
         const formatted = results.map(row => ({
             id: row.id,
@@ -109,10 +108,53 @@ export const selectVehicleById = async (id) => {
 
 export const selectAllVehiclesByBranchId = async (branchId) => {
     try {
-        const query = `SELECT * FROM vehicles WHERE branchId = ?`
+        const query = `SELECT
+                        v.id,
+                        v.brand,
+                        v.model,
+                        v.version,
+                        v.year,
+                        v.gearbox,
+                        v.color,
+                        v.motorization,
+                        v.plate,
+                        v.km,
+                        v.value,
+                        v.branchId,
+                        b.id AS branch_id,
+                        b.name AS branch_name,
+                        b.city AS branch_city,
+                        b.state AS branch_state,
+                        b.cep AS branch_cep,
+                        b.phoneNumber AS branch_phone
+                       FROM vehicles v
+                       JOIN branches b ON v.branchId = b.id
+                       WHERE v.branchId = ?;`;
         const [results] = await db.promise().query(query, [branchId]);
+        const formatted = results.map(row => ({
+            id: row.id,
+            brand: row.brand,
+            model: row.model,
+            version: row.version,
+            year: row.year,
+            gearbox: row.gearbox,
+            color: row.color,
+            motorization: row.motorization,
+            plate: row.plate,
+            km: row.km,
+            value: row.value,
+            branchId: row.branchId,
+            branch: {
+                id: row.branch_id,
+                name: row.branch_name,
+                city: row.branch_city,
+                state: row.branch_state,
+                cep: row.branch_cep,
+                phoneNumber: row.branch_phone
+            }
+        }));
 
-        return results;
+        return formatted.length > 0 ? formatted[0] : null;
     } catch (error) {
         throw new Error("Erro ao selecionar veículos por concessionaria no banco de dados");
     }
