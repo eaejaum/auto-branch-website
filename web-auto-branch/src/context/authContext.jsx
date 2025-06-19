@@ -72,12 +72,49 @@ export function AuthProvider({ children }) {
       }
 
       setError(false);
-      getAllUsers();
+      if(user.roleId == 1) {
+        getAllUsers();
+      } else {
+        getAllUsersByBranchId(user.branchId)
+      }
 
       return true;
 
     } catch (error) {
       setError("Erro ao deletar usuário");
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function editUser(id, name, email, cpf, roleId, branchId) {
+    try {
+      setLoading(true);
+      setError(false);
+      const response = await fetch(`http://localhost:3000/api/users/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id, name, email, cpf, roleId, branchId })
+      });
+      const responseData = await response.json();
+      if (!response.ok) {
+        setError(responseData.message);
+        return false
+      }
+
+      setError(false);
+
+      if(user.roleId == 1) {
+        getAllUsers();
+      } else {
+        getAllUsersByBranchId(user.branchId)
+      }
+
+    } catch (error) {
+      setError("Erro ao editar funcionário");
       return false;
     } finally {
       setLoading(false);
@@ -197,7 +234,11 @@ export function AuthProvider({ children }) {
         return false;
       }
 
-      getAllUsers();
+      if(user.roleId == 1) {
+        getAllUsers();
+      } else {
+        getAllUsersByBranchId(user.branchId)
+      }
       setError(null);
       return true;
     } catch (error) {
@@ -216,7 +257,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, users, managers, error, loading, isAuthenticated, login, register, getAllUsers, getAllManagers, getAllUsersByBranchId, deleteUser, logout }}
+      value={{ user, users, managers, error, loading, isAuthenticated, login, register, getAllUsers, getAllManagers, getAllUsersByBranchId, deleteUser, editUser, logout }}
     >
       {children}
     </AuthContext.Provider>
