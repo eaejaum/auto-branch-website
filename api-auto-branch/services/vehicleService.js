@@ -1,4 +1,4 @@
-import { deleteVehicle, insertVehicle, selectAllVehicles, selectVehicleById, updateVehicle } from "../models/vehicleModel.js";
+import { deleteVehicle, insertVehicle, selectAllVehicles, selectAllVehiclesByBranchId, selectVehicleById, updateVehicle } from "../models/vehicleModel.js";
 import { AppError } from "../utils/appError.js";
 
 export const getAllVehiclesService = async () => {
@@ -12,6 +12,13 @@ export const getVehicleByIdService = async (id) => {
         throw new AppError("Veículo não encontrado", 400);
 
     return vehicle;
+};
+
+export const getAllVehiclesByBranchIdService = async (branchId) => {
+    const vehicles = await selectAllVehiclesByBranchId(branchId);
+    const vehiclesList = Array.isArray(vehicles) ? vehicles : [vehicles];
+    
+    return vehiclesList;
 };
 
 export const createVehicleService = async ({ brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId }) => {

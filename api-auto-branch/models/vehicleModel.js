@@ -107,6 +107,17 @@ export const selectVehicleById = async (id) => {
     }
 };
 
+export const selectAllVehiclesByBranchId = async (branchId) => {
+    try {
+        const query = `SELECT * FROM vehicles WHERE branchId = ?`
+        const [results] = await db.promise().query(query, [branchId]);
+
+        return results;
+    } catch (error) {
+        throw new Error("Erro ao selecionar veículos por concessionaria no banco de dados");
+    }
+}
+
 export const insertVehicle = async (brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId) => {
     try {
         const query = `INSERT INTO vehicles (brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
