@@ -75,7 +75,8 @@ export const selectVehicleById = async (id) => {
                         b.cep AS branch_cep,
                         b.phoneNumber AS branch_phone
                        FROM vehicles v
-                       JOIN branches b ON v.branchId = b.id;`;
+                       JOIN branches b ON v.branchId = b.id
+                       WHERE v.id = ?`;
         const [results] = await db.promise().query(query, [id]);
         const formatted = results.map(row => ({
             id: row.id,
@@ -154,7 +155,7 @@ export const selectAllVehiclesByBranchId = async (branchId) => {
             }
         }));
 
-        return formatted.length > 0 ? formatted[0] : null;
+        return formatted.length > 0 ? formatted : null;
     } catch (error) {
         throw new Error("Erro ao selecionar veículos por concessionaria no banco de dados");
     }
