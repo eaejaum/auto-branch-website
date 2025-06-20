@@ -7,21 +7,19 @@ import { useSellHistoryContext } from "../../context/sellHistoryContext";
 
 function SellHistory() {
     const { user } = useAuthContext();
-    const { loading, salesHistory, getAllSalesHistory } = useSellHistoryContext();
+    const { loading, salesHistory, getAllSalesHistory, getAllSalesByBranchId } = useSellHistoryContext();
 
     useEffect(() => {
         async function getSales() {
             if (user.roleId == 1) {
                 await getAllSalesHistory();
+            } else {
+                console.log(user)
+                await getAllSalesByBranchId(user.branchId);
             }
-            // else {
-            //     await getAllSalesByBranchId(user.branchId);
-            // }
         }
         getSales();
     }, []);
-
-    console.log(salesHistory)
 
     return (
         <>

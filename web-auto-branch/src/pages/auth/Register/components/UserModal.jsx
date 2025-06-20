@@ -55,7 +55,7 @@ function UserModal({ open, onOpenChange, employee }) {
             let req
 
             if (!employee) {
-                req = await register(name, email, unformatCpf(cpf), password, role, user.branchId ? user.branchId : null);
+                req = await register(name, email, unformatCpf(cpf), password, role, branch ? branch : null);
             }
             else if (employee) {
                 req = await editUser(parseInt(employee.id), name, email, cpf, role, branch);

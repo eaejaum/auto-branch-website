@@ -37,6 +37,34 @@ export function SellHistoryProvider({ children }) {
         }
     }
 
+    async function getAllSalesHistoryByBranchId(branchId) {
+        try {
+            setLoading(true);
+            setError(false);
+            const response = await fetch(`http://localhost:3000/api/sell/branch/${branchId}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+
+            const responseData = await response.json();
+
+            if (!response.ok) {
+                setError(responseData.message);
+                return false;
+            }
+
+            setError(false);
+            setSalesHistory(responseData.data)
+        } catch (error) {
+            setError("Erro ao listar histórico de vendas");
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    }
+
     async function sellVehicle(vehicleId, branchId, userId, sellPrice, discountPercent, totalPrice) {
         try {
             setLoading(true);
@@ -57,10 +85,9 @@ export function SellHistoryProvider({ children }) {
             setError(false);
             if (user.roleId == 1) {
                 await getAllSalesHistory();
+            } else {
+                await getAllSalesHistoryByBranchId(user.branchId)
             }
-            // else {
-            //     await getAllSalesHistoryByBranchId(user.branchId)
-            // }
 
             return true;
         } catch (error) {
@@ -72,7 +99,7 @@ export function SellHistoryProvider({ children }) {
     }
 
     return (
-        <SellHistoryContext.Provider value={{ loading, error, salesHistory, sellVehicle, getAllSalesHistory }}>
+        <SellHistoryContext.Provider value={{ loading, error, salesHistory, sellVehicle, getAllSalesHistory, getAllSalesHistoryByBranchId }}>
             {children}
         </SellHistoryContext.Provider>
     )
