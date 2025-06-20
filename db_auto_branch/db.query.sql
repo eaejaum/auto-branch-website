@@ -55,12 +55,17 @@ CREATE TABLE vehicles (
     plate VARCHAR(255) NOT NULL UNIQUE,
     km DECIMAL(10, 2) NOT NULL,
     value DECIMAL(10, 2) NOT NULL,
+    status INT NOT NULL DEFAULT 1,
     branchId INT NOT NULL
 ); 
 
 ALTER TABLE vehicles
 ADD CONSTRAINT fk_vehicles_branch
 FOREIGN KEY (branchId) REFERENCES branches(id);
+
+ALTER TABLE vehicles
+ADD CONSTRAINT fk_vehicles_status
+FOREIGN KEY (status) REFERENCES status(id);
 
 CREATE TABLE sellHistory (
 	id INT AUTO_INCREMENT PRIMARY KEY,

@@ -14,6 +14,7 @@ export const selectAllVehicles = async () => {
                         v.plate,
                         v.km,
                         v.value,
+                        v.status,
                         v.branchId,
                         b.id AS branch_id,
                         b.name AS branch_name,
@@ -36,6 +37,7 @@ export const selectAllVehicles = async () => {
             plate: row.plate,
             km: row.km,
             value: row.value,
+            status: row.status,
             branchId: row.branchId,
             branch: {
                 id: row.branch_id,
@@ -67,6 +69,7 @@ export const selectVehicleById = async (id) => {
                         v.plate,
                         v.km,
                         v.value,
+                        v.status,
                         v.branchId,
                         b.id AS branch_id,
                         b.name AS branch_name,
@@ -90,6 +93,7 @@ export const selectVehicleById = async (id) => {
             plate: row.plate,
             km: row.km,
             value: row.value,
+            status: row.status,
             branchId: row.branchId,
             branch: {
                 id: row.branch_id,
@@ -121,6 +125,7 @@ export const selectAllVehiclesByBranchId = async (branchId) => {
                         v.plate,
                         v.km,
                         v.value,
+                        v.status,
                         v.branchId,
                         b.id AS branch_id,
                         b.name AS branch_name,
@@ -144,6 +149,7 @@ export const selectAllVehiclesByBranchId = async (branchId) => {
             plate: row.plate,
             km: row.km,
             value: row.value,
+            status: row.status,
             branchId: row.branchId,
             branch: {
                 id: row.branch_id,
