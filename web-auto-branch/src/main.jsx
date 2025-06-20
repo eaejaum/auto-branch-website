@@ -7,6 +7,7 @@ import "@radix-ui/themes/styles.css";
 import "./index.css";
 import { BranchProvider } from "./context/branchContext.jsx";
 import { VehicleProvider } from "./context/vehicleContext.jsx";
+import { SellHistoryProvider } from "./context/sellHistoryContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -14,7 +15,9 @@ createRoot(document.getElementById("root")).render(
       <AuthProvider>
         <BranchProvider>
           <VehicleProvider>
-            <App />
+            <SellHistoryProvider>
+              <App />
+            </SellHistoryProvider>
           </VehicleProvider>
         </BranchProvider>
       </AuthProvider>

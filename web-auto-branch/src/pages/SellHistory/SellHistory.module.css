@@ -9,3 +9,33 @@
     font-size: 24px;
     padding-bottom: 16px;
 }
+
+.tableContainer {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.tableHeader {
+    font-size: 12px;
+    color: #2E2D37;
+}
+
+.tableRow {
+    transition: background 0.3s ease;
+}
+
+.tableRow:hover {
+    background-color: #f5f5f5;
+}
+
+.tableCell {
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #696977;
+    font-weight: 500;
+}
