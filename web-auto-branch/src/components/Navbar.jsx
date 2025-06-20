@@ -10,7 +10,7 @@ function Navbar() {
 
     const pathname = decodeURIComponent(location.pathname)
 
-    const isAuthenticatedRoute = ['/branches', '/vehicles', '/employees'].includes(pathname) || pathname.startsWith("/vehicles/");
+    const isAuthenticatedRoute = ['/branches', '/vehicles', '/sellHistory', '/employees'].includes(pathname) || pathname.startsWith("/vehicles/");
 
     if (!isAuthenticatedRoute) {
         return null;
@@ -41,6 +41,16 @@ function Navbar() {
                             }
                         >
                             Veículos
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink
+                            to="/sellHistory"
+                            className={({ isActive }) =>
+                                isActive ? styles.navLinkActive : styles.navLink
+                            }
+                        >
+                            Vendas
                         </NavLink>
                     </li>
                     <li>

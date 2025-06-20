@@ -8,6 +8,7 @@ import Vehicle from "./pages/Vehicles/Vehicle";
 import Employee from "./pages/Employees/Employee";
 import { useAuthContext } from "./context/authContext";
 import VehicleDetails from "./pages/Vehicles/components/VehicleDetails";
+import SellHistory from "./pages/SellHistory/SellHistory";
 
 function App() {
   const { user, isAuthenticated, isRestoringSession } = useAuthContext();
@@ -22,6 +23,7 @@ function App() {
           <Route path="/branches" element={<Branch />} />
           <Route path="/vehicles" element={<Vehicle />} />
           <Route path="/vehicles/:vehicleId" element={<VehicleDetails />} />
+          <Route path="/sellHistory" element={<SellHistory />} />
           <Route path="/employees" element={<Employee />} />
           <Route path="*" element={<NotFound />} />
         </Route>
