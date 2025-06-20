@@ -108,7 +108,7 @@ export const editUserService = async ({ id, name, email, cpf, roleId, branchId }
 };
 
 export const removeUserService = async (id) => {
-    const existingUser = selectUserById(id);
+    const existingUser = await selectUserById(id);
 
     if (!existingUser)
         throw new AppError("Usuário não encontrado", 400);

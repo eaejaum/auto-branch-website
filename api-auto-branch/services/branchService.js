@@ -34,7 +34,7 @@ export const editBranchService = async ({ id, name, city, state, cep, phoneNumbe
 };
 
 export const removeBranchService = async (id) => {
-    const existingBranch = selectBranchById(id);
+    const existingBranch = await selectBranchById(id);
 
     if (!existingBranch)
         throw new AppError("Concessionária não encontrada", 400);

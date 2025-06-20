@@ -48,7 +48,7 @@ export const editVehicleService = async ({ id, brand, model, version, year, gear
 };
 
 export const removeVehicleService = async (id) => {
-    const existingVehicle = selectVehicleById(id);
+    const existingVehicle = await selectVehicleById(id);
 
     if (!existingVehicle)
         throw new AppError("Veículo não encontrado", 400);
