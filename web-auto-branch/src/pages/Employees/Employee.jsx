@@ -95,10 +95,10 @@ function Employee() {
                     </Table.Root>
                 )}
             </Box>
+            <UserModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} employee={selectedEmployee} />
             {user.roleId !== 3 && (
                 <>
                     <UserModal open={isAddModalOpen} onOpenChange={setIsAddModalOpen} />
-                    <UserModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} employee={selectedEmployee} />
                     <DeleteModal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} handleSubmit={handleDeleteUser} message="Tem certeza de que deseja excluir este funcionário?" title="Funcionário" />
                 </>
             )}
