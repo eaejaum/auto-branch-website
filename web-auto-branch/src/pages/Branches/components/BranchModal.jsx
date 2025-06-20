@@ -104,11 +104,13 @@ function BranchModal({ open, onOpenChange, branch }) {
                     </AlertDialog.Cancel>
                 </Flex>
                 <form
+                    id="branch-form"
                     onSubmit={handleCreateBranch}
                     className={styles.loginForm}
                 >
                     <label className="inputLabel">Nome</label>
                     <input
+                        id="branch-name"
                         className="input"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -122,6 +124,7 @@ function BranchModal({ open, onOpenChange, branch }) {
                     />
                     <label className="inputLabel">Estado</label>
                     <select
+                        id="branch-state"
                         className="input"
                         value={state}
                         onChange={(e) => setState(e.target.value)}
@@ -137,6 +140,7 @@ function BranchModal({ open, onOpenChange, branch }) {
                     </select>
                     <label className="inputLabel">Cidade</label>
                     <input
+                        id="branch-city"
                         className="input"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
@@ -150,6 +154,7 @@ function BranchModal({ open, onOpenChange, branch }) {
                     />
                     <label className="inputLabel">CEP</label>
                     <input
+                        id="branch-cep"
                         className="input"
                         value={cep}
                         onChange={(e) => handleCepChange(e)}
@@ -164,6 +169,7 @@ function BranchModal({ open, onOpenChange, branch }) {
                     
                     <label className="inputLabel">Número de Contato</label>
                     <input
+                        id="branch-phone"
                         className="input"
                         value={phoneNumber}
                         onChange={(e) => handlePhoneChange(e)}
@@ -177,7 +183,7 @@ function BranchModal({ open, onOpenChange, branch }) {
                     />
                     <Flex justify="end">
                         <AlertDialog.Action>
-                            <Button type="submit" className={styles.saveButton}>Salvar</Button>
+                            <Button id="branch-submit" type="submit" className={styles.saveButton}>Salvar</Button>
                         </AlertDialog.Action>
                     </Flex>
                 </form>

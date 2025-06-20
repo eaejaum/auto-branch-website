@@ -62,9 +62,10 @@ function SellModal({ open, onOpenChange, vehicle }) {
                         <X style={{ cursor: "pointer" }} width={16} height={16} />
                     </AlertDialog.Cancel>
                 </Flex>
-                <form id="form" onSubmit={handleSubmit} className={styles.loginForm}>
+                <form id="sell-form" onSubmit={handleSubmit} className={styles.loginForm}>
                     <label className="inputLabel">Valor Inicial</label>
                     <input
+                        id="sell-original-value"
                         className="input"
                         value={originalValue.toLocaleString("pt-BR", {
                             style: "currency",
@@ -77,6 +78,7 @@ function SellModal({ open, onOpenChange, vehicle }) {
 
                     <label className="inputLabel">Desconto (%)</label>
                     <input
+                        id="sell-discount"
                         className="input"
                         value={discountInput}
                         onChange={handleDiscountChange}
@@ -87,6 +89,7 @@ function SellModal({ open, onOpenChange, vehicle }) {
 
                     <label className="inputLabel">Valor Final com Desconto</label>
                     <input
+                        id="sell-total-value"
                         className="input"
                         value={totalValue.toLocaleString("pt-BR", {
                             style: "currency",
@@ -99,7 +102,7 @@ function SellModal({ open, onOpenChange, vehicle }) {
 
                     <Flex justify="end">
                         <AlertDialog.Action>
-                            <Button type="submit" className={styles.saveButton}>
+                            <Button id="sell-submit" type="submit" className={styles.saveButton}>
                                 Salvar
                             </Button>
                         </AlertDialog.Action>

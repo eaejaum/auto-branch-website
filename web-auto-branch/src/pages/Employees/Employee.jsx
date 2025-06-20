@@ -77,13 +77,13 @@ function Employee() {
                                     <Table.Cell className={styles.tableCell}>
                                         <Flex gap="1" justify="end">
                                             {user.roleId !== 3 && user.id !== u.id && (
-                                                <button className={styles.actionButton} onClick={() => openDeleteModal(u)}>
+                                                <button id={`delete-user-${u.id}`} className={styles.actionButton} onClick={() => openDeleteModal(u)}>
                                                     <Trash width={15} height={15} color="#F3123C" />
                                                 </button>
                                             )}
 
                                             {(user.roleId !== 3 || user.id === u.id) && (
-                                                <button className={styles.actionButton} onClick={() => openEditModal(u)}>
+                                                <button id={`edit-user-${u.id}`} className={styles.actionButton} onClick={() => openEditModal(u)}>
                                                     <Edit width={15} height={15} color="#2563EB" />
                                                 </button>
                                             )}
