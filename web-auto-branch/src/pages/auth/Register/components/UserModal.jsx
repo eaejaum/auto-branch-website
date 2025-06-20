@@ -52,14 +52,10 @@ function UserModal({ open, onOpenChange, employee }) {
     async function handleSubmit(e) {
         e.preventDefault();
         try {
-            if (branch == 0 || role == 1) {
-                setBranch(null);
-            }
-
             let req
 
             if (!employee) {
-                req = await register(name, email, unformatCpf(cpf), password, role, user.branchId ? user.branchId : branch);
+                req = await register(name, email, unformatCpf(cpf), password, role, user.branchId ? user.branchId : null);
             }
             else if (employee) {
                 req = await editUser(parseInt(employee.id), name, email, cpf, role, branch);
