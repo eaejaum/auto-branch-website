@@ -13,6 +13,7 @@ function Vehicle() {
     const { user } = useAuthContext();
     const { loading, vehicles, getAllVehicles, getAllVehiclesByBranchId } = useVehicleContext();
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [statusSelect, setStatusSelect] = useState(1);
 
     useEffect(() => {
         if (user.roleId == 1) {
@@ -22,12 +23,26 @@ function Vehicle() {
         }
     }, []);
 
+    const filteredVehicles = vehicles.filter((v) => {
+        const status =
+            statusSelect == 1 ? v.status == 1
+            : v.status == 2;
+
+        return status;
+    });
+
     return (
         <>
             <Navbar />
             <Box className={styles.mainBox}>
                 <Flex justify="between">
-                    <h1 className={styles.title}>Lista de Veiculos</h1>
+                    <Flex justify="between" gap="3" align="center">
+                        <h1 className={styles.title}>Lista de Veiculos</h1>
+                        <select className={styles.statusSelect} onChange={(e) => setStatusSelect(e.target.value)}>
+                            <option value={1}>Disponíveis</option>
+                            <option value={2}>Vendidos</option>
+                        </select>
+                    </Flex>
                     <Button onClick={() => setIsAddModalOpen(true)} ><Plus color="#FFF" height={14} width={14} /> Novo Veículo</Button>
                 </Flex>
                 {loading ? (
@@ -36,7 +51,7 @@ function Vehicle() {
                     </Flex>
                 ) : (
                     <Flex justify="start" align="start" gap="4" wrap="wrap">
-                        {vehicles && Array.isArray(vehicles) && vehicles.map((vehicle) => (
+                        {filteredVehicles && Array.isArray(filteredVehicles) && filteredVehicles.map((vehicle) => (
                             <Link key={vehicle.id} to={`/vehicles/${vehicle.id}`} style={{ textDecoration: "none" }}>
                                 <VehicleCard vehicle={vehicle} />
                             </Link>

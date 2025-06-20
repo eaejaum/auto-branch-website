@@ -44,7 +44,7 @@ function SellModal({ open, onOpenChange, vehicle }) {
     function handleSubmit(e) {
         e.preventDefault();
         console.log({
-            branchId: user.branchId,
+            branchId: vehicle.branchId,
             vehicleId: vehicle.id,
             userId: user.id,
             originalValue,

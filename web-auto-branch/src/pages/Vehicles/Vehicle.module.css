@@ -7,5 +7,14 @@
 .title {
     text-align: left;
     font-size: 24px;
-    padding-bottom: 16px;
+    margin-bottom: 16px;
+}
+
+.statusSelect {
+    padding: 0 12px;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 12px;
+    outline: none;
+    margin-bottom: 16px;
 }
