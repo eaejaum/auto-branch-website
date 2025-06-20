@@ -1,8 +1,10 @@
 import { createContext, useContext, useState } from "react";
+import { useAuthContext } from "./authContext";
 
 export const VehicleContext = createContext(null);
 
 export function VehicleProvider({ children }) {
+    const { user } = useAuthContext();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [vehicles, setVehicles] = useState([]);
@@ -112,9 +114,9 @@ export function VehicleProvider({ children }) {
 
             setError(false);
             if (user.roleId == 1) {
-                getAllVehicles();
+                await getAllVehicles();
             } else {
-                getAllVehiclesByBranchId(user.branchId)
+                await getAllVehiclesByBranchId(user.branchId)
             }
 
             return true;
@@ -143,14 +145,8 @@ export function VehicleProvider({ children }) {
             }
 
             setError(false);
-            if (user.roleId == 1) {
-                getAllVehicles();
-            } else {
-                getAllVehiclesByBranchId(user.branchId)
-            }
 
             return true;
-
         } catch (error) {
             setError("Erro ao deletar veículo");
             return false;
@@ -178,12 +174,7 @@ export function VehicleProvider({ children }) {
 
             setError(false);
 
-            if (user.roleId == 1) {
-                getAllVehicles();
-            } else {
-                getAllVehiclesByBranchId(user.branchId)
-            }
-
+            return true;
         } catch (error) {
             setError("Erro ao editar veículo");
             return false;
