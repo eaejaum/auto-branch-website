@@ -1,15 +1,14 @@
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
-import styles from "./CreateBranchModal.module.css";
+import styles from "./BranchModal.module.css";
 import { useBranchContext } from "../../../context/branchContext";
 import { formatCep } from "../../../utils/formatCep";
 import { unformatCep } from "../../../utils/unformatCep";
 import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
 import { unformatPhoneNumber } from "../../../utils/unformatPhoneNumber";
-import { useAuthContext } from "../../../context/authContext";
 
-function CreateBranchModal({ open, onOpenChange }) {
+function BranchModal({ open, onOpenChange, branch }) {
     const { createBranch } = useBranchContext();
 
     const [name, setName] = useState("");
@@ -17,6 +16,16 @@ function CreateBranchModal({ open, onOpenChange }) {
     const [city, setCity] = useState("");
     const [cep, setCep] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
+
+    useEffect(() => {
+        if (branch) {
+            setName(branch.name);
+            setState(branch.state);
+            setCity(branch.city);
+            setCep(formatCep(branch.cep));
+            setPhoneNumber(formatPhoneNumber(branch.phoneNumber));
+        }
+    }, [branch])
 
     const states = [
         { acronym: "AC", name: "Acre" },
@@ -89,7 +98,7 @@ function CreateBranchModal({ open, onOpenChange }) {
         <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
             <AlertDialog.Content align="start">
                 <Flex justify="between" align="start" style={{ paddingBottom: "20px" }}>
-                    <AlertDialog.Title>Cadastrar Concessionária!</AlertDialog.Title>
+                    <AlertDialog.Title>{branch ? "Editar" : "Cadastrar"} Concessionária!</AlertDialog.Title>
                     <AlertDialog.Cancel>
                         <X style={{ cursor: 'pointer' }} width={16} height={16} />
                     </AlertDialog.Cancel>
@@ -177,4 +186,4 @@ function CreateBranchModal({ open, onOpenChange }) {
     );
 }
 
-export default CreateBranchModal;
+export default BranchModal;

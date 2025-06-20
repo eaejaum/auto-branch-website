@@ -79,7 +79,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
         <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
             <AlertDialog.Content aria-describedby="form" align="start">
                 <Flex justify="between" align="start" style={{ paddingBottom: "20px" }}>
-                    <AlertDialog.Title>Cadastrar Compra!</AlertDialog.Title>
+                    <AlertDialog.Title>{vehicle ? "Editar" : "Cadastrar"} Veículo!</AlertDialog.Title>
                     <AlertDialog.Cancel>
                         <X style={{ cursor: 'pointer' }} width={16} height={16} />
                     </AlertDialog.Cancel>

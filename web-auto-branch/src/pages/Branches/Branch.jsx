@@ -3,7 +3,7 @@ import { Plus } from "lucide-react";
 import styles from "./Branch.module.css";
 import Navbar from "../../components/Navbar";
 import { useEffect, useState } from "react";
-import CreateBranchModal from "../Branches/components/CreateBranchModal";
+import BranchModal from "../Branches/components/BranchModal";
 import BranchCard from "./components/BranchCard";
 import { useBranchContext } from "../../context/branchContext";
 import { useAuthContext } from "../../context/authContext";
@@ -39,7 +39,7 @@ function Branch() {
                     </Flex>
                 )}
             </Box>
-            <CreateBranchModal open={isAddModalOpen} onOpenChange={setIsAddModalOpen} />
+            <BranchModal open={isAddModalOpen} onOpenChange={setIsAddModalOpen} />
         </>
     )
 };

@@ -4,64 +4,74 @@ import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
 import styles from "./BranchCard.module.css";
 import { Box, Flex } from "@radix-ui/themes";
 import { useAuthContext } from "../../../context/authContext";
+import { useState } from "react";
+import BranchModal from "./BranchModal";
+import DeleteModal from "../../../components/DeleteModal";
 
 function BranchCard({ branch }) {
     const { user } = useAuthContext();
 
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
     return (
-        <div className={styles.card}>
-            <h3 className={styles.title}>{(branch.name).toUpperCase()}</h3>
+        <>
+            <div className={styles.card}>
+                <h3 className={styles.title}>{(branch.name).toUpperCase()}</h3>
 
-            <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Telefone</span>
-                <span className={styles.detailValue}>{formatPhoneNumber(branch.phoneNumber || '')}</span>
-            </div>
-            <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Cidade</span>
-                <span className={styles.detailValue}>{branch.city}</span>
-            </div>
+                <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Telefone</span>
+                    <span className={styles.detailValue}>{formatPhoneNumber(branch.phoneNumber || '')}</span>
+                </div>
+                <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Cidade</span>
+                    <span className={styles.detailValue}>{branch.city}</span>
+                </div>
 
-            <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Estado</span>
-                <span className={styles.detailValue}>{branch.state}</span>
-            </div>
+                <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Estado</span>
+                    <span className={styles.detailValue}>{branch.state}</span>
+                </div>
 
-            <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>CEP</span>
-                <span className={styles.detailValue}>{formatCep(branch.cep || '')}</span>
-            </div>
+                <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>CEP</span>
+                    <span className={styles.detailValue}>{formatCep(branch.cep || '')}</span>
+                </div>
 
-            <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Funcionários</span>
-                <span className={styles.detailValue}>{branch.employeeCount ?? 0}</span>
-            </div>
+                <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Funcionários</span>
+                    <span className={styles.detailValue}>{branch.employeeCount ?? 0}</span>
+                </div>
 
-            <div className={styles.detailRow}>
-                <span className={styles.detailLabel}>Veículos</span>
-                <span className={styles.detailValue}>{branch.vehicleCount ?? 0}</span>
-            </div>
+                <div className={styles.detailRow}>
+                    <span className={styles.detailLabel}>Veículos</span>
+                    <span className={styles.detailValue}>{branch.vehicleCount ?? 0}</span>
+                </div>
 
 
-            {user.roleId == 1 || (user.roleId == 2 && user.branchId === branch.id) && (<div className={styles.divider}></div>)}
-            <Flex justify="center" gap="2">
-                {user.roleId == 1 && (
-                    <>
-                        <button className={styles.actionButton} onClick={() => openDeleteModal(u)}>
-                            <Trash width={15} height={15} color="#F3123C" />
-                        </button>
-                        <button className={styles.actionButton} onClick={() => openEditModal(u)}>
+                {user.roleId == 1 || (user.roleId == 2 && user.branchId === branch.id) && (<div className={styles.divider}></div>)}
+                <Flex justify="center" gap="2">
+                    {user.roleId == 1 && (
+                        <>
+                            <button className={styles.actionButton} onClick={() => setIsDeleteModalOpen(true)}>
+                                <Trash width={15} height={15} color="#F3123C" />
+                            </button>
+                            <button className={styles.actionButton} onClick={() => setIsEditModalOpen(true)}>
+                                <Edit width={15} height={15} color="#2563EB" />
+                            </button>
+                        </>
+                    )}
+
+                    {(user.roleId == 2 && user.branchId === branch.id) && (
+                        <button className={styles.actionButton} onClick={() => setIsEditModalOpen(true)}>
                             <Edit width={15} height={15} color="#2563EB" />
                         </button>
-                    </>
-                )}
-
-                {(user.roleId == 2 && user.branchId === branch.id) && (
-                    <button className={styles.actionButton} onClick={() => openEditModal(u)}>
-                        <Edit width={15} height={15} color="#2563EB" />
-                    </button>
-                )}
-            </Flex>
-        </div>
+                    )}
+                </Flex>
+            </div>
+            <BranchModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} branch={branch} />
+            <DeleteModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} branch={branch} />
+        </>
     );
 };
 
