@@ -176,7 +176,7 @@ export const selectAllVehiclesByBranchId = async (branchId) => {
             }
         }));
 
-        return formatted.length > 0 ? formatted : null;
+        return formatted.length > 0 ? formatted : [];
     } catch (error) {
         throw new Error("Erro ao selecionar veículos por concessionaria no banco de dados");
     }
