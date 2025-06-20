@@ -1,4 +1,4 @@
-import { selectAllSalesHistory, sellVehicleModel } from "../models/sellHistoryModel.js";
+import { selectAllSalesHistory, selectAllSalesHistoryByBranchId, sellVehicleModel } from "../models/sellHistoryModel.js";
 import { AppError } from "../utils/appError.js";
 
 export const sellVehicleService = async ({ vehicleId, branchId, userId, sellPrice, discountPercent, totalPrice }) => {
@@ -10,4 +10,11 @@ export const sellVehicleService = async ({ vehicleId, branchId, userId, sellPric
 
 export const getAllSalesHistoryService = async () => {
     return await selectAllSalesHistory();
+};
+
+export const getAllSalesHistoryByBranchIdService = async (branchId) => {
+    const history = await selectAllSalesHistoryByBranchId(branchId);
+    const historyList = Array.isArray(history) ? history : [history];
+
+    return historyList;
 };

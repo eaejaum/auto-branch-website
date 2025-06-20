@@ -30,19 +30,19 @@ export const getVehicleById = async (req, res) => {
 
 export const getAllVehiclesByBranchId = async (req, res) => {
     const { id } = req.params
-  
+
     try {
-      const vehicles = await getAllVehiclesByBranchIdService(id);
-      res.status(200).json({
-        data: vehicles,
-        message: "Veículos por concessionária listados com sucesso!"
-      });
+        const vehicles = await getAllVehiclesByBranchIdService(id);
+        res.status(200).json({
+            data: vehicles,
+            message: "Veículos por concessionária listados com sucesso!"
+        });
     } catch (err) {
-      const status = err.statusCode || 500;
-      res.status(status).json({ message: err.message });
+        const status = err.statusCode || 500;
+        res.status(status).json({ message: err.message });
     }
-  };
-  
+};
+
 
 export const createVehicle = async (req, res) => {
     try {

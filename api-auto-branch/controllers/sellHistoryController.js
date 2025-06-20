@@ -1,4 +1,4 @@
-import { getAllSalesHistoryService, sellVehicleService } from "../services/sellHistoryService.js";
+import { getAllSalesHistoryByBranchIdService, getAllSalesHistoryService, sellVehicleService } from "../services/sellHistoryService.js";
 
 export const sellVehicle = async (req, res) => {
     try {
@@ -22,5 +22,20 @@ export const getAllSalesHistory = async (req, res) => {
     } catch (err) {
       const status = err.statusCode || 500;
       res.status(status).json({ message: err.message });
+    }
+};
+
+export const getAllSalesHistoryByBranchId = async (req, res) => {
+    const { id } = req.params
+
+    try {
+        const history = await getAllSalesHistoryByBranchIdService(id);
+        res.status(200).json({
+            data: history,
+            message: "Histórico por concessionária listado com sucesso!"
+        });
+    } catch (err) {
+        const status = err.statusCode || 500;
+        res.status(status).json({ message: err.message });
     }
 };
