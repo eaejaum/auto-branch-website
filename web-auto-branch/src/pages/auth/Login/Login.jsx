@@ -16,8 +16,7 @@ function Login() {
     e.preventDefault();
     try {
       const req = await login(email, password, rememberUser);
-      if (req)
-        navigate("/vehicles");
+      if (req) navigate("/vehicles");
     } catch (err) {
       console.error(err);
     }
@@ -28,47 +27,51 @@ function Login() {
       <h1 className={styles.title}>
         Auto<span className="titleSpan">Branch</span>
       </h1>
-      <form
-        onSubmit={handleLogin}
-        className={styles.loginForm}
-      >
-        <label className="inputLabel">Email</label>
+      <form onSubmit={handleLogin} className={styles.loginForm}>
+        <label htmlFor="email-input" className="inputLabel">Email</label>
         <input
+          id="email-input"
           className="input"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           type="email"
           name="email"
           placeholder="Digite seu email..."
-          style={{
-            border: error ? "1px solid red" : "1px solid #ccc",
-          }}
+          style={{ border: error ? "1px solid red" : "1px solid #ccc" }}
         />
-        <label className="inputLabel">Senha</label>
+
+        <label htmlFor="password-input" className="inputLabel">Senha</label>
         <input
+          id="password-input"
           className="input"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           type="password"
+          name="password"
           placeholder="Digite sua senha..."
-          style={{
-            border: error ? "1px solid red" : "1px solid #ccc",
-          }}
+          style={{ border: error ? "1px solid red" : "1px solid #ccc" }}
         />
 
-        {error && (<span className="errorMessage">{error}</span>)}
+        {error && <span className="errorMessage">{error}</span>}
 
-        <Text as="label" size="2" style={{ marginBottom: "10px" }}>
+        <Text as="label" size="2" htmlFor="remember-checkbox" style={{ marginBottom: "10px" }}>
           <Flex gap="2">
-            <Checkbox checked={rememberUser} onClick={() => setRememberUser(!rememberUser)} style={{ cursor: "pointer" }} />
+            <Checkbox
+              id="remember-checkbox"
+              checked={rememberUser}
+              onClick={() => setRememberUser(!rememberUser)}
+              style={{ cursor: "pointer" }}
+            />
             Lembrar de mim
           </Flex>
         </Text>
 
-        <Button type="submit" className="authButton">{loading ? <Spinner /> : "Entrar"}</Button>
+        <Button id="login-button" type="submit" className="authButton">
+          {loading ? <Spinner /> : "Entrar"}
+        </Button>
       </form>
     </Container>
   );
 }
 
-export default Login;
+export default Login;
