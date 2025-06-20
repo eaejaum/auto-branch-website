@@ -24,7 +24,9 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
     const [branchId, setBranchId] = useState(0);
 
     useEffect(() => {
-        getAllBranches();
+        if(user.roleId == 1) {
+            getAllBranches();
+        }
         if (vehicle) {
             setBrand(vehicle.brand);
             setModel(vehicle.model);
@@ -58,8 +60,9 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
         e.preventDefault();
         try {
             let req;
-            if (!vehicle)
+            if (!vehicle) {
                 req = await createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, user.branchId ? user.branchId : branchId);
+            }
             else if (vehicle) {
                 req = await editVehicle(parseInt(vehicle.id), brand, model, version, year, gearbox, color, motorization, plate, parseFloat(km), parseFloat(value), branchId);
                 refreshVehicle();
