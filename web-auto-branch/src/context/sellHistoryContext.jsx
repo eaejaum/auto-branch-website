@@ -29,6 +29,7 @@ export function SellHistoryProvider({ children }) {
 
             setError(false);
             setSalesHistory(responseData.data)
+            return true;
         } catch (error) {
             setError("Erro ao listar histórico de vendas");
             return false;
@@ -56,7 +57,8 @@ export function SellHistoryProvider({ children }) {
             }
 
             setError(false);
-            setSalesHistory(responseData.data)
+            setSalesHistory(responseData.data);
+            return true
         } catch (error) {
             setError("Erro ao listar histórico de vendas");
             return false;
@@ -83,12 +85,6 @@ export function SellHistoryProvider({ children }) {
             }
 
             setError(false);
-            if (user.roleId == 1) {
-                await getAllSalesHistory();
-            } else {
-                await getAllSalesHistoryByBranchId(user.branchId)
-            }
-
             return true;
         } catch (error) {
             setError("Erro ao vender veículo");

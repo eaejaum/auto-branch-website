@@ -147,13 +147,13 @@ function VehicleDetails() {
                                             <Box>
                                                 <Flex direction="column">
                                                     <span className={styles.spanInfo}>Estoque</span>
-                                                    <Text className={styles.textInfo}>42 veículos</Text>
+                                                    <Text className={styles.textInfo}>{vehicle.branch.vehicleCount} Veículos</Text>
                                                 </Flex>
                                             </Box>
                                             <Box>
                                                 <Flex direction="column">
                                                     <span className={styles.spanInfo}>Funcionários</span>
-                                                    <Text className={styles.textInfo}>12 Funcionários</Text>
+                                                    <Text className={styles.textInfo}>{vehicle.branch.employeeCount} Funcionários</Text>
                                                 </Flex>
                                             </Box>
                                             <Box>

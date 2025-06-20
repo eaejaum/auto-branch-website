@@ -31,6 +31,17 @@ function BranchCard({ branch }) {
                 <span className={styles.detailValue}>{formatCep(branch.cep || '')}</span>
             </div>
 
+            <div className={styles.detailRow}>
+                <span className={styles.detailLabel}>Funcionários</span>
+                <span className={styles.detailValue}>{branch.employeeCount ?? 0}</span>
+            </div>
+
+            <div className={styles.detailRow}>
+                <span className={styles.detailLabel}>Veículos</span>
+                <span className={styles.detailValue}>{branch.vehicleCount ?? 0}</span>
+            </div>
+
+
             {user.roleId == 1 || (user.roleId == 2 && user.branchId === branch.id) && (<div className={styles.divider}></div>)}
             <Flex justify="center" gap="2">
                 {user.roleId == 1 && (
