@@ -13,7 +13,7 @@ function VehicleCard({ vehicle }) {
                 <p className={styles.infoText}>{(vehicle.branch.city).toUpperCase()}, {(vehicle.branch.state).toUpperCase()}</p>
             </div>
             <div className={styles.subinfo}>
-                <p className={styles.priceText}>R${Number(vehicle.value).toFixed(0)}</p>
+                <p className={styles.priceText}>{vehicle.status == 1 ? (`R$${Number(vehicle.value).toFixed(0)}`) : 'VENDIDO'}</p>
                 <div className={styles.yearKmBox}>
                     <p className={styles.infoText}>{vehicle.year}</p>
                     <p className={styles.infoText}>{Number(vehicle.km).toFixed(0)} km</p>

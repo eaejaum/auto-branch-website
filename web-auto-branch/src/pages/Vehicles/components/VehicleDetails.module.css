@@ -99,6 +99,14 @@
     background-color: #1b52c9;
 }
 
+.soldButton {
+    padding: 12px 16px;
+    background-color: #2563EB;
+    border: none;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
 .buttonText {
     font-size: 16px;
     color: #fff;

@@ -67,15 +67,17 @@ function VehicleDetails() {
                                         <Text className={styles.name}>{(vehicle.brand).toUpperCase()} <span>{(vehicle.model).toUpperCase()}</span></Text>
                                         <Text className={styles.vehicleEspecification}>{`${(vehicle.version).toUpperCase()} ${(vehicle.motorization).toUpperCase()} ${(vehicle.gearbox).toUpperCase()}`}</Text>
                                     </Flex>
-                                    <Flex gap="1">
-                                        <Text className={styles.vehiclePrice}>R${Number(vehicle.value).toFixed(0)}</Text>
-                                        <button className={styles.actionButton} onClick={() => setIsDeleteModalOpen(true)}>
-                                            <Trash width={15} height={15} color="#F3123C" />
-                                        </button>
-                                        <button className={styles.actionButton} onClick={() => setIsEditModalOpen(true)}>
-                                            <Edit width={15} height={15} color="#2563EB" />
-                                        </button>
-                                    </Flex>
+                                    {vehicle.status == 1 && (
+                                        <Flex gap="1">
+                                            <Text className={styles.vehiclePrice}>R${Number(vehicle.value).toFixed(0)}</Text>
+                                            <button className={styles.actionButton} onClick={() => setIsDeleteModalOpen(true)}>
+                                                <Trash width={15} height={15} color="#F3123C" />
+                                            </button>
+                                            <button className={styles.actionButton} onClick={() => setIsEditModalOpen(true)}>
+                                                <Edit width={15} height={15} color="#2563EB" />
+                                            </button>
+                                        </Flex>
+                                    )}
                                 </Flex>
                                 <Flex justify="between" align="end">
                                     <div className={styles.infos}>
@@ -116,9 +118,16 @@ function VehicleDetails() {
                                             </Flex>
                                         </Box>
                                     </div>
-                                    <button className={styles.sellButton} onClick={() => setIsSellModalOpen(true)}>
-                                        <Text className={styles.buttonText}>VENDER</Text>
-                                    </button>
+                                    {vehicle.status == 1 && (
+                                        <button className={styles.sellButton} onClick={() => setIsSellModalOpen(true)}>
+                                            <Text className={styles.buttonText}>VENDER</Text>
+                                        </button>
+                                    )}
+                                    {vehicle.status == 2 && (
+                                        <button className={styles.soldButton} disabled>
+                                            <Text className={styles.buttonText}>VENDIDO</Text>
+                                        </button>
+                                    )}
                                 </Flex>
                             </Flex>
                         </Box>
