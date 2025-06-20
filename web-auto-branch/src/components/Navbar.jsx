@@ -6,7 +6,7 @@ import { useAuthContext } from "../context/authContext";
 
 function Navbar() {
     const location = useLocation();
-    const { user } = useAuthContext();
+    const { logout } = useAuthContext();
 
     const pathname = decodeURIComponent(location.pathname)
 
@@ -55,7 +55,7 @@ function Navbar() {
                     </li>
                 </ul>
             </nav>
-            <LogOut className={styles.logout} />
+            <LogOut className={styles.logout} onClick={logout} />
         </div>
     );
 }
