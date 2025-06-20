@@ -56,7 +56,7 @@ function Employee() {
                         <Spinner />
                     </Flex>
 
-                ) : users && users.length > 1 && (
+                ) : users && users.length > 0 && (
                     <Table.Root className={styles.tableContainer}>
                         <Table.Header className={styles.tableHeader}>
                             <Table.Row>
@@ -64,30 +64,31 @@ function Employee() {
                                 <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
                                 <Table.ColumnHeaderCell>CPF</Table.ColumnHeaderCell>
                                 <Table.ColumnHeaderCell>Cargo</Table.ColumnHeaderCell>
-                                {user.roleId !== 3 && (
-                                    <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
-                                )}
+                                <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
-                            {Array.isArray(users) && users.filter(u => u.id !== user.id).map((u) => (
+                            {Array.isArray(users) && users.map((u) => (
                                 <Table.Row key={u.id} className={styles.tableRow}>
                                     <Table.Cell className={styles.tableCell}>{u.name}</Table.Cell>
                                     <Table.Cell className={styles.tableCell}>{u.email}</Table.Cell>
                                     <Table.Cell className={styles.tableCell}>{formatCpf(u.cpf)}</Table.Cell>
                                     <Table.Cell className={styles.tableCell}>{u.roleId == 1 ? "Diretor" : u.roleId == 2 ? "Gerente" : "Vendedor"}</Table.Cell>
-                                    {user.roleId !== 3 && (
-                                        <Table.Cell className={styles.tableCell}>
-                                            <Flex gap="1" justify="end">
+                                    <Table.Cell className={styles.tableCell}>
+                                        <Flex gap="1" justify="end">
+                                            {user.roleId !== 3 && user.id !== u.id && (
                                                 <button className={styles.actionButton} onClick={() => openDeleteModal(u)}>
                                                     <Trash width={15} height={15} color="#F3123C" />
                                                 </button>
+                                            )}
+
+                                            {(user.roleId !== 3 || user.id === u.id) && (
                                                 <button className={styles.actionButton} onClick={() => openEditModal(u)}>
                                                     <Edit width={15} height={15} color="#2563EB" />
                                                 </button>
-                                            </Flex>
-                                        </Table.Cell>
-                                    )}
+                                            )}
+                                        </Flex>
+                                    </Table.Cell>
                                 </Table.Row>
                             ))}
                         </Table.Body>

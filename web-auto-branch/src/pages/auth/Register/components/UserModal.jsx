@@ -147,10 +147,11 @@ function UserModal({ open, onOpenChange, employee }) {
                     >
                         <option value={0}>Selecione o cargo...</option>
                         {user.roleId === 1 && (
-                            <>
-                                <option value={1}>Diretor</option>
-                                <option value={2}>Gerente</option>
-                            </>)}
+                            <option value={1}>Diretor</option>
+                        )}
+                        {user.roleId !== 3 && (
+                            <option value={2}>Gerente</option>
+                        )}
                         <option value={3}>Vendedor</option>
                     </select>
 
