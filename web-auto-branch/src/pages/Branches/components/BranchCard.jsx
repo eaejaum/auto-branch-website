@@ -1,8 +1,13 @@
+import { Edit, Trash } from "lucide-react";
 import { formatCep } from "../../../utils/formatCep";
 import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
 import styles from "./BranchCard.module.css";
+import { Box, Flex } from "@radix-ui/themes";
+import { useAuthContext } from "../../../context/authContext";
 
 function BranchCard({ branch }) {
+    const { user } = useAuthContext();
+
     return (
         <div className={styles.card}>
             <h3 className={styles.title}>{(branch.name).toUpperCase()}</h3>
@@ -26,12 +31,25 @@ function BranchCard({ branch }) {
                 <span className={styles.detailValue}>{formatCep(branch.cep || '')}</span>
             </div>
 
-            {/* Exemplo de campo com destaque */}
-            {branch.status && (
-                <div className={`${styles.detailValue} ${styles.highlight}`}>
-                    Status: {branch.status}
-                </div>
-            )}
+            {user.roleId == 1 || (user.roleId == 2 && user.branchId === branch.id) && (<div className={styles.divider}></div>)}
+            <Flex justify="center" gap="2">
+                {user.roleId == 1 && (
+                    <>
+                        <button className={styles.actionButton} onClick={() => openDeleteModal(u)}>
+                            <Trash width={15} height={15} color="#F3123C" />
+                        </button>
+                        <button className={styles.actionButton} onClick={() => openEditModal(u)}>
+                            <Edit width={15} height={15} color="#2563EB" />
+                        </button>
+                    </>
+                )}
+
+                {(user.roleId == 2 && user.branchId === branch.id) && (
+                    <button className={styles.actionButton} onClick={() => openEditModal(u)}>
+                        <Edit width={15} height={15} color="#2563EB" />
+                    </button>
+                )}
+            </Flex>
         </div>
     );
 };

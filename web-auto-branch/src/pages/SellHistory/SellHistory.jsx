@@ -14,7 +14,6 @@ function SellHistory() {
             if (user.roleId == 1) {
                 await getAllSalesHistory();
             } else {
-                console.log(user)
                 await getAllSalesByBranchId(user.branchId);
             }
         }
