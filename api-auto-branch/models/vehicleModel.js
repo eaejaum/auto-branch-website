@@ -1,5 +1,20 @@
 import db from "../db/conn.js";
 
+export const sellVehicleModel = async (vehicleId, branchId, userId, sellPrice, discountPercent, totalPrice) => {
+    try {
+        const insertQuery = `INSERT INTO sellHistory (vehicleId, branchId, userId, sellPrice, discountPercent, totalPrice) VALUES (?, ?, ?, ?, ?, ?)`;
+        await db.promise().query(insertQuery, [vehicleId, branchId, userId, sellPrice, discountPercent, totalPrice]);
+
+        const updateQuery = `UPDATE vehicles SET status = 2 WHERE id = ?`;
+        await db.promise().query(updateQuery, [vehicleId]);
+
+        return { message: "Veículo vendido com sucesso!" };
+    } catch (err) {
+        console.log(err);
+        throw new Error("Erro ao vender veiculo no banco de dados");
+    }
+}
+
 export const selectAllVehicles = async () => {
     try {
         const query = `SELECT 
