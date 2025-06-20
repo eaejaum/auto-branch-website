@@ -54,3 +54,13 @@ export const deleteBranch = async (id) => {
         throw new Error("Erro ao deletar no banco de dados");
     }
 };
+
+export const updateVehicleCount = async (branchId) => {
+    const query = `UPDATE branches SET vehicleCount = vehicleCount + 1 WHERE id = ?`;
+    await db.promise().query(query, [branchId]);
+};
+
+export const updateEmployeeCount = async (branchId) => {
+    const query = `UPDATE branches SET employeeCount = employeeCount + 1 WHERE id = ?`;
+    await db.promise().query(query, [branchId]);
+};

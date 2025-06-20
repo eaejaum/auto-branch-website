@@ -21,6 +21,8 @@ export const selectAllVehicles = async () => {
                         b.city AS branch_city,
                         b.state AS branch_state,
                         b.cep AS branch_cep,
+                        b.employeeCount AS branch_employee_count,
+                        b.vehicleCount AS branch_vehicle_count,
                         b.phoneNumber AS branch_phone
                        FROM vehicles v
                        JOIN branches b ON v.branchId = b.id;`;
@@ -50,6 +52,8 @@ export const selectAllVehicles = async () => {
                 city: row.branch_city,
                 state: row.branch_state,
                 cep: row.branch_cep,
+                employeeCount: row.branch_employee_count,
+                vehicleCount: row.branch_vehicle_count,
                 phoneNumber: row.branch_phone
             }
         }));
@@ -79,6 +83,8 @@ export const selectVehicleById = async (id) => {
                         b.city AS branch_city,
                         b.state AS branch_state,
                         b.cep AS branch_cep,
+                        b.employeeCount AS branch_employee_count,
+                        b.vehicleCount AS branch_vehicle_count,
                         b.phoneNumber AS branch_phone
                        FROM vehicles v
                        JOIN branches b ON v.branchId = b.id
@@ -104,6 +110,8 @@ export const selectVehicleById = async (id) => {
                 city: row.branch_city,
                 state: row.branch_state,
                 cep: row.branch_cep,
+                employeeCount: row.branch_employee_count,
+                vehicleCount: row.branch_vehicle_count,
                 phoneNumber: row.branch_phone
             }
         }));
@@ -135,6 +143,8 @@ export const selectAllVehiclesByBranchId = async (branchId) => {
                         b.city AS branch_city,
                         b.state AS branch_state,
                         b.cep AS branch_cep,
+                        b.employeeCount AS branch_employee_count,
+                        b.vehicleCount AS branch_vehicle_count,
                         b.phoneNumber AS branch_phone
                        FROM vehicles v
                        JOIN branches b ON v.branchId = b.id
@@ -160,6 +170,8 @@ export const selectAllVehiclesByBranchId = async (branchId) => {
                 city: row.branch_city,
                 state: row.branch_state,
                 cep: row.branch_cep,
+                employeeCount: row.branch_employee_count,
+                vehicleCount: row.branch_vehicle_count,
                 phoneNumber: row.branch_phone
             }
         }));

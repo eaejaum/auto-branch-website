@@ -1,3 +1,4 @@
+import { updateEmployeeCount } from "../models/branchModel.js";
 import { insertUser, selectUserByEmail, selectAllUsers, deleteUser, updateUser, selectUserById, selectAllManagers, selectAllUsersByBranchId } from "../models/userModel.js";
 import { AppError } from "../utils/appError.js";
 import bcrypt from "bcrypt";
@@ -36,7 +37,12 @@ export const createUserService = async ({ name, email, cpf, password, roleId, br
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    return await insertUser(name, email, cpf, hashedPassword, roleId, branchId);
+    await insertUser(name, email, cpf, hashedPassword, roleId, branchId);
+    if (branchId) {
+        await updateEmployeeCount(branchId);
+    }
+
+    return { message: "Usuário criado com sucesso" }
 };
 
 export const getAllUsersService = async () => {

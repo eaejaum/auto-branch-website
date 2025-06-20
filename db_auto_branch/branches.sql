@@ -4,5 +4,7 @@ CREATE TABLE branches (
     city VARCHAR(255) NOT NULL,
     state VARCHAR(255) NOT NULL,
     cep VARCHAR(255) NOT NULL UNIQUE,
+    employeeCount INT,
+    vehicleCount INT,
     phoneNumber VARCHAR(11)
 ); 
