@@ -1,20 +1,5 @@
 import db from "../db/conn.js";
 
-export const sellVehicleModel = async (vehicleId, branchId, userId, sellPrice, discountPercent, totalPrice) => {
-    try {
-        const insertQuery = `INSERT INTO sellHistory (vehicleId, branchId, userId, sellPrice, discountPercent, totalPrice) VALUES (?, ?, ?, ?, ?, ?)`;
-        await db.promise().query(insertQuery, [vehicleId, branchId, userId, sellPrice, discountPercent, totalPrice]);
-
-        const updateQuery = `UPDATE vehicles SET status = 2 WHERE id = ?`;
-        await db.promise().query(updateQuery, [vehicleId]);
-
-        return { message: "Veículo vendido com sucesso!" };
-    } catch (err) {
-        console.log(err);
-        throw new Error("Erro ao vender veiculo no banco de dados");
-    }
-}
-
 export const selectAllVehicles = async () => {
     try {
         const query = `SELECT 
@@ -40,7 +25,12 @@ export const selectAllVehicles = async () => {
                        FROM vehicles v
                        JOIN branches b ON v.branchId = b.id;`;
         const [results] = await db.promise().query(query);
-        const formatted = results.map(row => ({
+
+        if (!results || results.length === 0) {
+            return [];
+        }
+
+        return results.map(row => ({
             id: row.id,
             brand: row.brand,
             model: row.model,
@@ -63,8 +53,6 @@ export const selectAllVehicles = async () => {
                 phoneNumber: row.branch_phone
             }
         }));
-
-        return formatted;
     } catch (err) {
         throw new Error("Erro ao listar no banco de dados");
     }

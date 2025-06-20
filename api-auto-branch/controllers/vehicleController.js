@@ -1,16 +1,4 @@
-import { createVehicleService, editVehicleService, getAllVehiclesByBranchIdService, getAllVehiclesService, getVehicleByIdService, removeVehicleService, sellVehicleService } from "../services/vehicleService.js";
-
-export const sellVehicle = async (req, res) => {
-    try {
-        await sellVehicleService(req.body);
-        res.status(201).json({
-            message: "Veículo vendido com sucesso!"
-        });
-    } catch (err) {
-        const status = err.statusCode || 500;
-        res.status(status).json({ message: err.message });
-    }
-};
+import { createVehicleService, editVehicleService, getAllVehiclesByBranchIdService, getAllVehiclesService, getVehicleByIdService, removeVehicleService } from "../services/vehicleService.js";
 
 export const getAllVehicles = async (req, res) => {
     try {

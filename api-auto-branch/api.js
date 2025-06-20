@@ -4,6 +4,7 @@ import db from "./db/conn.js";
 import userRouter from "./routes/userRoutes.js";
 import branchRouter from "./routes/branchRoutes.js";
 import vehicleRouter from "./routes/vehicleRoutes.js";
+import sellHistoryRouter from "./routes/sellHistoryRoutes.js";
 
 const app = express();
 const PORT = 3000;
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use("/api/users", userRouter);
 app.use("/api/branches", branchRouter);
 app.use("/api/vehicles", vehicleRouter);
+app.use("/api/sell", sellHistoryRouter);
 
 app.get("/", (req, res) => {
     res.send("Api funcionando!");

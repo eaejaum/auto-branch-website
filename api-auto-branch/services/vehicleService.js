@@ -1,12 +1,5 @@
-import { deleteVehicle, insertVehicle, selectAllVehicles, selectAllVehiclesByBranchId, selectVehicleById, sellVehicleModel, updateVehicle } from "../models/vehicleModel.js";
+import { deleteVehicle, insertVehicle, selectAllVehicles, selectAllVehiclesByBranchId, selectVehicleById, updateVehicle } from "../models/vehicleModel.js";
 import { AppError } from "../utils/appError.js";
-
-export const sellVehicleService = async ({ vehicleId, branchId, userId, sellPrice, discountPercent, totalPrice }) => {
-    if (!vehicleId || !branchId || !userId || !sellPrice || !totalPrice)
-        throw new AppError("Preencha os campos corretamente", 400);
-
-    return await sellVehicleModel(vehicleId, branchId, userId, sellPrice, discountPercent, totalPrice);
-};
 
 export const getAllVehiclesService = async () => {
     return await selectAllVehicles();
