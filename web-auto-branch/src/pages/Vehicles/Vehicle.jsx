@@ -28,7 +28,7 @@ function Vehicle() {
             <Box className={styles.mainBox}>
                 <Flex justify="between">
                     <h1 className={styles.title}>Lista de Veiculos</h1>
-                    <Button onClick={() => setIsAddModalOpen(true)} ><Plus color="#FFF" height={14} width={14} /> Nova Compra</Button>
+                    <Button onClick={() => setIsAddModalOpen(true)} ><Plus color="#FFF" height={14} width={14} /> Novo Veículo</Button>
                 </Flex>
                 {loading ? (
                     <Flex justify="center" align="center">
