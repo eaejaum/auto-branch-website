@@ -63,17 +63,17 @@ function BranchCard({ branch }) {
                 <Flex justify="center" gap="2">
                     {user.roleId == 1 && (
                         <>
-                            <button className={styles.actionButton} onClick={() => setIsDeleteModalOpen(true)}>
+                            <button id={`delete-branch-${branch.id}`} className={styles.actionButton} onClick={() => setIsDeleteModalOpen(true)}>
                                 <Trash width={15} height={15} color="#F3123C" />
                             </button>
-                            <button className={styles.actionButton} onClick={() => setIsEditModalOpen(true)}>
+                            <button id={`edit-branch-${branch.id}`} className={styles.actionButton} onClick={() => setIsEditModalOpen(true)}>
                                 <Edit width={15} height={15} color="#2563EB" />
                             </button>
                         </>
                     )}
 
                     {(user.roleId == 2 && user.branchId === branch.id) && (
-                        <button className={styles.actionButton} onClick={() => setIsEditModalOpen(true)}>
+                        <button id={`edit-branch-${branch.id}`} className={styles.actionButton} onClick={() => setIsEditModalOpen(true)}>
                             <Edit width={15} height={15} color="#2563EB" />
                         </button>
                     )}

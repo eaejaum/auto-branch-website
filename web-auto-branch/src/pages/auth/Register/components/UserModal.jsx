@@ -121,11 +121,13 @@ function UserModal({ open, onOpenChange, employee }) {
                     </AlertDialog.Cancel>
                 </Flex>
                 <form
+                    id="user-form"
                     onSubmit={(e) => handleSubmit(e)}
                     className={styles.registerForm}
                 >
                     <label className="inputLabel">Email</label>
                     <input
+                        id="user-email"
                         className="input"
                         value={email}
                         onChange={(e) => {
@@ -142,6 +144,7 @@ function UserModal({ open, onOpenChange, employee }) {
 
                     <label className="inputLabel">Nome</label>
                     <input
+                        id="user-name"
                         className="input"
                         value={name}
                         onChange={(e) => {
@@ -157,6 +160,7 @@ function UserModal({ open, onOpenChange, employee }) {
                     {errors.name && <span className="errorMessage">{errors.name[0]}</span>}
                     <label className="inputLabel">CPF</label>
                     <input
+                        id="user-cpf"
                         className="input"
                         value={cpf}
                         onChange={(e) => {
@@ -176,6 +180,7 @@ function UserModal({ open, onOpenChange, employee }) {
                         <>
                             <label className="inputLabel">Senha</label>
                             <input
+                                id="user-password"
                                 className="input"
                                 value={password}
                                 onChange={(e) => {
@@ -194,6 +199,7 @@ function UserModal({ open, onOpenChange, employee }) {
 
                     <label className="inputLabel">Cargo</label>
                     <select
+                        id="user-role"
                         className="input"
                         value={role}
                         onChange={(e) => {
@@ -216,6 +222,7 @@ function UserModal({ open, onOpenChange, employee }) {
                         <>
                             <label className="inputLabel">Concessionária</label>
                             <select
+                                id="user-branch"
                                 className="input"
                                 value={branch}
                                 onChange={(e) => {
@@ -237,7 +244,10 @@ function UserModal({ open, onOpenChange, employee }) {
                     )}
 
                     <Flex justify="end">
-                        <Button type="submit" className={styles.saveButton}>Salvar</Button>
+                        <AlertDialog.Action>
+                            <Button id="user-submit" type="submit" className={styles.saveButton}>Salvar</Button>
+                        </AlertDialog.Action>
+
                     </Flex>
                 </form>
             </AlertDialog.Content>

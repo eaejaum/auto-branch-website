@@ -23,7 +23,7 @@ export const vehicleSchema = z.object({
 
 function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
     const { user } = useAuthContext();
-    const { createVehicle, editVehicle } = useVehicleContext();
+    const { createVehicle, editVehicle, error, success } = useVehicleContext();
     const { branches, getAllBranches } = useBranchContext();
 
     const [brand, setBrand] = useState('');
@@ -132,12 +132,13 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                     </AlertDialog.Cancel>
                 </Flex>
                 <form
-                    id="form"
+                    id="vehicle-form"
                     onSubmit={handleSubmit}
                     className={styles.loginForm}
                 >
                     <label className="inputLabel">Marca</label>
                     <input
+                        id="vehicle-brand"
                         className="input"
                         value={brand}
                         onChange={(e) => {
@@ -154,6 +155,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
 
                     <label className="inputLabel">Modelo</label>
                     <input
+                        id="vehicle-model"
                         className="input"
                         value={model}
                         onChange={(e) => {
@@ -170,6 +172,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
 
                     <label className="inputLabel">Versão</label>
                     <input
+                        id="vehicle-version"
                         className="input"
                         value={version}
                         onChange={(e) => {
@@ -186,6 +189,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
 
                     <label className="inputLabel">Ano</label>
                     <input
+                        id="vehicle-year"
                         className="input"
                         value={year}
                         onChange={(e) => {
@@ -202,6 +206,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
 
                     <label className="inputLabel">Câmbio</label>
                     <select
+                        id="vehicle-gearbox"
                         className="input"
                         value={gearbox}
                         onChange={(e) => {
@@ -220,6 +225,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
 
                     <label className="inputLabel">Cor</label>
                     <input
+                        id="vehicle-color"
                         className="input"
                         value={color}
                         onChange={(e) => {
@@ -236,6 +242,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
 
                     <label className="inputLabel">Motorização</label>
                     <input
+                        id="vehicle-motorization"
                         className="input"
                         value={motorization}
                         onChange={(e) => {
@@ -252,6 +259,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
 
                     <label className="inputLabel">Placa</label>
                     <input
+                        id="vehicle-plate"
                         className="input"
                         value={plate}
                         onChange={(e) => {
@@ -268,6 +276,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
 
                     <label className="inputLabel">Quilômetragem</label>
                     <input
+                        id="vehicle-km"
                         className="input"
                         value={km}
                         onChange={(e) => {
@@ -284,6 +293,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
 
                     <label className="inputLabel">Valor</label>
                     <input
+                        id="vehicle-value"
                         className="input"
                         value={value}
                         onChange={(e) => {
@@ -302,6 +312,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                         <>
                             <label className="inputLabel">Concessionária</label>
                             <select
+                                id="vehicle-branch"
                                 className="input"
                                 value={branchId}
                                 onChange={(e) => {
@@ -320,8 +331,13 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                             {errors.branchId && <span className="errorMessage">{errors.branchId[0]}</span>}
                         </>
                     )}
+                    {error && <span id="vehicle-error" className="errorMessage">{error}</span>}
+                    {success && <span id="vehicle-success" className="successMessage">{success}</span>}
                     <Flex justify="end">
-                        <Button type="submit" className={styles.saveButton}>Salvar</Button>
+                        <AlertDialog.Action>
+                            <Button id="vehicle-submit" type="submit" className={styles.saveButton}>Salvar</Button>
+                        </AlertDialog.Action>
+
                     </Flex>
                 </form>
             </AlertDialog.Content>
