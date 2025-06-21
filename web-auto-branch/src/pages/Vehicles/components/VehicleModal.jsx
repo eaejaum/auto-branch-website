@@ -59,21 +59,48 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
     async function handleSubmit(e) {
         e.preventDefault();
         try {
+            const sanitizedPlate = plate.trim().toUpperCase();
             let req;
             if (!vehicle) {
-                req = await createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, user.branchId ? user.branchId : branchId);
-            }
-            else if (vehicle) {
-                req = await editVehicle(parseInt(vehicle.id), brand, model, version, year, gearbox, color, motorization, plate, parseFloat(km), parseFloat(value), branchId);
+                req = await createVehicle(
+                    brand,
+                    model,
+                    version,
+                    year,
+                    gearbox,
+                    color,
+                    motorization,
+                    sanitizedPlate,
+                    km,
+                    value,
+                    user.branchId ? user.branchId : branchId,
+                );
+            } else {
+                req = await editVehicle(
+                    parseInt(vehicle.id),
+                    brand,
+                    model,
+                    version,
+                    year,
+                    gearbox,
+                    color,
+                    motorization,
+                    sanitizedPlate,
+                    parseFloat(km),
+                    parseFloat(value),
+                    branchId,
+                );
                 refreshVehicle();
             }
+
             if (req) {
+                onOpenChange(false);
                 clearForm();
             }
         } catch (err) {
             console.error(err);
         }
-    };
+    }
 
     return (
         <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
@@ -252,9 +279,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                         </>
                     )}
                     <Flex justify="end">
-                        <AlertDialog.Action>
-                            <Button id="vehicle-submit" type="submit" className={styles.saveButton}>Salvar</Button>
-                        </AlertDialog.Action>
+                        <Button id="vehicle-submit" type="submit" className={styles.saveButton}>Salvar</Button>
                     </Flex>
                 </form>
             </AlertDialog.Content>
