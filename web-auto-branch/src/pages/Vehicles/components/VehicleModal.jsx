@@ -8,7 +8,7 @@ import { useAuthContext } from "../../../context/authContext";
 
 function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
     const { user } = useAuthContext();
-    const { createVehicle, editVehicle } = useVehicleContext();
+    const { createVehicle, editVehicle, error } = useVehicleContext();
     const { branches, getAllBranches } = useBranchContext();
 
     const [brand, setBrand] = useState('');
@@ -268,7 +268,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                                 onChange={(e) => setBranchId(parseInt(e.target.value))}
                                 style={{
                                     border: "1px solid #ccc",
-                                    // error ? "1px solid red" : 
+                                    // error ? "1px solid red" :
                                 }}
                             >
                                 <option value={0}>Selecione a concessionária...</option>
@@ -278,6 +278,8 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                             </select>
                         </>
                     )}
+
+                    {error && <span className="errorMessage">{error}</span>}
                     <Flex justify="end">
                         <Button id="vehicle-submit" type="submit" className={styles.saveButton}>Salvar</Button>
                     </Flex>
