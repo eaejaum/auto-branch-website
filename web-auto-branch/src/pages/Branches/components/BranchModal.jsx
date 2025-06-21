@@ -9,7 +9,7 @@ import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
 import { unformatPhoneNumber } from "../../../utils/unformatPhoneNumber";
 
 function BranchModal({ open, onOpenChange, branch }) {
-    const { createBranch } = useBranchContext();
+    const { createBranch, editBranch } = useBranchContext();
 
     const [name, setName] = useState("");
     const [state, setState] = useState("");
@@ -81,10 +81,15 @@ function BranchModal({ open, onOpenChange, branch }) {
         setPhoneNumber(numbers);
     }
 
-    async function handleCreateBranch(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         try {
-            const req = await createBranch(name, city, state, unformatCep(cep), unformatPhoneNumber(phoneNumber));
+            let req;
+            if(!branch) {
+                req = await createBranch(name, city, state, unformatCep(cep), unformatPhoneNumber(phoneNumber));
+            } else if (branch) {
+                req = await editBranch(branch.id, name, city, state, unformatCep(cep), unformatPhoneNumber(phoneNumber));
+            }
             if (req) {
                 clearForm();
                 onOpenChange(false);
@@ -104,7 +109,7 @@ function BranchModal({ open, onOpenChange, branch }) {
                     </AlertDialog.Cancel>
                 </Flex>
                 <form
-                    onSubmit={handleCreateBranch}
+                    onSubmit={handleSubmit}
                     className={styles.loginForm}
                 >
                     <label className="inputLabel">Nome</label>
