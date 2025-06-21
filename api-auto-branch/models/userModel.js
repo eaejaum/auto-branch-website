@@ -77,6 +77,17 @@ export const updateUser = async (id, name, email, cpf, roleId, branchId) => {
     }
 };
 
+export const updateUserProfile = async (id, name, password) => {
+    try {
+        const query = `UPDATE users SET name = ?, password = ? WHERE id = ?`;
+        const [results] = await db.promise().query(query, [name, password, id]);
+
+        return results.length > 0 ? results[0] : null;
+    } catch (err) {
+        throw new Error("Erro ao atualizar perfil do usuário no banco de dados");
+    }
+};
+
 export const deleteUser = async (id) => {
     try {
         const query = `DELETE FROM users WHERE id = ?`;
