@@ -20,7 +20,7 @@ export function BranchProvider({ children }) {
 
             const responseData = await response.json();
 
-            if(!response.ok) {
+            if (!response.ok) {
                 setError(responseData.message);
                 return false;
             }
@@ -49,7 +49,7 @@ export function BranchProvider({ children }) {
 
             const responseData = await response.json();
 
-            if(!response.ok) {
+            if (!response.ok) {
                 setError(responseData.message);
                 return false;
             }
@@ -64,7 +64,7 @@ export function BranchProvider({ children }) {
         }
     };
 
-    async function createBranch(name, city, state, cep, phoneNumber ) {
+    async function createBranch(name, city, state, cep, phoneNumber) {
         try {
             setLoading(true);
             setError(null);
@@ -78,14 +78,14 @@ export function BranchProvider({ children }) {
 
             const responseData = await response.json();
 
-            if(!response.ok) {
+            if (!response.ok) {
                 setError(responseData.message);
                 return false
             }
 
             const updatedBranches = getAllBranches();
             setBranches(updatedBranches);
-        
+
             return true;
         } catch (error) {
             setError("Erro ao criar concessionária");
@@ -95,8 +95,66 @@ export function BranchProvider({ children }) {
         }
     };
 
+    async function deleteBranch(branchId) {
+        try {
+            setLoading(true);
+            setError(false);
+            const response = await fetch(`http://localhost:3000/api/branches/${branchId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+            const responseData = await response.json();
+            if (!response.ok) {
+                setError(responseData.message);
+                return false
+            }
+
+            setError(false);
+
+            const updatedBranches = getAllBranches();
+            setBranches(updatedBranches);
+
+            return true;
+        } catch (error) {
+            setError("Erro ao deletar concessionária");
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // async function editVehicle(id, brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId) {
+    //     try {
+    //         setLoading(true);
+    //         setError(false);
+    //         const response = await fetch(`http://localhost:3000/api/vehicles/`, {
+    //             method: "PUT",
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify({ id, brand, model, version, year, gearbox, color, motorization, plate, km, value, branchId })
+    //         });
+    //         const responseData = await response.json();
+    //         if (!response.ok) {
+    //             setError(responseData.message);
+    //             return false
+    //         }
+
+    //         setError(false);
+
+    //         return true;
+    //     } catch (error) {
+    //         setError("Erro ao editar veículo");
+    //         return false;
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
+
     return (
-        <BranchContext.Provider value={{ branches, loading, error, getAllBranches, getBranchById, createBranch }}>
+        <BranchContext.Provider value={{ branches, loading, error, getAllBranches, getBranchById, createBranch, deleteBranch }}>
             {children}
         </BranchContext.Provider>
     )

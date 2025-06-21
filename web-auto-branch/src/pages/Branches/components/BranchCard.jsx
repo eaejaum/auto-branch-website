@@ -7,12 +7,22 @@ import { useAuthContext } from "../../../context/authContext";
 import { useState } from "react";
 import BranchModal from "./BranchModal";
 import DeleteModal from "../../../components/DeleteModal";
+import { useBranchContext } from "../../../context/branchContext";
 
 function BranchCard({ branch }) {
     const { user } = useAuthContext();
 
+    const { deleteBranch } = useBranchContext();
+
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+    async function handleDeleteBranch() {
+        if (branch.id) {
+            await deleteBranch(branch.id);
+            setIsDeleteModalOpen(false);
+        }
+    };
 
     return (
         <>
@@ -70,7 +80,7 @@ function BranchCard({ branch }) {
                 </Flex>
             </div>
             <BranchModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} branch={branch} />
-            <DeleteModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} branch={branch} />
+            <DeleteModal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} branch={branch} handleSubmit={handleDeleteBranch} message="Tem certeza de que deseja excluir a concessionária?" title="Concessionária" />
         </>
     );
 };
