@@ -48,3 +48,9 @@
     font-size: 12px;
     margin-bottom: 16px;
 }
+
+.successMessage {
+    color: green;
+    font-size: 12px;
+    margin-bottom: 16px;
+}

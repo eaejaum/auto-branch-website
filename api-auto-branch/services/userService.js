@@ -1,5 +1,5 @@
 import { updateEmployeeCount } from "../models/branchModel.js";
-import { insertUser, selectUserByEmail, selectAllUsers, deleteUser, updateUser, selectUserById, selectAllManagers, selectAllUsersByBranchId } from "../models/userModel.js";
+import { insertUser, selectUserByEmail, selectAllUsers, deleteUser, updateUser, selectUserById, selectAllManagers, selectAllUsersByBranchId, updateUserProfile } from "../models/userModel.js";
 import { AppError } from "../utils/appError.js";
 import bcrypt from "bcrypt";
 
@@ -120,4 +120,34 @@ export const removeUserService = async (id) => {
         throw new AppError("Usuário não encontrado", 400);
 
     return await deleteUser(id);
+};
+
+export const updateProfileService = async ({ id, name, password }) => {
+    const existingUser = await selectUserById(id);
+
+    if (!existingUser)
+        throw new AppError("Usuário não encontrado", 400);
+
+    if (name) {
+        const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ ]+$/;
+        if (!nameRegex.test(name))
+            throw new AppError("O nome só pode conter letras e espaços", 400);
+        if (name.length > 50)
+            throw new AppError("O nome excede o limite permitido", 400);
+    }
+
+    let hashedPassword = existingUser.password;
+    if (password) {
+        const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+        if (!strongRegex.test(password))
+            throw new AppError("Senha fraca", 400);
+
+        hashedPassword = await bcrypt.hash(password, 10);
+    }
+
+    const newName = name || existingUser.name;
+
+    await updateUserProfile(id, newName, hashedPassword);
+
+    return { message: "Perfil atualizado com sucesso!" };
 };
