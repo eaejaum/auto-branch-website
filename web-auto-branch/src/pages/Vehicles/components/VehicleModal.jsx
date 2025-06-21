@@ -107,17 +107,16 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
         }
 
         try {
-            let req;
             if (!vehicle) {
-                req = await createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, parseInt(branchId));
+                await createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, parseInt(branchId));
             } else {
-                req = await editVehicle(parseInt(vehicle.id), brand, model, version, year, gearbox, color, motorization, plate, parseFloat(km), parseFloat(value), parseInt(branchId));
+                await editVehicle(parseInt(vehicle.id), brand, model, version, year, gearbox, color, motorization, plate, parseFloat(km), parseFloat(value), parseInt(branchId));
                 refreshVehicle();
             }
-            if (req) {
-                clearForm();
-                onOpenChange(false);
-            }
+
+            clearForm();
+            setErrors({});
+            onOpenChange(false);
         } catch (err) {
             console.error(err);
         }

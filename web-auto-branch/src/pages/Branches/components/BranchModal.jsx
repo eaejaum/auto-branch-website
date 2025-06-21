@@ -128,9 +128,8 @@ function BranchModal({ open, onOpenChange, branch }) {
         }
 
         try {
-            let req;
             if (!branch) {
-                req = await createBranch(
+                await createBranch(
                     name,
                     city,
                     state,
@@ -138,7 +137,7 @@ function BranchModal({ open, onOpenChange, branch }) {
                     unformatPhoneNumber(phoneNumber)
                 );
             } else {
-                req = await editBranch(
+                await editBranch(
                     branch.id,
                     name,
                     city,
@@ -148,11 +147,9 @@ function BranchModal({ open, onOpenChange, branch }) {
                 );
             }
 
-            if (req) {
-                clearForm();
-                setErrors({});
-                onOpenChange(false);
-            }
+            clearForm();
+            setErrors({});
+            onOpenChange(false);
         } catch (err) {
             console.error(err);
         }
