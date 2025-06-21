@@ -1,4 +1,4 @@
-import { createUserService, getAllUsersService, loginUserService, getUserByIdService, getUserByEmailService, editUserService, removeUserService, getAllManagersService, getAllUsersByBranchIdService } from "../services/userService.js";
+import { createUserService, getAllUsersService, loginUserService, getUserByIdService, getUserByEmailService, editUserService, removeUserService, getAllManagersService, getAllUsersByBranchIdService, updateProfileService } from "../services/userService.js";
 
 export const loginUser = async (req, res) => {
   try {
@@ -101,6 +101,18 @@ export const removeUser = async (req, res) => {
     await removeUserService(id);
     res.status(200).json({
       message: "Usuário removido com sucesso!"
+    });
+  } catch (err) {
+    const status = err.statusCode || 500;
+    res.status(status).json({ message: err.message });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const result = await updateProfileService(req.body);
+    res.status(200).json({
+      message: result.message,
     });
   } catch (err) {
     const status = err.statusCode || 500;
