@@ -9,6 +9,7 @@ import Employee from "./pages/Employees/Employee";
 import { useAuthContext } from "./context/authContext";
 import VehicleDetails from "./pages/Vehicles/components/VehicleDetails";
 import SellHistory from "./pages/SellHistory/SellHistory";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   const { user, isAuthenticated, isRestoringSession } = useAuthContext();
@@ -25,6 +26,7 @@ function App() {
           <Route path="/vehicles/:vehicleId" element={<VehicleDetails />} />
           <Route path="/sellHistory" element={<SellHistory />} />
           <Route path="/employees" element={<Employee />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
