@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -5,6 +6,20 @@ import styles from "./VehicleModal.module.css";
 import { useVehicleContext } from "../../../context/vehicleContext";
 import { useBranchContext } from "../../../context/branchContext";
 import { useAuthContext } from "../../../context/authContext";
+
+export const vehicleSchema = z.object({
+    brand: z.string().nonempty("Marca é obrigatório"),
+    model: z.string().nonempty("Modelo é obrigatório"),
+    version: z.string().nonempty("Versão é obrigatório"),
+    year: z.string().nonempty("Ano é obrigatório"),
+    gearbox: z.string().nonempty("Câmbio é obrigatório"),
+    color: z.string().nonempty("Cor é obrigatório"),
+    motorization: z.string().nonempty("Motorização é obrigatório"),
+    plate: z.string().nonempty("Placa é obrigatório"),
+    km: z.string().nonempty("Km é obrigatório"),
+    value: z.string().nonempty("Valor é obrigatório"),
+    branchId: z.string().nonempty("Concessionária é obrigatório"),
+});
 
 function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
     const { user } = useAuthContext();
@@ -21,10 +36,11 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
     const [plate, setPlate] = useState('');
     const [km, setKm] = useState('');
     const [value, setValue] = useState('');
-    const [branchId, setBranchId] = useState(0);
+    const [branchId, setBranchId] = useState("");
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
-        if(user.roleId == 1) {
+        if (user.roleId == 1) {
             getAllBranches();
         }
         if (vehicle) {
@@ -38,7 +54,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
             setPlate(vehicle.plate);
             setKm(vehicle.km);
             setValue(vehicle.value);
-            setBranchId(parseInt(vehicle.branchId));
+            setBranchId(String(vehicle.branchId));
         }
     }, [vehicle]);
 
@@ -53,27 +69,58 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
         setPlate('');
         setKm('');
         setValue('');
-        setBranchId(0);
+        setBranchId("");
+    }
+
+    function validateField(field, value) {
+        const singleFieldSchema = vehicleSchema.pick({ [field]: true });
+        const result = singleFieldSchema.safeParse({ [field]: value });
+
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            [field]: result.success ? undefined : result.error.flatten().fieldErrors[field],
+        }));
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
+
+        const data = {
+            brand,
+            model,
+            version,
+            year,
+            gearbox,
+            color,
+            motorization,
+            plate,
+            km,
+            value,
+            branchId,
+        };
+
+        const result = vehicleSchema.safeParse(data);
+        if (!result.success) {
+            const fieldErrors = result.error.flatten().fieldErrors;
+            setErrors(fieldErrors);
+            return;
+        }
+
         try {
-            let req;
             if (!vehicle) {
-                req = await createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, user.branchId ? user.branchId : branchId);
-            }
-            else if (vehicle) {
-                req = await editVehicle(parseInt(vehicle.id), brand, model, version, year, gearbox, color, motorization, plate, parseFloat(km), parseFloat(value), branchId);
+                await createVehicle(brand, model, version, year, gearbox, color, motorization, plate, km, value, parseInt(branchId));
+            } else {
+                await editVehicle(parseInt(vehicle.id), brand, model, version, year, gearbox, color, motorization, plate, parseFloat(km), parseFloat(value), parseInt(branchId));
                 refreshVehicle();
             }
-            if (req) {
-                clearForm();
-            }
+
+            clearForm();
+            setErrors({});
+            onOpenChange(false);
         } catch (err) {
             console.error(err);
         }
-    };
+    }
 
     return (
         <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
@@ -94,142 +141,172 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                         id="vehicle-brand"
                         className="input"
                         value={brand}
-                        onChange={(e) => setBrand(e.target.value)}
+                        onChange={(e) => {
+                            setBrand(e.target.value);
+                            validateField("brand", e.target.value);
+                        }}
                         type="text"
                         placeholder="Digite a marca..."
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.brand ? "1px solid red" : "1px solid #ccc",
                         }}
                     />
+                    {errors.brand && <span className="errorMessage">{errors.brand[0]}</span>}
 
                     <label className="inputLabel">Modelo</label>
                     <input
                         id="vehicle-model"
                         className="input"
                         value={model}
-                        onChange={(e) => setModel(e.target.value)}
+                        onChange={(e) => {
+                            setModel(e.target.value);
+                            validateField("model", e.target.value);
+                        }}
                         type="text"
                         placeholder="Digite o modelo..."
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.model ? "1px solid red" : "1px solid #ccc",
                         }}
                     />
+                    {errors.model && <span className="errorMessage">{errors.model[0]}</span>}
 
                     <label className="inputLabel">Versão</label>
                     <input
                         id="vehicle-version"
                         className="input"
                         value={version}
-                        onChange={(e) => setVersion(e.target.value)}
+                        onChange={(e) => {
+                            setVersion(e.target.value);
+                            validateField("version", e.target.value);
+                        }}
                         type="text"
                         placeholder="Digite a versão..."
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.version ? "1px solid red" : "1px solid #ccc",
                         }}
                     />
+                    {errors.version && <span className="errorMessage">{errors.version[0]}</span>}
 
                     <label className="inputLabel">Ano</label>
                     <input
                         id="vehicle-year"
                         className="input"
                         value={year}
-                        onChange={(e) => setYear(e.target.value)}
+                        onChange={(e) => {
+                            setYear(e.target.value);
+                            validateField("year", e.target.value);
+                        }}
                         type="text"
                         placeholder="Digite o ano..."
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.year ? "1px solid red" : "1px solid #ccc",
                         }}
                     />
+                    {errors.year && <span className="errorMessage">{errors.year[0]}</span>}
 
                     <label className="inputLabel">Câmbio</label>
                     <select
                         id="vehicle-gearbox"
                         className="input"
                         value={gearbox}
-                        onChange={(e) => setGearbox(e.target.value)}
+                        onChange={(e) => {
+                            setGearbox(e.target.value);
+                            validateField("gearbox", e.target.value);
+                        }}
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.gearbox ? "1px solid red" : "1px solid #ccc",
                         }}
                     >
                         <option value="">Selecione o câmbio...</option>
                         <option value="Manual">Manual</option>
                         <option value="Automático">Automático</option>
                     </select>
+                    {errors.gearbox && <span className="errorMessage">{errors.gearbox[0]}</span>}
 
                     <label className="inputLabel">Cor</label>
                     <input
                         id="vehicle-color"
                         className="input"
                         value={color}
-                        onChange={(e) => setColor(e.target.value)}
+                        onChange={(e) => {
+                            setColor(e.target.value);
+                            validateField("color", e.target.value);
+                        }}
                         type="text"
                         placeholder="Digite a cor..."
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.color ? "1px solid red" : "1px solid #ccc",
                         }}
                     />
+                    {errors.color && <span className="errorMessage">{errors.color[0]}</span>}
 
                     <label className="inputLabel">Motorização</label>
                     <input
                         id="vehicle-motorization"
                         className="input"
                         value={motorization}
-                        onChange={(e) => setMotorization(e.target.value)}
+                        onChange={(e) => {
+                            setMotorization(e.target.value);
+                            validateField("motorization", e.target.value);
+                        }}
                         type="text"
                         placeholder="Digite a motorização..."
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.motorization ? "1px solid red" : "1px solid #ccc",
                         }}
                     />
+                    {errors.motorization && <span className="errorMessage">{errors.motorization[0]}</span>}
 
                     <label className="inputLabel">Placa</label>
                     <input
                         id="vehicle-plate"
                         className="input"
                         value={plate}
-                        onChange={(e) => setPlate(e.target.value)}
+                        onChange={(e) => {
+                            setPlate(e.target.value);
+                            validateField("plate", e.target.value);
+                        }}
                         type="text"
                         placeholder="Digite a placa..."
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.plate ? "1px solid red" : "1px solid #ccc",
                         }}
                     />
+                    {errors.plate && <span className="errorMessage">{errors.plate[0]}</span>}
 
                     <label className="inputLabel">Quilômetragem</label>
                     <input
                         id="vehicle-km"
                         className="input"
                         value={km}
-                        onChange={(e) => setKm(e.target.value)}
+                        onChange={(e) => {
+                            setKm(e.target.value);
+                            validateField("km", e.target.value);
+                        }}
                         type="text"
                         placeholder="Digite o Km..."
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.km ? "1px solid red" : "1px solid #ccc",
                         }}
                     />
+                    {errors.km && <span className="errorMessage">{errors.km[0]}</span>}
 
                     <label className="inputLabel">Valor</label>
                     <input
                         id="vehicle-value"
                         className="input"
                         value={value}
-                        onChange={(e) => setValue(e.target.value)}
+                        onChange={(e) => {
+                            setValue(e.target.value);
+                            validateField("value", e.target.value);
+                        }}
                         type="text"
                         placeholder="Digite o valor..."
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.value ? "1px solid red" : "1px solid #ccc",
                         }}
                     />
+                    {errors.value && <span className="errorMessage">{errors.value[0]}</span>}
 
                     {user.roleId === 1 && (
                         <>
@@ -238,17 +315,20 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                                 id="vehicle-branch"
                                 className="input"
                                 value={branchId}
-                                onChange={(e) => setBranchId(parseInt(e.target.value))}
+                                onChange={(e) => {
+                                    setBranchId(e.target.value);
+                                    validateField("branchId", e.target.value);
+                                }}
                                 style={{
-                                    border: "1px solid #ccc",
-                                    // error ? "1px solid red" : 
+                                    border: errors.branchId ? "1px solid red" : "1px solid #ccc",
                                 }}
                             >
-                                <option value={0}>Selecione a concessionária...</option>
+                                <option value="">Selecione a concessionária...</option>
                                 {branches && branches.map((branch) => (
-                                    <option key={branch.id} value={branch.id}>{branch.name}</option>
+                                    <option key={branch.id} value={String(branch.id)}>{branch.name}</option>
                                 ))}
                             </select>
+                            {errors.branchId && <span className="errorMessage">{errors.branchId[0]}</span>}
                         </>
                     )}
                     {error && <span id="vehicle-error" className="errorMessage">{error}</span>}
@@ -257,6 +337,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                         <AlertDialog.Action>
                             <Button id="vehicle-submit" type="submit" className={styles.saveButton}>Salvar</Button>
                         </AlertDialog.Action>
+
                     </Flex>
                 </form>
             </AlertDialog.Content>

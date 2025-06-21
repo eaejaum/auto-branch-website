@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -8,14 +9,29 @@ import { unformatCep } from "../../../utils/unformatCep";
 import { formatPhoneNumber } from "../../../utils/formatPhoneNumber";
 import { unformatPhoneNumber } from "../../../utils/unformatPhoneNumber";
 
+export const branchSchema = z.object({
+    name: z.string().nonempty("Nome é obrigatório"),
+    state: z.string().nonempty("Estado é obrigatório"),
+    city: z.string().nonempty("Cidade é obrigatória"),
+    cep: z
+        .string()
+        .nonempty("CEP é obrigatório")
+        .refine((val) => val.length >= 9, { message: "CEP inválido" }),
+    phoneNumber: z
+        .string()
+        .nonempty("Número é obrigatório")
+        .refine((val) => val.length >= 14, { message: "Número inválido" }),
+});
+
 function BranchModal({ open, onOpenChange, branch }) {
-    const { createBranch } = useBranchContext();
+    const { createBranch, editBranch } = useBranchContext();
 
     const [name, setName] = useState("");
     const [state, setState] = useState("");
     const [city, setCity] = useState("");
     const [cep, setCep] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         if (branch) {
@@ -64,7 +80,16 @@ function BranchModal({ open, onOpenChange, branch }) {
         setCity('');
         setCep('');
         setPhoneNumber('');
-        setManager(0);
+    }
+
+    function validateField(field, value) {
+        const singleFieldSchema = branchSchema.pick({ [field]: true });
+        const result = singleFieldSchema.safeParse({ [field]: value });
+
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            [field]: result.success ? undefined : result.error.flatten().fieldErrors[field],
+        }));
     }
 
     function handleCepChange(e) {
@@ -72,6 +97,7 @@ function BranchModal({ open, onOpenChange, branch }) {
         const numbers = formatCep(input);
 
         setCep(numbers);
+        validateField("cep", numbers);
     }
 
     function handlePhoneChange(e) {
@@ -79,20 +105,55 @@ function BranchModal({ open, onOpenChange, branch }) {
         const numbers = formatPhoneNumber(input);
 
         setPhoneNumber(numbers);
+        validateField("phoneNumber", numbers);
     }
 
-    async function handleCreateBranch(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
+
+        const data = {
+            name,
+            state,
+            city,
+            cep,
+            phoneNumber,
+        };
+
+        const result = branchSchema.safeParse(data);
+
+        if (!result.success) {
+            const fieldErrors = result.error.flatten().fieldErrors;
+            setErrors(fieldErrors);
+            return;
+        }
+
         try {
-            const req = await createBranch(name, city, state, unformatCep(cep), unformatPhoneNumber(phoneNumber));
-            if (req) {
-                clearForm();
-                onOpenChange(false);
+            if (!branch) {
+                await createBranch(
+                    name,
+                    city,
+                    state,
+                    unformatCep(cep),
+                    unformatPhoneNumber(phoneNumber)
+                );
+            } else {
+                await editBranch(
+                    branch.id,
+                    name,
+                    city,
+                    state,
+                    unformatCep(cep),
+                    unformatPhoneNumber(phoneNumber)
+                );
             }
+
+            clearForm();
+            setErrors({});
+            onOpenChange(false);
         } catch (err) {
             console.error(err);
         }
-    };
+    }
 
     return (
         <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
@@ -106,6 +167,7 @@ function BranchModal({ open, onOpenChange, branch }) {
                 <form
                     id="branch-form"
                     onSubmit={handleCreateBranch}
+
                     className={styles.loginForm}
                 >
                     <label className="inputLabel">Nome</label>
@@ -113,24 +175,31 @@ function BranchModal({ open, onOpenChange, branch }) {
                         id="branch-name"
                         className="input"
                         value={name}
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            setName(value);
+                            validateField("name", value);
+                        }}
                         type="text"
-                        name="text"
                         placeholder="Digite o nome da concessionária..."
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.name ? "1px solid red" : "1px solid #ccc",
                         }}
                     />
+                    {errors.name && <span className="errorMessage">{errors.name[0]}</span>}
+
                     <label className="inputLabel">Estado</label>
                     <select
                         id="branch-state"
                         className="input"
                         value={state}
-                        onChange={(e) => setState(e.target.value)}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            setState(value);
+                            validateField("state", value);
+                        }}
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.state ? "1px solid red" : "1px solid #ccc",
                         }}
                     >
                         <option value="">Selecione o estado da concessionária...</option>
@@ -138,20 +207,28 @@ function BranchModal({ open, onOpenChange, branch }) {
                             <option key={`${state.acronym}-${state.name}`} value={state.acronym}>{state.name}</option>
                         ))}
                     </select>
+                    {errors.state && <span className="errorMessage">{errors.state[0]}</span>}
+
+
                     <label className="inputLabel">Cidade</label>
                     <input
                         id="branch-city"
                         className="input"
                         value={city}
-                        onChange={(e) => setCity(e.target.value)}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            setCity(value);
+                            validateField("city", value);
+                        }}
                         type="text"
                         name="text"
                         placeholder="Digite a cidade da concessionária..."
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.city ? "1px solid red" : "1px solid #ccc",
                         }}
                     />
+                    {errors.city && <span className="errorMessage">{errors.city[0]}</span>}
+
                     <label className="inputLabel">CEP</label>
                     <input
                         id="branch-cep"
@@ -162,11 +239,11 @@ function BranchModal({ open, onOpenChange, branch }) {
                         name="text"
                         placeholder="Digite o CEP da concessionária..."
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.cep ? "1px solid red" : "1px solid #ccc",
                         }}
                     />
-                    
+                    {errors.cep && <span className="errorMessage">{errors.cep[0]}</span>}
+
                     <label className="inputLabel">Número de Contato</label>
                     <input
                         id="branch-phone"
@@ -177,14 +254,16 @@ function BranchModal({ open, onOpenChange, branch }) {
                         name="text"
                         placeholder="Digite o número de contato da concessionária..."
                         style={{
-                            border: "1px solid #ccc",
-                            // error ? "1px solid red" : 
+                            border: errors.phoneNumber ? "1px solid red" : "1px solid #ccc",
                         }}
                     />
+                    {errors.phoneNumber && <span className="errorMessage">{errors.phoneNumber[0]}</span>}
+
                     <Flex justify="end">
                         <AlertDialog.Action>
                             <Button id="branch-submit" type="submit" className={styles.saveButton}>Salvar</Button>
                         </AlertDialog.Action>
+
                     </Flex>
                 </form>
             </AlertDialog.Content>
