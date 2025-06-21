@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { toast } from "sonner";
 
 export const BranchContext = createContext(null);
 
@@ -80,15 +81,18 @@ export function BranchProvider({ children }) {
 
             if (!response.ok) {
                 setError(responseData.message);
+                toast.error(responseData.message);
                 return false
             }
 
             const updatedBranches = getAllBranches();
             setBranches(updatedBranches);
 
+            toast.success(responseData.message);
             return true;
         } catch (error) {
             setError("Erro ao criar concessionária");
+            toast.error("Erro ao criar concessionária");
             return false;
         } finally {
             setLoading(false);
@@ -108,6 +112,7 @@ export function BranchProvider({ children }) {
             const responseData = await response.json();
             if (!response.ok) {
                 setError(responseData.message);
+                toast.error(responseData.message);
                 return false
             }
 
@@ -116,9 +121,11 @@ export function BranchProvider({ children }) {
             const updatedBranches = getAllBranches();
             setBranches(updatedBranches);
 
+            toast.success(responseData.message);
             return true;
         } catch (error) {
             setError("Erro ao deletar concessionária");
+            toast.error("Erro ao deletar concessionária");
             return false;
         } finally {
             setLoading(false);
@@ -139,6 +146,7 @@ export function BranchProvider({ children }) {
             const responseData = await response.json();
             if (!response.ok) {
                 setError(responseData.message);
+                toast.error(responseData.message);
                 return false
             }
 
@@ -147,9 +155,11 @@ export function BranchProvider({ children }) {
             const updatedBranches = getAllBranches();
             setBranches(updatedBranches);
 
+            toast.success(responseData.message);
             return true;
         } catch (error) {
             setError("Erro ao editar concessionária");
+            toast.error("Erro ao editar concessionária");
             return false;
         } finally {
             setLoading(false);
