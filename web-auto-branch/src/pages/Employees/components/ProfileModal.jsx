@@ -63,6 +63,7 @@ function ProfileModal({ open, onOpenChange }) {
                     {error && <span className="errorMessage">{error}</span>}
                     {success && <span className="successMessage">{success}</span>}
                     <Flex justify="end">
+
                         <AlertDialog.Action>
                             <Button id="profile-submit" type="submit" className="authButton">
                                 {loading ? <Spinner /> : "Salvar"}
