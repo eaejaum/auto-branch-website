@@ -1,5 +1,5 @@
 export function formatPhoneNumber(phoneNumber) {
-    if (phoneNumber == "") return;
+    if (phoneNumber == "") return "";
     const numbers = phoneNumber.replace(/\D/g, '');
 
     if (numbers.length <= 2) return numbers;
