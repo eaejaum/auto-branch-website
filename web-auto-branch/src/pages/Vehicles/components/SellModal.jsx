@@ -133,11 +133,9 @@ function SellModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                     )}
 
                     <Flex justify="end">
-                        <AlertDialog.Action>
-                            <Button id="sell-submit" type="submit" className={styles.saveButton}>
-                                Salvar
-                            </Button>
-                        </AlertDialog.Action>
+                        <Button id="sell-submit" type="submit" className={styles.saveButton}>
+                            Salvar
+                        </Button>
                     </Flex>
                 </form>
             </AlertDialog.Content>
