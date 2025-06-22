@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { toast } from "sonner";
 
 export const BranchContext = createContext(null);
 
@@ -20,7 +21,7 @@ export function BranchProvider({ children }) {
 
             const responseData = await response.json();
 
-            if(!response.ok) {
+            if (!response.ok) {
                 setError(responseData.message);
                 return false;
             }
@@ -49,7 +50,7 @@ export function BranchProvider({ children }) {
 
             const responseData = await response.json();
 
-            if(!response.ok) {
+            if (!response.ok) {
                 setError(responseData.message);
                 return false;
             }
@@ -64,7 +65,7 @@ export function BranchProvider({ children }) {
         }
     };
 
-    async function createBranch(name, city, state, cep, phoneNumber ) {
+    async function createBranch(name, city, state, cep, phoneNumber) {
         try {
             setLoading(true);
             setError(null);
@@ -78,17 +79,87 @@ export function BranchProvider({ children }) {
 
             const responseData = await response.json();
 
-            if(!response.ok) {
+            if (!response.ok) {
                 setError(responseData.message);
+                toast.error(responseData.message);
                 return false
             }
 
             const updatedBranches = getAllBranches();
             setBranches(updatedBranches);
-        
+
+            toast.success(responseData.message);
             return true;
         } catch (error) {
             setError("Erro ao criar concessionária");
+            toast.error("Erro ao criar concessionária");
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    async function deleteBranch(branchId) {
+        try {
+            setLoading(true);
+            setError(false);
+            const response = await fetch(`http://localhost:3000/api/branches/${branchId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            });
+            const responseData = await response.json();
+            if (!response.ok) {
+                setError(responseData.message);
+                toast.error(responseData.message);
+                return false
+            }
+
+            setError(false);
+
+            const updatedBranches = getAllBranches();
+            setBranches(updatedBranches);
+
+            toast.success(responseData.message);
+            return true;
+        } catch (error) {
+            setError("Erro ao deletar concessionária");
+            toast.error("Erro ao deletar concessionária");
+            return false;
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    async function editBranch(id, name, city, state, cep, phoneNumber) {
+        try {
+            setLoading(true);
+            setError(false);
+            const response = await fetch(`http://localhost:3000/api/branches/`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ id, name, city, state, cep, phoneNumber })
+            });
+            const responseData = await response.json();
+            if (!response.ok) {
+                setError(responseData.message);
+                toast.error(responseData.message);
+                return false
+            }
+
+            setError(false);
+
+            const updatedBranches = getAllBranches();
+            setBranches(updatedBranches);
+
+            toast.success(responseData.message);
+            return true;
+        } catch (error) {
+            setError("Erro ao editar concessionária");
+            toast.error("Erro ao editar concessionária");
             return false;
         } finally {
             setLoading(false);
@@ -96,7 +167,7 @@ export function BranchProvider({ children }) {
     };
 
     return (
-        <BranchContext.Provider value={{ branches, loading, error, getAllBranches, getBranchById, createBranch }}>
+        <BranchContext.Provider value={{ branches, loading, error, getAllBranches, getBranchById, createBranch, deleteBranch, editBranch }}>
             {children}
         </BranchContext.Provider>
     )
