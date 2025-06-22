@@ -279,7 +279,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                         </>
                     )}
 
-                    {error && <span className="errorMessage">{error}</span>}
+                    {error && <span id="error-message" className="errorMessage">{error}</span>}
                     <Flex justify="end">
                         <Button id="vehicle-submit" type="submit" className={styles.saveButton}>Salvar</Button>
                     </Flex>
