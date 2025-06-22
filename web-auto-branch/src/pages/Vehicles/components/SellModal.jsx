@@ -2,18 +2,21 @@ import { AlertDialog, Button, Flex } from "@radix-ui/themes";
 import { X } from "lucide-react";
 import styles from "./SellModal.module.css";
 import { useVehicleContext } from "../../../context/vehicleContext";
-import { useBranchContext } from "../../../context/branchContext";
 import { useAuthContext } from "../../../context/authContext";
+import { useSellHistoryContext } from "../../../context/sellHistoryContext";
 import { useEffect, useState } from "react";
 
-function SellModal({ open, onOpenChange, vehicle }) {
+function SellModal({ open, onOpenChange, vehicle, refreshVehicle }) {
     const { user } = useAuthContext();
-    // const { sellVehicle } = useVehicleContext();
+    const { getAllVehicles, getAllVehiclesByBranchId } = useVehicleContext();
+    const { sellVehicle } = useSellHistoryContext();
 
     const [originalValue, setOriginalValue] = useState(0);
     const [discountInput, setDiscountInput] = useState("");
     const [discountPercent, setDiscountPercent] = useState(0);
     const [totalValue, setTotalValue] = useState(0);
+    const [success, setSuccess] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         if (open) {
@@ -22,6 +25,8 @@ function SellModal({ open, onOpenChange, vehicle }) {
             setDiscountInput("");
             setDiscountPercent(0);
             setTotalValue(value);
+            setSuccess("");
+            setErrorMessage("");
         }
     }, [open]);
 
@@ -41,16 +46,36 @@ function SellModal({ open, onOpenChange, vehicle }) {
         }
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
-        console.log({
-            branchId: vehicle.branchId,
-            vehicleId: vehicle.id,
-            userId: user.id,
+        setSuccess("");
+        setErrorMessage("");
+
+        if (isNaN(discountPercent) || discountPercent < 0 || discountPercent > 100) {
+            setErrorMessage("Desconto inválido");
+            return;
+        }
+
+        const ok = await sellVehicle(
+            vehicle.id,
+            vehicle.branchId,
+            user.id,
             originalValue,
             discountPercent,
-            totalValue,
-        });
+            totalValue
+        );
+
+        if (ok) {
+            if (user.roleId === 1) {
+                await getAllVehicles();
+            } else {
+                await getAllVehiclesByBranchId(user.branchId);
+            }
+            if (typeof refreshVehicle === "function") {
+                await refreshVehicle();
+            }
+            setSuccess("Veículo vendido com sucesso!");
+        }
     }
 
     return (
@@ -100,6 +125,13 @@ function SellModal({ open, onOpenChange, vehicle }) {
                         style={{ border: "1px solid #ccc" }}
                     />
 
+                    {errorMessage && (
+                        <span className="errorMessage">{errorMessage}</span>
+                    )}
+                    {success && (
+                        <span className="successMessage">{success}</span>
+                    )}
+
                     <Flex justify="end">
                         <AlertDialog.Action>
                             <Button id="sell-submit" type="submit" className={styles.saveButton}>
@@ -113,4 +145,4 @@ function SellModal({ open, onOpenChange, vehicle }) {
     );
 }
 
-export default SellModal
+export default SellModal;
