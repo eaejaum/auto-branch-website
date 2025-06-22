@@ -60,19 +60,23 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
         e.preventDefault();
         try {
             const sanitizedPlate = plate.trim().toUpperCase();
+            const parsedYear = parseInt(year, 10);
+            const parsedKm = parseFloat(String(km).replace(',', '.'));
+            const parsedValue = parseFloat(String(value).replace(',', '.'));
+
             let req;
             if (!vehicle) {
                 req = await createVehicle(
                     brand,
                     model,
                     version,
-                    year,
+                    parsedYear,
                     gearbox,
                     color,
                     motorization,
                     sanitizedPlate,
-                    km,
-                    value,
+                    parsedKm,
+                    parsedValue,
                     user.branchId ? user.branchId : branchId,
                 );
             } else {
@@ -81,13 +85,13 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                     brand,
                     model,
                     version,
-                    year,
+                    parsedYear,
                     gearbox,
                     color,
                     motorization,
                     sanitizedPlate,
-                    parseFloat(km),
-                    parseFloat(value),
+                    parsedKm,
+                    parsedValue,
                     branchId,
                 );
                 refreshVehicle();

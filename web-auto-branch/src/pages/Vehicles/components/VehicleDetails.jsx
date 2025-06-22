@@ -182,7 +182,12 @@ function VehicleDetails() {
                     </Flex>
                 )}
             </Box>
-            <SellModal open={isSellModalOpen} onOpenChange={setIsSellModalOpen} vehicle={vehicle} />
+            <SellModal
+                open={isSellModalOpen}
+                onOpenChange={setIsSellModalOpen}
+                vehicle={vehicle}
+                refreshVehicle={refreshVehicle}
+            />
             <VehicleModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} vehicle={vehicle} refreshVehicle={refreshVehicle} />
             <DeleteModal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} handleSubmit={handleDeleteVehicle} message="Tem certeza de que deseja excluir o veículo?" title="Veículo" />
         </>
