@@ -337,7 +337,6 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                         <AlertDialog.Action>
                             <Button id="vehicle-submit" type="submit" className={styles.saveButton}>Salvar</Button>
                         </AlertDialog.Action>
-
                     </Flex>
                 </form>
             </AlertDialog.Content>

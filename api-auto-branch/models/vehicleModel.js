@@ -1,4 +1,5 @@
 import db from "../db/conn.js";
+import { AppError } from "../utils/appError.js";
 
 export const selectAllVehicles = async () => {
     try {
@@ -201,6 +202,9 @@ export const insertVehicle = async (brand, model, version, year, gearbox, color,
 
         return results;
     } catch (err) {
+        if (err.code === 'ER_DUP_ENTRY') {
+            throw new AppError('Placa já cadastrada', 400);
+        }
         throw new Error("Erro ao inserir no banco de dados");
     }
 };

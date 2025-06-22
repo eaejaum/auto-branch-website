@@ -43,7 +43,7 @@ function Vehicle() {
                             <option value={2}>Vendidos</option>
                         </select>
                     </Flex>
-                    <Button onClick={() => setIsAddModalOpen(true)} ><Plus color="#FFF" height={14} width={14} /> Novo Veículo</Button>
+                    <Button id="add-vehicle-button" onClick={() => setIsAddModalOpen(true)} ><Plus color="#FFF" height={14} width={14} /> Novo Veículo</Button>
                 </Flex>
                 {loading ? (
                     <Flex justify="center" align="center">
