@@ -244,10 +244,7 @@ function UserModal({ open, onOpenChange, employee }) {
                     )}
 
                     <Flex justify="end">
-                        <AlertDialog.Action>
-                            <Button id="user-submit" type="submit" className={styles.saveButton}>Salvar</Button>
-                        </AlertDialog.Action>
-
+                        <Button id="user-submit" type="submit" className={styles.saveButton}>Salvar</Button>
                     </Flex>
                 </form>
             </AlertDialog.Content>

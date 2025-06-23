@@ -334,9 +334,7 @@ function VehicleModal({ open, onOpenChange, vehicle, refreshVehicle }) {
                     {error && <span id="vehicle-error" className="errorMessage">{error}</span>}
                     {success && <span id="vehicle-success" className="successMessage">{success}</span>}
                     <Flex justify="end">
-                        <AlertDialog.Action>
-                            <Button id="vehicle-submit" type="submit" className={styles.saveButton}>Salvar</Button>
-                        </AlertDialog.Action>
+                        <Button id="vehicle-submit" type="submit" className={styles.saveButton}>Salvar</Button>
                     </Flex>
                 </form>
             </AlertDialog.Content>
