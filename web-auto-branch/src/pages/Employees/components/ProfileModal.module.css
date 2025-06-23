@@ -3,3 +3,8 @@
     flex-direction: column;
     gap: 4px;
 }
+
+.saveButton {
+    padding: 16px;
+    margin-top: 16px;
+}

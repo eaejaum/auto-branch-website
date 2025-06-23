@@ -63,7 +63,7 @@ function ProfileModal({ open, onOpenChange }) {
                     {error && <span className="errorMessage">{error}</span>}
                     {success && <span className="successMessage">{success}</span>}
                     <Flex justify="end">
-                        <Button id="profile-submit" type="submit" className="authButton">
+                        <Button id="profile-submit" type="submit" className={styles.saveButton}>
                             {loading ? <Spinner /> : "Salvar"}
                         </Button>
                     </Flex>
